@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.6 2004-06-18 11:40:05 grahn Exp $
+# $Id: coordinate.py,v 1.7 2004-06-18 19:22:52 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -27,7 +27,6 @@ coordinate systems are needed to determine the translation.
 
 import vector
 import transform
-
 
 class Transform:
     """A transformation between two coordinate systems,

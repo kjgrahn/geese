@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: transform.py,v 1.5 2004-06-17 07:29:47 grahn Exp $
+# $Id: transform.py,v 1.6 2004-06-18 19:22:52 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -97,11 +97,15 @@ if __name__ == "__main__":
                    (.031014, .036227),
                    (.060737, .037544))
         def testScale(self):
-            sf = scale(2.3)
-            for v in self.vectors:
-                v2 = sf(v)
-                self.assertAlmostEqual(vector.angle(v), vector.angle(v2))
-                self.assertAlmostEqual(2.3*vector.length(v), vector.length(v2))
+            origo = (0,0)
+            for s in xrange(1, 40):
+                s /= 13.0
+                sf = scale(s)
+                for v in self.vectors:
+                    v2 = sf(v)
+                    self.assertAlmostEqual(vector.angle2(origo, v),
+                                           vector.angle2(origo, v2))
+                    self.assertAlmostEqual(s*vector.length(v),vector.length(v2))
         def testTranspose(self):
             tf = transpose((-0.14, 782.01))
             origo = (0,0)

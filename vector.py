@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: vector.py,v 1.2 2004-06-17 07:25:10 grahn Exp $
+# $Id: vector.py,v 1.3 2004-06-18 19:22:52 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -52,11 +52,12 @@ if __name__ == "__main__":
         def testAngle(self):
             for i in range(1, 1000):
                 i /= 10.0
-                self.assertEqual(angle((i, 0)), 0)
-                self.assertEqual(angle((i, i)), math.pi/4)
-                self.assertEqual(angle((0, i)), math.pi/2)
-                self.assertEqual(angle((-i, i)), math.pi*3/4)
-                self.assertEqual(angle((-i, 0)), math.pi)
+                origo = (0,0)
+                self.assertEqual(angle2(origo, (i, 0)), 0)
+                self.assertEqual(angle2(origo, (i, i)), math.pi/4)
+                self.assertEqual(angle2(origo, (0, i)), math.pi/2)
+                self.assertEqual(angle2(origo, (-i, i)), math.pi*3/4)
+                self.assertEqual(angle2(origo, (-i, 0)), math.pi)
         def testAngle2(self):
             self.assertEqual(angle2((1,1), (2,1)), 0)
             self.assertEqual(angle2((2,1), (1,1)), math.pi)
