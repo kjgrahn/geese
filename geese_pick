@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_pick,v 1.5 2004-09-12 16:00:24 grahn Exp $
+# $Id: geese_pick,v 1.6 2004-09-12 16:52:34 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -91,7 +91,12 @@ xvpixel = re.compile(r'\s*(\d+),\s*(\d+)\s=')
 xv = Child('xv %s' % file)
 
 print 'geese_pick: displaying map ...'
-print 'scale: one pixel is %.1f m wide' % themap.scale()
+print 'one pixel is %.1f m wide' % themap.scale()
+ar = themap.area()
+if ar > 100000:
+    print 'the map covers %.2f km²' % (themap.area()/1.0e6)
+else:
+    print 'the map covers %.0f m²' % themap.area()
 
 while 1:
     s = sys.stdin.readline()

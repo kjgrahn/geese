@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.4 2004-09-12 16:00:24 grahn Exp $
+# $Id: library.py,v 1.5 2004-09-12 16:52:34 grahn Exp $
 
 import re
 from geese import coordinate
@@ -42,6 +42,15 @@ class Map:
         """
         return vector.distance(self.outof((0,0)),
                                self.outof((0,1)))
+    def area(self):
+        """The area in square meters covered by the map.
+        """
+        w, h = self.dimension
+        w = vector.distance(self.outof((0,0)),
+                               self.outof((w,0)))
+        h = vector.distance(self.outof((0,0)),
+                            self.outof((0,h)))
+        return w*h
     def __str__(self):
         names = self.names
         if len(names) > 1:
