@@ -1,12 +1,23 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.2 2004-07-10 18:40:09 grahn Exp $
+# $Id: find.py,v 1.3 2004-07-11 17:33:20 grahn Exp $
 """Finding a point based on its distance from
 several other known points.
 """
 
 import math
 from geese import vector, coordinate
+
+class Error(Exception):
+    """Insufficient data. Too few neighbor points to divine
+    the point we're looking for, or too few of them are distinct
+    and don't contradict each other.
+    """
+
+class _IntersectError(Exception):
+    """No point fullfils the criteria (i.e. because the reference
+    points are too far apart).
+    """
 
 def _pairs(seq):
     """Return all pairs of elements from the sequence,
@@ -31,7 +42,7 @@ def _mean(seq):
         ys += y
     return xs/n, ys/n
 
-def intersection(ra, rb, d):
+def _intersection(ra, rb, d):
     """Find one intersection point (x, y), y>=0
     of two circles A and B.
 
@@ -40,28 +51,36 @@ def intersection(ra, rb, d):
     
     We will assume that they *do* intersect,
     i.e. they are not distinct and one is not
-    confined inside the other.
+    confined inside the other. The former case
+    raises _IntersectError.
     """
     # XXX ugly int overflow workaround
     ra, rb, d = map(float, (ra, rb, d))
     x = d*d + ra*ra - rb*rb
     x /= 2*d
-    y = math.sqrt(ra*ra - x*x)
+    tmp = ra*ra - x*x
+    if tmp < 0:
+        raise _IntersectError
+    y = math.sqrt(tmp)
     return x, y
 
 def find2(ca, ra, cb, rb):
     """Find the two points where circles A (centered at xa,ya with radius ra)
     and B (similarly) intersect.
 
-    Returns two (x, y) pairs. 
+    Returns two (x, y) pairs, or raises _IntersectError.
     """
     d = vector.distance(ca, cb)
+    # We could raise error here by noticing that
+    # d > ra+rb, but rounding errors below could
+    # still fsck us ... so don't do that.
+
     # transpose and rotate down;
     # A in origo and B on the x axis.
     t = coordinate.Transform(ca, vector.origo,
                              cb, (d, 0))
     # .., only we don't have to do the formal transform
-    x, y = intersection(ra, rb, d)
+    x, y = _intersection(ra, rb, d)
     # ... but only revert it
     tinv = t.inverse()
     return (tinv((x, y)), tinv((x, -y)))
@@ -73,6 +92,8 @@ def findmany(neighbors):
 
     Like find(), but returns a sequence of candidates (with the
     obviously 'bad' ones weeded out.
+
+    May raise Error.
     """
     # OK, so we have the maths in the form of find2() above.  That's
     # not enough since each comparison between two neighbors yields
@@ -117,6 +138,8 @@ def find(neighbors):
     neighbor points are probably not enough. Three should be enough in
     all but the most extreme cases, but more is better - especially
     since we do not really trust our inputs.
+
+    May raise Error.
     """
     return _mean(findmany(neighbors))
 
@@ -154,5 +177,25 @@ if __name__ == "__main__":
                 #print p
                 self.assert_(vector.distance(p, target) < 0.0001)
                 del nds[-1]
+        def testBroken(self):
+            neighbors = [(6450000, 1360000, 3109),
+                         (6452000, 1360000, 3116),
+                         (6450000, 1362000, 1369),
+                         (6452000, 1362000, 1385),
+                         (6454000, 1362000, 3156),
+                         (6450000, 1364000, 1443),
+                         (6452000, 1364000, 1459),
+                         (6454000, 1364000, 3189),
+                         (6452000, 1366000, 3215)]
+            find(neighbors)
+        def testNonIntersect(self):
+            self.assertRaises(_IntersectError,
+                              find2,
+                              (6450000, 1360000), 3109,
+                              (6452000, 1366000), 3215)
+            self.assertRaises(Error,
+                              find,
+                              [(6450000, 1360000, 3109),
+                               (6452000, 1366000, 3215)])
 
     unittest.main()
