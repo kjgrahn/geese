@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.3 2004-09-11 22:21:26 grahn Exp $
+# $Id: library.py,v 1.4 2004-09-12 16:00:24 grahn Exp $
 
 import re
 from geese import coordinate
 from geese import segrid
+from geese import vector
 
 class Map:
     """Info on a specific image mapping a specific area.
@@ -27,6 +28,20 @@ class Map:
         """
         return tuple(map(lambda i: int(i+.5),
                          self.outof((x,y))))
+    def contains(self, p):
+        """True if the map contains coordinate p.
+        """
+        w, h = self.dimension
+        x, y = self.into(p)
+        if x<0 or x>=w: return 0
+        if y<0 or y>=h: return 0
+        return 1
+    def scale(self):
+        """The scale of the map as a floating-point number,
+        as in 'one pixel is n meters wide'.
+        """
+        return vector.distance(self.outof((0,0)),
+                               self.outof((0,1)))
     def __str__(self):
         names = self.names
         if len(names) > 1:
