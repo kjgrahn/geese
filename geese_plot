@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.5 2005-01-09 11:22:18 grahn Exp $
+# $Id: geese_plot,v 1.6 2005-01-09 11:53:26 grahn Exp $
 #
 # Copyright (c) 2004, 2005 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -68,13 +68,15 @@ class Child:
         except OSError: pass
 
 prog = os.path.split(sys.argv[0])[1]
-usage = 'usage: %s [-V] -f coordinate-file map-file' % prog
+usage = 'usage: %s [-V] [-t format] -f coordinate-file map-file' % prog
 try:
-    opts, files = getopt.getopt(sys.argv[1:], 'Vf:')
+    opts, files = getopt.getopt(sys.argv[1:], 'Vt:f:')
     coords = None
     just_version = 0
+    encoding = 'jpeg'
     for option, value in opts:
         if option == '-f': coords = value
+        if option == '-t': encoding = value
         if option == '-V': just_version = 1
     if just_version:
         import geese.version
@@ -137,7 +139,7 @@ while 1:
     if s=='show':
         print 'rendering ...',
         sys.stdout.flush()
-        img.save(tmpname, 'JPEG')
+        img.save(tmpname, encoding)
         print 'displaying ...',
         sys.stdout.flush()
         xv = Child('xv', tmpname)

@@ -1,4 +1,4 @@
-.\" $Id: geese_plot.1,v 1.3 2005-01-08 11:28:05 grahn Exp $
+.\" $Id: geese_plot.1,v 1.4 2005-01-09 11:53:26 grahn Exp $
 .\" $Name:  $
 .\" 
 .\"
@@ -8,6 +8,8 @@ geese_plot \- plot coordinates on maps
 .SH "SYNOPSIS"
 .B geese_plot
 .RI [ \-V ]
+.RB [ \-t
+.IR format ]
 .BI \-f\  mapping-file
 .I map-file
 .
@@ -26,6 +28,26 @@ which describes how one or more images map onto the real world.
 The mapping file (see
 .BR geese_pick (1)
 for details).
+.
+.IP \-t\ \fIformat
+Render the plotted map in graphics format
+.IR format ,
+which can be either
+.I jpeg
+or
+.IR png .
+Default is
+.IR jpeg ,
+which generates much faster, but loses some detail.
+.IP
+Other formats such as
+.IR gif ,
+.I ppm
+and
+.I tiff
+are also likely to be supported; the name is simply passed through to the
+.SM PIL
+library which encodes the image.
 .
 .IP \-V
 Print version information and exit.
@@ -54,6 +76,9 @@ and may have meter-resolution or less:
 .I 6448158\ 1370286
 .I 64481\ 13702
 .fi
+.P
+Naturally, EOF (Control-D) exits
+.IR geese_plot .
 .
 .SH "AUTHOR"
 J\(:orgen Grahn

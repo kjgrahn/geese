@@ -4,6 +4,12 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+geese 1.6 (2005-01-09):
+
+  - geese_plot didn't work at all in 1.5 - fixed.
+  - Made geese_plot significantly faster by (by default) saving the
+    temporary image as JPEG rather than PNG.
+
 geese 1.5 (2005-01-08):
 
   - geese_plot: better markers on the map. The big, dull red circles
@@ -42,5 +48,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.8 2005-01-08 11:36:16 grahn Exp $
+$Id: NEWS,v 1.9 2005-01-09 11:53:26 grahn Exp $
 $Name:  $
