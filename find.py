@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.1 2004-06-27 20:48:09 grahn Exp $
+# $Id: find.py,v 1.2 2004-07-10 18:40:09 grahn Exp $
 """Finding a point based on its distance from
 several other known points.
 """
@@ -8,7 +8,7 @@ several other known points.
 import math
 from geese import vector, coordinate
 
-def pairs(seq):
+def _pairs(seq):
     """Return all pairs of elements from the sequence,
     but not both (a,b) and (b,a).
     """
@@ -18,6 +18,18 @@ def pairs(seq):
         for j in xrange(i+1, n):
             acc.append((seq[i], seq[j]))
     return acc
+
+def _mean(seq):
+    """Return the mean of a sequence of points (using possibly not the
+    best definition of two-dimensional mean.
+    """
+    n = float(len(seq))
+    xs = 0
+    ys = 0
+    for x, y in seq:
+        xs += x
+        ys += y
+    return xs/n, ys/n
 
 def intersection(ra, rb, d):
     """Find one intersection point (x, y), y>=0
@@ -65,7 +77,7 @@ def findmany(neighbors):
     # OK, so we have the maths in the form of find2() above.  That's
     # not enough since each comparison between two neighbors yields
     # two candidates and one is a fake. Combining all neighbors in N
-    # permutatons would yield 2N candidates, out of which N would be
+    # permutations would yield 2N candidates, out of which N would be
     # nicely clustered around the desired point, with the other N
     # spread in a random fashion (although one could devise an
     # infinite set of neighbors pointing out two desired points).
@@ -73,7 +85,7 @@ def findmany(neighbors):
     # So there's still a need for wild heuristics.
 
     candidates = []
-    for a, b in pairs(neighbors):
+    for a, b in _pairs(neighbors):
         if a==b: continue
         da = a[2]; a = a[:2]
         db = b[2]; b = b[:2]
@@ -106,8 +118,7 @@ def find(neighbors):
     all but the most extreme cases, but more is better - especially
     since we do not really trust our inputs.
     """
-    # XXX should really do a mean here
-    return findmany(neighbors)[0]
+    return _mean(findmany(neighbors))
 
 
 if __name__ == "__main__":
