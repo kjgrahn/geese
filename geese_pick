@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_pick,v 1.7 2004-10-03 17:39:27 grahn Exp $
+# $Id: geese_pick,v 1.8 2005-01-02 11:33:54 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -12,7 +12,6 @@ import os
 import os.path
 import getopt
 import sys
-import re
 import md5
 from geese import library
 
@@ -104,4 +103,12 @@ while 1:
     m = xvpixel.match(s)
     if not m: continue
     x, y = map(int, m.groups())
-    print themap.coordOf(x, y)
+    c = themap.coordOf(x, y)
+    n, e = c
+    print '1m: %d %d;' % (n,e),
+    n, e = map(lambda n: (n+5)/10, c)
+    print '10m: %d %d;' % (n,e),
+    n, e = map(lambda n: (n+50)/100, c)
+    print '100m: %d %d;' % (n,e),
+    n, e = map(lambda n: (n+500)/1000, c)
+    print '1km: %d %d' % (n,e)
