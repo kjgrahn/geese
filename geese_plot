@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.4 2005-01-08 11:28:05 grahn Exp $
+# $Id: geese_plot,v 1.5 2005-01-09 11:22:18 grahn Exp $
 #
 # Copyright (c) 2004, 2005 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -49,17 +49,17 @@ class Child:
     (if it's still alive) when the object dies.
     This part is Unix-specific.
     """
-    def __init__(self, cmd):
+    def __init__(self, *argv):
         self.pid = os.fork()
         # workaround for python 2.1 weirdness (or my misuse)
         self.os = os
         if not self.pid:
-            argv = cmd.split(' ')
+            cmd = argv[0]
             try:
-                os.execvp(argv[0], argv)
+                os.execvp(cmd, argv)
             except OSError, s:
-                print >>sys.stderr, "couldn't execute `%s'" % cmd
-                print >>sys.stderr, s
+                print >>sys.stderr, "couldn't execute `%s':" % cmd ,
+                print >>sys.stderr, str(s)
             sys.exit(-1)
     def __del__(self):
         try:
@@ -137,10 +137,10 @@ while 1:
     if s=='show':
         print 'rendering ...',
         sys.stdout.flush()
-        img.save(tmpname, 'PNG')
+        img.save(tmpname, 'JPEG')
         print 'displaying ...',
         sys.stdout.flush()
-        xv = Child('xv /tmp/foo')
+        xv = Child('xv', tmpname)
         print 'ok'
         continue
     if s=='':  continue
