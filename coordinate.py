@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.1 2004-06-17 08:37:39 grahn Exp $
+# $Id: coordinate.py,v 1.2 2004-06-17 09:45:43 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -25,6 +25,10 @@ As it turns out, only two points in the source and destination
 coordinate systems are needed to determine the translation.
 """
 
+import vector
+import transform
+
+
 class Transform:
     """A transformation between two coordinate systems,
     where one is a scaled, rotated and transposed version
@@ -38,13 +42,25 @@ class Transform:
         Naturally, accurracy increases the further apart
         A and B are.
         """
-        # for str)_ and inverse() only
+        self._t1 = transform.transpose(vector.sub((0, 0), src_a))
+        self._r = transform.rotate(vector.angle2(dst_a, dst_b) - \
+                                   vector.angle2(src_a, src_b))
+        self._t2 = transform.transpose(dst_a)
+        self._s = transform.scale(vector.distance(dst_a, dst_b) / \
+                                  vector.distance(src_a, src_b))
+        # for str() and inverse() only
         (self._src_a, self._dst_a,
          self._src_b, self._dst_b) = (src_a, dst_a, src_b, dst_b)
-        
+    def __call__(self, point):
+        """Transform a point from coordinate system A to B.
 
-    def __call__(self, point_a):
-        """Transform a point from coordinate system A to B."""
+        Internally, this is performed in steps:
+        - transpose src_a to origo
+        - rotate <src_a, src_b> parallell to <dst_a, dst_b>
+        - scale so that |src_a-src_b| == |dst_a-dst_b|
+        - transpose origo to dst_a
+        """
+        return self._t2(self._s(self._r(self._t1(point))))
     def inverse(self):
         """Return the inverse of this transform, i.e.
         a transform from the destination to the source.
