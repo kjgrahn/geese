@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.5 2004-09-12 16:52:34 grahn Exp $
+# $Id: library.py,v 1.6 2004-10-03 17:39:39 grahn Exp $
 
 import re
 from geese import coordinate
@@ -28,6 +28,11 @@ class Map:
         """
         return tuple(map(lambda i: int(i+.5),
                          self.outof((x,y))))
+    def pixelOf(self, north, east):
+        """Find the pixel of this world coordinate,
+        as a (x, y) tuple of floats.
+        """
+        return self.into((north, east))
     def contains(self, p):
         """True if the map contains coordinate p.
         """
