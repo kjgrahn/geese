@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.2 2003-01-04 16:09:29 grahn Exp $
+# $Id: Makefile,v 1.3 2003-01-05 23:19:02 grahn Exp $
 #
 # Makefile
 #
@@ -15,7 +15,7 @@ CXXFLAGS= -W -Wall -pedantic -ansi -g
 LDFLAGS=
 LIBS=
 
-OBJS=geese.o vector.o
+OBJS=geese.o vector.o transform.o
 OUTS=geese
 
 all: $(OUTS)
@@ -44,5 +44,6 @@ love:
 
 # DO NOT DELETE
 
-geese.o: vector.h
+geese.o: vector.h transform.h
+transform.o: transform.h vector.h
 vector.o: vector.h
