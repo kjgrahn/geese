@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.1 2003-01-05 23:19:02 grahn Exp $
+ * $Id: transform.h,v 1.2 2003-01-10 18:57:34 grahn Exp $
  *
  * transform.h
  *
@@ -103,5 +103,22 @@ private:
     Transpose _t2;
     Scale _s;
 };
+
+
+/**
+ * A lame transform for coordinate systems with origo
+ * in the upper-left corner -- e.g. bitmaps.
+ *
+ *  -----o---->------
+ *   ^   |
+ *  h|   |
+ *   |   v
+ *   v
+ *  -----------------
+ *
+ *
+ *
+ *
+ */
 
 #endif
