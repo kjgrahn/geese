@@ -1,0 +1,58 @@
+the `geese' Python package
+
+Geese is a set of utilities for manipulating coordinates and
+coordinate systems on bitmapped maps.
+
+Right now it's not really an end user thing, but I have to release it
+since other software (skatan) depends on the geese.find algorithm.
+
+In the longer run, Geese is based on the following observations:
+
+- Finding coordinates from maps by hand is difficult, boring and
+  error-prone.
+- It's hard to look at a coordinate and tell where it is in the
+  terrain.
+- Plotting coordinates on maps by hand is boring and error-prone.
+- Keeping high-quality digital copies of maps for personal use is (in
+  the days of flatbed scanners) convenient and legal.
+- Two persons need not share the same maps to share geographic data;
+  all they need are reasonable-quality maps covering the same area,
+  and some metadata telling them how these map to the terrain.
+- If a map's projection is simple enough, you only have to measure the
+  pixel--coordinate mapping for two points on the map to have a good
+  mapping.
+
+Geese is mostly limited to handle coordinates in the "Rikets Nät"
+("Swedish Grid"). See geese.segrid for details.  It's probably trivial
+to generalize it to other national systems working along the same
+principles, but I don't want to mess with broad generalizations for
+which I have no test data or documentation ...
+
+The original ISO C++ source for the core parts of geese is still in
+the distribution, but it's unused and might suffer from bit rot now or
+in the future.
+
+
+INSTALLATION AND REQUIREMENTS
+
+Installation is based on the standard Python 'distutils'.
+Python 2.1 or higher is required for installation and use.
+
+
+LICENSE
+
+Let's try the GPL for a change, shall we?
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+
+
+$Id: README,v 1.1 2004-08-09 09:02:40 grahn Exp $
+$Name:  $

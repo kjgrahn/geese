@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: setup.py,v 1.4 2004-07-20 22:04:05 grahn Exp $
+# $Id: setup.py,v 1.5 2004-08-09 09:02:40 grahn Exp $
 #
 from distutils.core import setup
 
@@ -18,7 +18,7 @@ setup(name = name,
 
       author = 'Jörgen Grahn',
       author_email = 'jgrahn@algonet.se',
-      license = 'BSD',
+      license = 'GPL',
       url = 'http://www.algonet.se/~jgrahn/comp/',
 
       packages = ['geese'],
