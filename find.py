@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.5 2004-07-11 17:49:43 grahn Exp $
+# $Id: find.py,v 1.6 2004-07-11 20:14:18 grahn Exp $
 """Finding a point based on its distance from
 several other known points.
 
@@ -46,6 +46,16 @@ def _mean(seq):
         xs += x
         ys += y
     return xs/n, ys/n
+
+def _uniq(seq):
+    """Remove duplicates - and fsck up the ordering - of a sequence.
+    Only works when the elements are sequences, and they are turned
+    into tuples as they are returned.
+    """
+    acc = {}
+    for e in seq:
+        acc[tuple(e)] = 1
+    return acc.keys()
 
 def _intersection(ra, rb, d):
     """Find one intersection point (x, y), y>=0
@@ -111,7 +121,7 @@ def findmany(neighbors):
     # So there's still a need for wild heuristics.
 
     candidates = []
-    for a, b in _pairs(neighbors):
+    for a, b in _pairs(_uniq(neighbors)):
         if a==b: continue
         da = a[2]; a = a[:2]
         db = b[2]; b = b[:2]
@@ -207,5 +217,6 @@ if __name__ == "__main__":
                               find,
                               [(6450000, 1360000, 3109),
                                (6452000, 1366000, 3215)])
+            self.assertRaises(Error, find, [])
 
     unittest.main()
