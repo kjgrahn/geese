@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: vector.py,v 1.4 2004-06-18 19:27:55 grahn Exp $
+# $Id: vector.py,v 1.5 2004-06-27 20:47:09 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -12,9 +12,11 @@
 
 import math
 
+origo = (0,0)
+
 def length(v):
     "Length of a vector."
-    x, y = v
+    x, y = map(float, v)
     return math.sqrt(x*x + y*y)
 def add(v1, v2):
     "Add two vectors."
@@ -42,7 +44,7 @@ if __name__ == "__main__":
 
     class test(unittest.TestCase):
         def testLength(self):
-            self.assertEqual(length((0, 0)), 0)
+            self.assertEqual(length(origo), 0)
             for y in range(-100, 1000):
                 self.assertEqual(length((0, y)), math.fabs(y))
             for x in range(-100, 1000):
@@ -50,7 +52,6 @@ if __name__ == "__main__":
         def testAngle(self):
             for i in range(1, 1000):
                 i /= 10.0
-                origo = (0,0)
                 self.assertEqual(angle(origo, (i, 0)), 0)
                 self.assertEqual(angle(origo, (i, i)), math.pi/4)
                 self.assertEqual(angle(origo, (0, i)), math.pi/2)
