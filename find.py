@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.3 2004-07-11 17:33:20 grahn Exp $
+# $Id: find.py,v 1.4 2004-07-11 17:45:18 grahn Exp $
 """Finding a point based on its distance from
 several other known points.
 """
@@ -51,17 +51,17 @@ def _intersection(ra, rb, d):
     
     We will assume that they *do* intersect,
     i.e. they are not distinct and one is not
-    confined inside the other. The former case
+    confined inside the other. At least the former case
     raises _IntersectError.
     """
     # XXX ugly int overflow workaround
     ra, rb, d = map(float, (ra, rb, d))
     x = d*d + ra*ra - rb*rb
     x /= 2*d
-    tmp = ra*ra - x*x
-    if tmp < 0:
+    try:
+        y = math.sqrt(ra*ra - x*x)
+    except ValueError:
         raise _IntersectError
-    y = math.sqrt(tmp)
     return x, y
 
 def find2(ca, ra, cb, rb):
@@ -110,8 +110,13 @@ def findmany(neighbors):
         if a==b: continue
         da = a[2]; a = a[:2]
         db = b[2]; b = b[:2]
-        candidates.append(find2(a, da,
-                                b, db))
+        try:
+            candidates.append(find2(a, da,
+                                    b, db))
+        except _IntersectError:
+            pass
+    if len(candidates) < 2:
+        raise Error, 'not enough good neighbors'
     # define the good candidate in each pair as the
     # one minimizing the sum of distance errors, and
     # eliminate the other
