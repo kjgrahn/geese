@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: transform.py,v 1.7 2004-06-18 19:27:55 grahn Exp $
+# $Id: transform.py,v 1.8 2004-06-27 20:46:21 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -14,7 +14,7 @@ coordinate systems.
 """
 
 import math
-import vector
+from geese import vector
 
 class scale:
     """A plane scaling; f(v) = Sv,  where
