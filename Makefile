@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 2004-10-12 20:30:46 grahn Exp $
+# $Id: Makefile,v 1.9 2005-01-04 22:48:51 grahn Exp $
 #
 # Makefile
 #
@@ -13,7 +13,7 @@ all:
 
 # Why not just use distutils all the way for installing this?  Because
 # as far as I can see, it doesn't really support installing anything
-# byt modules, and noone answered my query on comp.lang.python,
+# but modules, and noone answered my query on comp.lang.python,
 # <slrncjpp64.s1l.jgrahn-nntq@frailea.sa.invalid>.
 
 install:

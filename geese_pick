@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_pick,v 1.8 2005-01-02 11:33:54 grahn Exp $
+# $Id: geese_pick,v 1.9 2005-01-04 22:48:51 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -50,17 +50,24 @@ class Child:
         except OSError: pass
 
 prog = os.path.split(sys.argv[0])[1]
-usage = 'usage: %s -f coordinate-file map-file' % prog
+usage = 'usage: %s [-V] -f coordinate-file map-file' % prog
 try:
-    opts, files = getopt.getopt(sys.argv[1:], 'f:')
+    opts, files = getopt.getopt(sys.argv[1:], 'Vf:')
+    coords = None
+    just_version = 0
+    for option, value in opts:
+        if option == '-f': coords = value
+        if option == '-V': just_version = 1
+    if just_version:
+        import geese.version
+        print '%s, part of Geese %s' % (prog, geese.version.version)
+        print 'Copyright (C) 2004, 2005 Jörgen Grahn <jgrahn@algonet.se>'
+        sys.exit(0)
+    if not coords:
+        raise ValueError, 'argument -f missing'
     if len(files) != 1:
         raise ValueError, 'needs a single file name'
     file, = files
-    coords = None
-    for option, value in opts:
-        if option == '-f': coords = value
-    if not coords:
-        raise ValueError, 'argument -f missing'
 except (ValueError, getopt.GetoptError), s:
     print >>sys.stderr, 'error:', s
     print >>sys.stderr, usage

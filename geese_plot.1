@@ -1,4 +1,4 @@
-.\" $Id: geese_plot.1,v 1.1 2004-10-03 17:52:30 grahn Exp $
+.\" $Id: geese_plot.1,v 1.2 2005-01-04 22:48:51 grahn Exp $
 .\" $Name:  $
 .\" 
 .\"
@@ -6,8 +6,9 @@
 .SH "NAME"
 geese_plot \- plot coordinates on maps
 .SH "SYNOPSIS"
-.BR geese_plot\ \-f
-.I mapping-file
+.B geese_plot
+.RI [ \-V ]
+.BI \-f\  mapping-file
 .I map-file
 .
 .SH "DESCRIPTION"
@@ -19,9 +20,15 @@ the actual image file containing the map,
 and
 .IR mapping-file ,
 which describes how one or more images map onto the real world.
-See
+.
+.SH "OPTIONS"
+.IP \-f\ \fImapping-file
+The mapping file (see
 .BR geese_pick (1)
-for a description of the latter file format.
+for details).
+.
+.IP \-V
+Print version information and exit.
 .
 .SH "USAGE"
 .B geese_plot
