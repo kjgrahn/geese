@@ -1,13 +1,14 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 #
-# $Id: vector.py,v 1.1 2004-06-16 20:04:45 grahn Exp $
+# $Id: vector.py,v 1.2 2004-06-17 07:25:10 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
 #
 """Two-dimensional vector operations, with vectors represented as
-2-tuples of numbers (for simplicity, there is no Vector class
-per se)."""
+2-tuples of numbers (for simplicity, there is no Vector class per se).
+"""
 
 import math
 
@@ -31,7 +32,8 @@ def sub(v1, v2):
     return x1-x2, y1-y2
 def angle2(v1, v2):
     """The angle between two points (vectors),
-    i.e. from v1 to v2."""
+    i.e. from v1 to v2.
+    """
     return angle(sub(v2, v1))
 def distance(v1, v2):
     "The distance between two points (vectors)."

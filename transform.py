@@ -1,17 +1,20 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 #
-# $Id: transform.py,v 1.3 2004-06-16 22:10:51 grahn Exp $
+# $Id: transform.py,v 1.4 2004-06-17 07:25:10 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
 #
 """Two-dimensional vector transform functors:
 scaling, transposition and rotation.
-Or put differently, functors for distorting
-coordinate systems."""
 
-import vector
+Or put differently, functors for distorting
+coordinate systems.
+"""
+
 import math
+import vector
 
 class scale:
     """A plane scaling; f(v) = Sv,  where

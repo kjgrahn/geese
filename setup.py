@@ -1,6 +1,7 @@
 #!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
 #
-# $Id: setup.py,v 1.1 2004-06-16 22:41:35 grahn Exp $
+# $Id: setup.py,v 1.2 2004-06-17 07:25:10 grahn Exp $
 #
 from distutils.core import setup
 
