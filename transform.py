@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: transform.py,v 1.6 2004-06-18 19:22:52 grahn Exp $
+# $Id: transform.py,v 1.7 2004-06-18 19:27:55 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -103,8 +103,8 @@ if __name__ == "__main__":
                 sf = scale(s)
                 for v in self.vectors:
                     v2 = sf(v)
-                    self.assertAlmostEqual(vector.angle2(origo, v),
-                                           vector.angle2(origo, v2))
+                    self.assertAlmostEqual(vector.angle(origo, v),
+                                           vector.angle(origo, v2))
                     self.assertAlmostEqual(s*vector.length(v),vector.length(v2))
         def testTranspose(self):
             tf = transpose((-0.14, 782.01))
@@ -112,8 +112,8 @@ if __name__ == "__main__":
             origot = tf(origo)
             for v in self.vectors:
                 v2 = tf(v)
-                self.assertAlmostEqual(vector.angle2(origo, v),
-                                       vector.angle2(origot, v2))
+                self.assertAlmostEqual(vector.angle(origo, v),
+                                       vector.angle(origot, v2))
                 self.assertAlmostEqual(vector.distance(origo, v),
                                        vector.distance(origot, v2))
         def testRotate(self):

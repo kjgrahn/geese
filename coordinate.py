@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.7 2004-06-18 19:22:52 grahn Exp $
+# $Id: coordinate.py,v 1.8 2004-06-18 19:27:55 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -42,8 +42,8 @@ class Transform:
         A and B are.
         """
         self._t1 = transform.transpose(vector.sub((0, 0), src_a))
-        self._r = transform.rotate(vector.angle2(dst_a, dst_b) - \
-                                   vector.angle2(src_a, src_b))
+        self._r = transform.rotate(vector.angle(dst_a, dst_b) - \
+                                   vector.angle(src_a, src_b))
         self._t2 = transform.transpose(dst_a)
         self._s = transform.scale(vector.distance(dst_a, dst_b) / \
                                   vector.distance(src_a, src_b))
