@@ -1,15 +1,16 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.3 2003-01-11 21:17:55 grahn Exp $
+ * $Id: transform.h,v 1.4 2004-06-16 19:02:33 grahn Exp $
  *
  * transform.h
  *
- * Copyright (c) 2003 Jörgen Grahn <jgrahn@algonet.se>
+ * Copyright (c) 2003, 2004 Jörgen Grahn <jgrahn@algonet.se>
  * All rights reserved.
  */
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
+#include <cmath>
 #include "vector.h"
 
 /**
@@ -34,11 +35,11 @@ public:
 class Scale: public Transform
 {
 public:
-    Scale(double s = 1.0) : _s(s) {}
+    explicit Scale(double s = 1.0) : _s(s) {}
     virtual Vector operator() (const Vector& v) const;
 
 private:
-    double _s;
+    const double _s;
 };
 
 
@@ -50,11 +51,11 @@ class Transpose: public Transform
 {
 public:
     Transpose() : _v(0.0, 0.0) {}
-    Transpose(const Vector& v) : _v(v) {}
+    explicit Transpose(const Vector& v) : _v(v) {}
     virtual Vector operator() (const Vector& v) const;
 
 private:
-    Vector _v;
+    const Vector _v;
 };
 
 
@@ -69,14 +70,14 @@ private:
 class Rotate: public Transform
 {
 public:
-    Rotate(double a = 0.0)
+    explicit Rotate(double a = 0.0)
 	: _sin(std::sin(a)),
 	  _cos(std::cos(a)) {}
     virtual Vector operator() (const Vector& v) const;
 
 private:
-    double _sin;
-    double _cos;
+    const double _sin;
+    const double _cos;
 };
 
 
@@ -98,10 +99,10 @@ public:
     virtual Vector operator() (const Vector& v) const;
 
 private:
-    Transpose _t1;
-    Rotate _r;
-    Transpose _t2;
-    Scale _s;
+    const Transpose _t1;
+    const Rotate _r;
+    const Transpose _t2;
+    const Scale _s;
 };
 
 
@@ -120,14 +121,14 @@ private:
 class BitmapTransform: public Transform
 {
 public:
-    BitmapTransform(double h) : _h(h) {}
+    explicit BitmapTransform(double h) : _h(h) {}
 
     virtual Vector operator() (const Vector& v) const {
 	return Vector(v.x(), _h - v.y());
     }
 
 private:
-    double _h;
+    const double _h;
 };
 
 #endif

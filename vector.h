@@ -1,10 +1,10 @@
 /* -*- c++ -*-
  *
- * $Id: vector.h,v 1.3 2003-01-05 18:35:24 grahn Exp $
+ * $Id: vector.h,v 1.4 2004-06-16 19:02:33 grahn Exp $
  *
  * vector.h
  *
- * Copyright (c) 2003 Jörgen Grahn <jgrahn@algonet.se>
+ * Copyright (c) 2003, 2004 Jörgen Grahn <jgrahn@algonet.se>
  * All rights reserved.
  */
 #ifndef VECTOR_H
@@ -28,8 +28,8 @@ public:
     double angle() const;
 
 private:
-    double _x;
-    double _y;
+    const double _x;
+    const double _y;
 };
 
 
