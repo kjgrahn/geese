@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: segrid.py,v 1.1 2004-06-27 20:48:09 grahn Exp $
+# $Id: segrid.py,v 1.2 2004-07-18 20:20:22 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -83,7 +83,7 @@ class Point:
         for n in (self.north, self.east):
             n /= self.resolution
             n = str(n)
-            acc.append('\s-2%s\s0%s' % (n[:2], n[2:]))
+            acc.append(r'\s-2%s\s0%s' % (n[:2], n[2:]))
         return ' '.join(acc)
 
 
@@ -104,8 +104,8 @@ if __name__ == "__main__":
                              'Point(644500, 136200)')
         def testTstr(self):
             self.assertEqual(Point(64457, 13620).tstr(),
-                             '\s-264\s0457 \s-213\s0620')
+                             r'\s-264\s0457 \s-213\s0620')
             self.assertEqual(Point(6445700, 1362000).tstr(),
-                             '\s-264\s045700 \s-213\s062000')
+                             r'\s-264\s045700 \s-213\s062000')
 
     unittest.main()
