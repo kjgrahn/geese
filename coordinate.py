@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.4 2004-06-17 10:18:35 grahn Exp $
+# $Id: coordinate.py,v 1.5 2004-06-17 10:25:03 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -52,14 +52,13 @@ class Transform:
         (self._src_a, self._dst_a,
          self._src_b, self._dst_b) = (src_a, dst_a, src_b, dst_b)
     def __call__(self, point):
-        """Transform a point from coordinate system A to B.
-
-        Internally, this is performed in steps:
-        - transpose src_a to origo
-        - rotate <src_a, src_b> parallell to <dst_a, dst_b>
-        - scale so that |src_a-src_b| == |dst_a-dst_b|
-        - transpose origo to dst_a
+        """Transform a point from the source to the destination
+        coordinate system.
         """
+        # - transpose src_a to origo
+        # - rotate <src_a, src_b> parallell to <dst_a, dst_b>
+        # - scale so that |src_a-src_b| == |dst_a-dst_b|
+        # - transpose origo to dst_a
         return self._t2(self._s(self._r(self._t1(point))))
     def inverse(self):
         """Return the inverse of this transform, i.e.
