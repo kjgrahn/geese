@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.2 2004-08-29 18:58:08 grahn Exp $
+# $Id: library.py,v 1.3 2004-09-11 22:21:26 grahn Exp $
 
 import re
 from geese import coordinate
@@ -23,8 +23,10 @@ class Map:
         self.outof = self.into.inverse()
     def coordOf(self, x, y):
         """Find the world coordinate of pixel (x, y).
+        These are rounded to integers.
         """
-        return self.outof((x,y))
+        return tuple(map(lambda i: int(i+.5),
+                         self.outof((x,y))))
     def __str__(self):
         names = self.names
         if len(names) > 1:
