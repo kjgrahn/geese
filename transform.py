@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# $Id: transform.py,v 1.2 2004-06-16 21:10:39 grahn Exp $
+# $Id: transform.py,v 1.3 2004-06-16 22:10:51 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -102,10 +102,14 @@ if __name__ == "__main__":
                 self.assertAlmostEqual(2.3*vector.length(v), vector.length(v2))
         def testTranspose(self):
             tf = transpose((-0.14, 782.01))
+            origo = (0,0)
+            origot = tf(origo)
             for v in self.vectors:
                 v2 = tf(v)
-                self.assertAlmostEqual(vector.angle(v), vector.angle(v2))
-                self.assertAlmostEqual(vector.length(v), vector.length(v2))
+                self.assertAlmostEqual(vector.angle2(origo, v),
+                                       vector.angle2(origot, v2))
+                self.assertAlmostEqual(vector.distance(origo, v),
+                                       vector.distance(origot, v2))
         def testRotate(self):
             for angle in xrange(-314, 314):
                 angle /= 100.0
