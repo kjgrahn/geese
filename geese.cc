@@ -1,4 +1,4 @@
-/* $Id: geese.cc,v 1.5 2003-01-05 23:19:02 grahn Exp $
+/* $Id: geese.cc,v 1.6 2003-01-26 20:04:22 grahn Exp $
  *
  * geese.cc
  *
@@ -7,10 +7,36 @@
  */
 
 #include <iostream>
+#include <string>
 
 #include "vector.h"
 #include "transform.h"
 
+
+/**
+ * 
+ */
+class Map
+{
+public:
+    Map(const std::string& path,
+	int width, int height,
+	const Vector& a1, const Vector& a2,
+	const Vector& b1, const Vector& b2)
+	: _path(path),
+	  _width(width), _height(height),
+	  _pt(PlaneTransform(a1, a2, b1, b2)),
+	  _mt(width) {}
+
+    bool contains(const Vector& v) const;
+
+private:
+    std::string _path;
+    int _width;
+    int _height;
+    PlaneTransform _pt;
+    BitmapTransform _mt;
+};
 
 
 int main()
