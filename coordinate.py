@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.2 2004-06-17 09:45:43 grahn Exp $
+# $Id: coordinate.py,v 1.3 2004-06-17 10:05:44 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -83,21 +83,21 @@ if __name__ == "__main__":
             bridge = (144808, 720870)
             fjelka = (144600, 721200)
             storjen = (145200, 720600)
-            map1 = Transform(fjelka, (74, 118),
-                             storjen, (430, 471))
-            self.assertEqual(map1(bridge),
-                             (197, 312))
-            map2 = Transform(fjelka, (119, 124),
-                             storjen, (437, 511))
-            self.assertEqual(map2(bridge),
-                             (221, 329))
-            map3 = Transform(fjelka, (88, 168),
-                             storjen, (483, 476))
-            self.assertEqual(map3(bridge),
-                             (233, 346))
-            map4 = Transform(fjelka, (120, 190),
-                             storjen, (689, 755))
-            self.assertEqual(map4(bridge),
-                             (316, 500))
+            for h, fx, fy, sx, sy, bx, by in ((568,
+                                               74, 118, 430, 471,
+                                               197, 312),
+                                              (615,
+                                               119, 124, 437, 511,
+                                               221, 329),
+                                              (623,
+                                               88, 168, 483, 476,
+                                               233, 346),
+                                              (909,
+                                               120, 190, 689, 755,
+                                               316, 500)):
+                map = Transform(fjelka, (fx, h-fy),
+                                storjen, (sx, h-sy))
+                # 2--3 pixels off may be reasonable with this data
+                self.assert_(vector.distance(map(bridge), (bx, h-by)) < 3)
 
     unittest.main()
