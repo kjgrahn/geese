@@ -4,8 +4,8 @@ Geese is a set of utilities for manipulating coordinates and
 coordinate systems on bitmapped maps.
 
 It's both a library for use from other Python programs (the 'skatan'
-stuff depends on parts of it) and utilities you can run, such as
-'geese_pick'.
+stuff depends on parts of it) and utilities you can run, namely
+'geese_pick' and 'geese_plot'.
 
 Basically, geese is based on the following observations:
 
@@ -61,5 +61,5 @@ Let's try the GPL for a change, shall we?
   General Public License for more details.
 
 
-$Id: README,v 1.3 2004-10-03 17:52:29 grahn Exp $
+$Id: README,v 1.4 2005-01-08 11:36:16 grahn Exp $
 $Name:  $
