@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_pick,v 1.1 2004-09-07 19:30:08 grahn Exp $
+# $Id: geese_pick,v 1.2 2004-09-08 21:50:53 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -13,7 +13,19 @@ import os.path
 import getopt
 import sys
 import re
+import md5
 from geese import library
+
+def md5sum(file):
+    """Calculate the MD5 checksum of 'file'
+    and return it as a string à la md5sum(1).
+    """
+    # XXX this is stupid
+    acc = md5.new(open(file, 'r').read())
+    s = []
+    for c in acc.digest():
+        s.append('%02x' % ord(c))
+    return ''.join(s)
 
 prog = os.path.split(sys.argv[0])[1]
 usage = 'usage: %s -f coordinate-file map-file' % prog
@@ -34,10 +46,13 @@ except (ValueError, getopt.GetoptError), s:
 
 coords = library.parse(open(coords, "r"))
 for m in coords:
-    print m
     if os.path.basename(file) in m.names:
         themap = m
         break
+
+if themap.checksums and not md5sum(file) in themap.checksums:
+    print >>sys.stderr,\
+          '%s: bad checksum - mistrust the resulting coordinates!' % file
 
 # 1802,1387 = 183,147,112  #b79370  ( 29  38  71 HSV)  [  325,  135]
 xvpixel = re.compile(r'\s*(\d+),\s*(\d+)\s=')
