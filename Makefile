@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 2004-10-11 19:12:34 grahn Exp $
+# $Id: Makefile,v 1.8 2004-10-12 20:30:46 grahn Exp $
 #
 # Makefile
 #
@@ -27,7 +27,7 @@ clean:
 
 test: coordinate.py find.py library.py segrid.py transform.py vector.py
 	for py in $^; \
-	do PYTHONPATH=. python $$py; \
+	do PYTHONPATH=.. python $$py; \
 	done
 
 # The old C++ transform algorithms
