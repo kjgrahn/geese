@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.9 2004-06-27 20:46:21 grahn Exp $
+# $Id: coordinate.py,v 1.10 2004-10-12 22:00:45 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -40,7 +40,7 @@ class Transform:
         coordinate system, given the source and destination
         coordinates for two points A and B.
 
-        Naturally, accurracy increases the further apart
+        Naturally, accuracy increases the further apart
         A and B are.
         """
         self._t1 = transpose(vector.sub(vector.origo, src_a))
@@ -87,6 +87,24 @@ if __name__ == "__main__":
                 (909,
                  120, 190, 689, 755,
                  316, 500))
+        plains = (Transform((6446, 1360), ( 0, 0),
+                            (6447, 1360), (10, 0)),
+                  Transform((6447, 1360), (10, 0),
+                            (6447, 1361), (10, 10)),
+                  Transform((6446, 1360), (0, 0),
+                            (6446.5, 1360), (5, 0)))
+        rots = (Transform((6446, 1360), (0, 10),
+                          (6447, 1360), (0, 0)),
+                Transform((6447, 1360), (0, 0),
+                          (6446, 1361), (10, 10)),
+                Transform((6446, 1360), (0, 10),
+                          (6446.5, 1360), (0, 5)))
+        def assertMaps(self, map, src, dest):
+            "ok iff 'map' maps back & forth between 'src' and 'dest'"
+            self.assert_(vector.distance(map(src), dest) < 1,
+                         '%s != %s' % (map(src), dest))
+            self.assert_(vector.distance(map.inverse()(dest), src) < 1,
+                         '%s ~= %s' % (map.inverse()(dest), src))
         def testSlipsiken(self):
             for h, fx, fy, sx, sy, bx, by in self.maps:
                 # 2--3 pixels off may be reasonable with this data
@@ -108,5 +126,16 @@ if __name__ == "__main__":
                 # 10m off may be reasonable with this data
                 # print vector.distance(self.bridge, map((bx, h-by)))
                 self.assert_(vector.distance(self.bridge, map((bx, h-by))) < 10)
-
+        def testPlain(self):
+            for map in self.plains:
+                self.assertMaps(map, (6446, 1360), (0,0))
+                self.assertMaps(map, (6446, 1361), (0,10))
+                self.assertMaps(map, (6447, 1360), (10,0))
+                self.assertMaps(map, (6447, 1361), (10,10))
+        def testRotated(self):
+            for map in self.rots:
+                self.assertMaps(map, (6446, 1360), (0,10))
+                self.assertMaps(map, (6446, 1361), (10,10))
+                self.assertMaps(map, (6447, 1360), (0,0))
+                self.assertMaps(map, (6447, 1361), (10,0))
     unittest.main()
