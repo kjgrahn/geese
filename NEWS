@@ -4,10 +4,13 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+  - Introduced the geese_pick utility for pulling coordinates from maps.
+    This also introduces the file format for describing maps.
+
 geese 1.0 (2004-08-09):
   - First real release. An ugly geese.find bug which caused skatan to
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.1 2004-08-09 09:02:40 grahn Exp $
+$Id: NEWS,v 1.2 2004-09-08 21:50:40 grahn Exp $
 $Name:  $
