@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.3 2004-06-17 10:05:44 grahn Exp $
+# $Id: coordinate.py,v 1.4 2004-06-17 10:18:35 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -72,32 +72,41 @@ if __name__ == "__main__":
     import unittest
 
     class test(unittest.TestCase):
-        if not hasattr(unittest.TestCase, 'assertAlmostEqual'):
-            # no assertAlmostEqual() in Python 2.2
-            def assertAlmostEqual(self, first, second):
-                if first==second: return
-                if not abs(first*0.9999) < abs(second) < abs(first*1.0001):
-                    raise self.failureException, \
-                          '%s != %s' % (`first`, `second`)
+        bridge = (144808, 720870)
+        fjelka = (144600, 721200)
+        storjen = (145200, 720600)
+        maps = ((568,
+                 74, 118, 430, 471,
+                 197, 312),
+                (615,
+                 119, 124, 437, 511,
+                 221, 329),
+                (623,
+                 88, 168, 483, 476,
+                 233, 346),
+                (909,
+                 120, 190, 689, 755,
+                 316, 500))
         def testSlipsiken(self):
-            bridge = (144808, 720870)
-            fjelka = (144600, 721200)
-            storjen = (145200, 720600)
-            for h, fx, fy, sx, sy, bx, by in ((568,
-                                               74, 118, 430, 471,
-                                               197, 312),
-                                              (615,
-                                               119, 124, 437, 511,
-                                               221, 329),
-                                              (623,
-                                               88, 168, 483, 476,
-                                               233, 346),
-                                              (909,
-                                               120, 190, 689, 755,
-                                               316, 500)):
-                map = Transform(fjelka, (fx, h-fy),
-                                storjen, (sx, h-sy))
+            for h, fx, fy, sx, sy, bx, by in self.maps:
                 # 2--3 pixels off may be reasonable with this data
-                self.assert_(vector.distance(map(bridge), (bx, h-by)) < 3)
+                # print vector.distance(map(self.bridge), (bx, h-by))
+                map = Transform(self.fjelka, (fx, h-fy),
+                                self.storjen, (sx, h-sy))
+                self.assert_(vector.distance(map(self.bridge), (bx, h-by)) < 3)
+        def testSlipsiken2(self):
+            for h, fx, fy, sx, sy, bx, by in self.maps:
+                map = Transform((fx, h-fy), self.fjelka,
+                                (sx, h-sy), self.storjen)
+                # 10m off may be reasonable with this data
+                # print vector.distance(self.bridge, map((bx, h-by)))
+                self.assert_(vector.distance(self.bridge, map((bx, h-by))) < 10)
+        def testSlipsiken3(self):
+            for h, fx, fy, sx, sy, bx, by in self.maps:
+                map = Transform(self.fjelka, (fx, h-fy),
+                                self.storjen, (sx, h-sy)).inverse()
+                # 10m off may be reasonable with this data
+                # print vector.distance(self.bridge, map((bx, h-by)))
+                self.assert_(vector.distance(self.bridge, map((bx, h-by))) < 10)
 
     unittest.main()
