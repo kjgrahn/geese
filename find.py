@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.8 2004-08-07 08:37:29 grahn Exp $
+# $Id: find.py,v 1.9 2004-08-07 15:41:19 grahn Exp $
 """Finding a point based on its distance from
-several other known points.
+several other known points, possibly with minor
+errors in the input data.
 
 Note that the approximate nature of this can be a problem -
 not because the results are approximate, but because the user
@@ -46,6 +47,49 @@ def _mean(seq):
         xs += x
         ys += y
     return xs/n, ys/n
+
+class _Cluster:
+    """A set of points, hopefully clustered together.
+    """
+    def __init__(self):
+        self.points = []
+        self.accx = 0
+        self.accy = 0
+    def add(self, p):
+        self.points.append(p)
+        x, y = p
+        self.accx += x
+        self.accy += y
+    def __len__(self):
+        return len(self.points)
+    def center(self):
+        """The center of the cluster (kind of).
+        An empty cluster is by convention centered at origo.
+        """
+        n = len(self.points)
+        if n==0:
+            return vector.origo
+        n = float(n)
+        return self.accx/n, self.accy/n
+    def spread(self):
+        """A value indicating how tight or spread the cluster is,
+        currently the square root of the area of the smallest
+        rectangle, parallel to the axis, enclosing all points.
+        """
+        minx, miny = self.points[0]
+        maxx, maxy = self.points[0]
+        for x, y in self.points:
+            if x<minx: minx = x
+            if x>maxx: maxx = x
+            if y<miny: miny = y
+            if y>maxy: maxy = y
+        return math.sqrt((maxx-minx)*(maxy-miny))
+    def distance(self, p):
+        """The distance between [the center] of the cluster and p.
+        """
+        # XXX the current users do not need the actual value, so we
+        # could return the square of the distance instead ...
+        return vector.distance(self.center(), p)
 
 def _uniq(seq):
     """Remove duplicates - and fsck up the ordering - of a sequence.
@@ -112,42 +156,59 @@ def findmany(neighbors):
     """
     # OK, so we have the maths in the form of find2() above.  That's
     # not enough since each comparison between two neighbors yields
-    # two candidates and one is a fake. Combining all neighbors in N
-    # permutations would yield 2N candidates, out of which N would be
-    # nicely clustered around the desired point, with the other N
-    # spread in a random fashion (although one could devise an
-    # infinite set of neighbors pointing out two desired points).
+    # two candidates and one is a fake.
 
-    # So there's still a need for wild heuristics.
+    # Combining all neighbors in N permutations would yield 2N
+    # candidates, out of which N would be nicely clustered around the
+    # desired point, with the other N hopefully spread in a seemingly
+    # random fashion.  The worst case is when the neighbors are on a
+    # line; we then get two tight clusters of N candidates each. The
+    # way this algorithm tends to be used, that's not an unlikely
+    # scenario. Murphy's law applies.
 
-    candidates = []
+    # So the strategy is to maintain two sets of candidates, and for
+    # each pair of candidates, add one to each set in a way which
+    # maximises the 'clustering' aspect. If, at the end, we have more
+    # than one candidate in each set, and one of them is significantly
+    # better clustered than the other, that is the one centered around
+    # the point we're looking for.
+
+    cluster1 = _Cluster()
+    cluster2 = _Cluster()
     for a, b in _pairs(_uniq(neighbors)):
-        if a==b: continue
+        assert a!=b
         da = a[2]; a = a[:2]
         db = b[2]; b = b[:2]
         try:
-            candidates.append(find2(a, da,
-                                    b, db))
+            c1, c2 = find2(a, da, b, db)
+            d11 = cluster1.distance(c1)
+            d12 = cluster1.distance(c2)
+            d21 = cluster2.distance(c1)
+            d22 = cluster2.distance(c2)
+            mind = min(d11, d12, d21, d22)
+            if mind==d11 or mind==d22:
+                cluster1.add(c1)
+                cluster2.add(c2)
+            else:
+                cluster1.add(c2)
+                cluster2.add(c1)                
         except _IntersectError:
             pass
-    if len(candidates) < 2:
+    assert len(cluster1)==len(cluster2)
+    if len(cluster1) < 2:
         raise Error, 'not enough good neighbors'
-    # define the good candidate in each pair as the
-    # one minimizing the sum of distance errors, and
-    # eliminate the other
-    good = []
-    for c1, c2 in candidates:
-        d1 = 0
-        d2 = 0
-        for x, y, d in neighbors:
-            neighbor = (x, y)
-            d1 += abs(d - vector.distance(c1, neighbor))
-            d2 += abs(d - vector.distance(c2, neighbor))
-        if d1 < d2:
-            good.append(c1)
-        else:
-            good.append(c2)
-    return good
+
+    # heuristic: the cluster with the most spread loses.  If that
+    # cluster is not spread more than a third of the distance between
+    # the two clusters, /we/ lose because we cannot safely say which
+    # cluster is the correct one.
+
+    if cluster2.spread() < cluster1.spread():
+        cluster1, cluster2 = cluster2, cluster1
+    dc = vector.distance(cluster1.center(), cluster2.center())
+    if cluster2.spread() * 3 < dc:
+        raise Error, 'two sets of likely candidates'
+    return cluster1.points
 
 def find(neighbors):
     """Find a (x, y) coordinate of a point, based on a sequence of
@@ -155,11 +216,11 @@ def find(neighbors):
     from the desired point.
 
     As a pen and a piece of paper would tell you, two distinct
-    neighbor points are probably not enough. Three should be enough in
-    all but the most extreme cases, but more is better - especially
-    since we do not really trust our inputs.
+    neighbor points are not enough. Three or more are needed - but if
+    they are all on a straight line, we fail to find the point no
+    matter how many neighbors there are.
 
-    May raise Error.
+    Raises Error when the point cannot be identified.
     """
     return _mean(findmany(neighbors))
 
