@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: segrid.py,v 1.3 2005-01-02 11:33:41 grahn Exp $
+# $Id: segrid.py,v 1.4 2005-01-09 11:16:14 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -78,7 +78,7 @@ class Point:
     def __cmp__(self, other):
         return cmp((self.north, self.east),
                    (other.north, other.east))
-    def tstr(self):
+    def tstr(self, kind=0):
         """Return the point as a troff(1) source string, with
         point size changing commands as appropriate.
         """
@@ -86,7 +86,10 @@ class Point:
         for n in (self.north, self.east):
             n /= self.resolution
             n = str(n)
-            acc.append(r'\s-2%s\s0%s' % (n[:2], n[2:]))
+            if kind==0:
+                acc.append(r'\s-2%s\s0%s' % (n[:2], n[2:]))
+            else:
+                acc.append(r'\s-2%s\s0' % n)
         return ' '.join(acc)
 
 
