@@ -1,0 +1,126 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
+#
+# $Id: geese_plot,v 1.1 2004-10-03 17:52:30 grahn Exp $
+#
+# Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
+# All rights reserved.
+#
+
+import re
+import os
+import os.path
+import getopt
+import sys
+import re
+import md5
+import Image
+import ImageDraw
+from geese import library
+from geese import segrid
+
+def md5sum(file):
+    """Calculate the MD5 checksum of 'file'
+    and return it as a string à la md5sum(1).
+    """
+    # XXX this is stupid
+    acc = md5.new(open(file, 'r').read())
+    s = []
+    for c in acc.digest():
+        s.append('%02x' % ord(c))
+    return ''.join(s)
+
+class Child:
+    """Wrapper for a forked command which gets killed
+    (if it's still alive) when the object dies.
+    This part is Unix-specific.
+    """
+    def __init__(self, cmd):
+        self.pid = os.fork()
+        # workaround for python 2.1 weirdness (or my misuse)
+        self.os = os
+        if not self.pid:
+            argv = cmd.split(' ')
+            try:
+                os.execvp(argv[0], argv)
+            except OSError, s:
+                print >>sys.stderr, "couldn't execute `%s'" % cmd
+                print >>sys.stderr, s
+            sys.exit(-1)
+    def __del__(self):
+        try:
+            self.os.kill(self.pid, 2)
+            self.os.wait()
+        except OSError: pass
+
+prog = os.path.split(sys.argv[0])[1]
+usage = 'usage: %s -f coordinate-file map-file' % prog
+try:
+    opts, files = getopt.getopt(sys.argv[1:], 'f:')
+    if len(files) != 1:
+        raise ValueError, 'needs a single file name'
+    file, = files
+    coords = None
+    for option, value in opts:
+        if option == '-f': coords = value
+    if not coords:
+        raise ValueError, 'argument -f missing'
+except (ValueError, getopt.GetoptError), s:
+    print >>sys.stderr, 'error:', s
+    print >>sys.stderr, usage
+    sys.exit(1)
+
+try:
+    coords = library.parse(open(coords, "r"))
+except IOError, s:
+    print >>sys.stderr, s
+    sys.exit(1)
+
+themap = None
+for m in coords:
+    if os.path.basename(file) in m.names:
+        themap = m
+        break
+if not themap:
+    print >>sys.stderr, "found no entry for `%s', exiting" % file
+    sys.exit(1)
+if themap.checksums and not md5sum(file) in themap.checksums:
+    print >>sys.stderr,\
+          '%s: bad checksum - mistrust the resulting coordinates!' % file
+
+print '%s: one pixel is %.1f m wide' % (file, themap.scale())
+ar = themap.area()
+if ar > 100000:
+    print 'the map covers %.2f km²' % (ar/1.0e6)
+else:
+    print 'the map covers %.0f m²' % ar
+
+img = Image.open(file)
+dimg = ImageDraw.Draw(img)
+gridre = re.compile(r'(\d+)\s+(\d+)$')
+
+while 1:
+    s = sys.stdin.readline()
+    if not s: break
+    s = s.strip()
+    m = gridre.match(s)
+    if m:
+        north, east = map(int, m.groups())
+        while north < 1000000:
+            north *= 10
+            east *= 10
+        x, y = themap.pixelOf(north, east)
+        dimg.ellipse((x-10,y-10,x+10,y+10), fill=(100,0,0))
+        continue
+    if s=='show':
+        print 'rendering ...',
+        sys.stdout.flush()
+        img.save('/tmp/foo', 'PNG')
+        print 'displaying ...',
+        sys.stdout.flush()
+        xv = Child('xv /tmp/foo')
+        print 'ok'
+        continue
+    if s=='':  continue
+    print 'uh? You said "%s"' % s
+    continue

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.4 2004-09-11 18:53:35 grahn Exp $
+# $Id: Makefile,v 1.5 2004-10-03 17:52:29 grahn Exp $
 #
 # Makefile
 #
@@ -18,8 +18,8 @@ all:
 
 install:
 	./setup.py install
-	install -m755 geese_pick $(INSTALLBASE)/bin/
-	install -m644 geese_pick.1 $(INSTALLBASE)/man/man1/
+	install -m755 geese_pick geese_plot $(INSTALLBASE)/bin/
+	install -m644 geese_pick.1 geese_plot.1 $(INSTALLBASE)/man/man1/
 
 clean:
 	$(RM) $(OUTS) *.o Makefile.bak core TAGS

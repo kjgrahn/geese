@@ -1,0 +1,56 @@
+.\" $Id: geese_plot.1,v 1.1 2004-10-03 17:52:30 grahn Exp $
+.\" $Name:  $
+.\" 
+.\"
+.TH geese_plot 1 "OCT 2004" "Geese" "User Manuals"
+.SH "NAME"
+geese_plot \- plot coordinates on maps
+.SH "SYNOPSIS"
+.BR geese_plot\ \-f
+.I mapping-file
+.I map-file
+.
+.SH "DESCRIPTION"
+.B geese_plot
+is a small interactive utility for plotting coordinates onto
+digital maps, given
+.IR map-file ,
+the actual image file containing the map,
+and
+.IR mapping-file ,
+which describes how one or more images map onto the real world.
+See
+.BR geese_pick (1)
+for a description of the latter file format.
+.
+.SH "USAGE"
+.B geese_plot
+features a really simple command-line interface.
+Input is either a coordinate, or the
+.IP
+.I show
+.P
+command, which displays the map with the coordinates plotted,
+using John Bradley's excellent
+.BR xv (1)
+image viewer.
+.P
+Coordinates are on the form
+.IP
+.I
+north\ east
+.P
+and may have meter-resolution or less:
+.IP
+.nf
+.I 6448158\ 1370286
+.I 64481\ 13702
+.fi
+.
+.SH "AUTHOR"
+J\(:orgen Grahn
+.I <jgrahn@algonet.se>
+.
+.SH "SEE ALSO"
+.BR geese_pick (1),
+.BR xv (1).
