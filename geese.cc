@@ -1,4 +1,4 @@
-/* $Id: geese.cc,v 1.3 2003-01-05 18:35:24 grahn Exp $
+/* $Id: geese.cc,v 1.4 2003-01-05 23:11:06 grahn Exp $
  *
  * geese.cc
  *
@@ -22,7 +22,7 @@ public:
 
 
 /**
- * A plane scaling, as a matrix
+ * A plane scaling; f(v) = Sv,  where S =
  *
  * [ s   0 ]
  * [       ]
@@ -46,7 +46,7 @@ Vector Scale::operator() (const Vector& v) const
 
 
 /**
- * A plane transposition.
+ * A plane transposition; f(v) = v + v'
  *
  */
 class Transpose: public Transform
@@ -67,8 +67,7 @@ Vector Transpose::operator() (const Vector& v) const
 
 
 /**
- * A plane rotation around origo, as a matrix
- * [[cos(v) sin(v)] [-sin(v) cos(v)]] .
+ * A plane rotation around origo; f(v) = Rv,  where R =
  *
  * [ cos -sin ]
  * [          ]
@@ -157,7 +156,7 @@ int main()
     using std::endl;
 
     const Vector a2(1, 3);
-    const Vector b2(3, 2.5);
+    const Vector b2(0, 1);
 
     PlaneTransform tt(Vector(0,0), a2,
 		      Vector(1,0), b2);
