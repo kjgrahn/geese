@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.9 2004-08-07 15:41:19 grahn Exp $
+# $Id: find.py,v 1.10 2004-08-07 15:58:10 grahn Exp $
 """Finding a point based on its distance from
 several other known points, possibly with minor
 errors in the input data.
@@ -84,12 +84,11 @@ class _Cluster:
             if y<miny: miny = y
             if y>maxy: maxy = y
         return math.sqrt((maxx-minx)*(maxy-miny))
-    def distance(self, p):
-        """The distance between [the center] of the cluster and p.
+    def distance2(self, p):
+        """The square of the distance between [the center] of the
+        cluster and p.
         """
-        # XXX the current users do not need the actual value, so we
-        # could return the square of the distance instead ...
-        return vector.distance(self.center(), p)
+        return vector.distance2(self.center(), p)
 
 def _uniq(seq):
     """Remove duplicates - and fsck up the ordering - of a sequence.
@@ -181,10 +180,10 @@ def findmany(neighbors):
         db = b[2]; b = b[:2]
         try:
             c1, c2 = find2(a, da, b, db)
-            d11 = cluster1.distance(c1)
-            d12 = cluster1.distance(c2)
-            d21 = cluster2.distance(c1)
-            d22 = cluster2.distance(c2)
+            d11 = cluster1.distance2(c1)
+            d12 = cluster1.distance2(c2)
+            d21 = cluster2.distance2(c1)
+            d22 = cluster2.distance2(c2)
             mind = min(d11, d12, d21, d22)
             if mind==d11 or mind==d22:
                 cluster1.add(c1)

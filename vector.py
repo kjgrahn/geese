@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: vector.py,v 1.5 2004-06-27 20:47:09 grahn Exp $
+# $Id: vector.py,v 1.6 2004-08-07 15:58:10 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -35,9 +35,13 @@ def angle(v1, v2):
     x1, y1 = v1
     x2, y2 = v2
     return math.atan2(y2-y1, x2-x1)
+def distance2(v1, v2):
+    "The square of the distance between two points (vectors)."
+    x, y = sub(v2, v1)
+    return x*float(x) + y*float(y)
 def distance(v1, v2):
     "The distance between two points (vectors)."
-    return length(sub(v2, v1))
+    return math.sqrt(distance2(v1, v2))
 
 if __name__ == "__main__":
     import unittest
