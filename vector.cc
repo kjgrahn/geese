@@ -1,5 +1,5 @@
 /*
- * $Id: vector.cc,v 1.1 2003-01-02 20:30:23 grahn Exp $
+ * $Id: vector.cc,v 1.2 2003-01-04 16:09:29 grahn Exp $
  *
  * vector.cc
  *
@@ -21,7 +21,7 @@ double Vector::length() const
 
 double Vector::angle() const
 {
-    return 0.0;
+    return std::atan2(_x, _y);
 }
 
 
@@ -39,6 +39,6 @@ Vector operator- (const Vector& a, const Vector& b)
 
 std::ostream& operator<< (std::ostream& o, const Vector& v)
 {
-    o << "(" << v.x() << ", " << v.y() << ")";
+    o << "(" << int(v.x()) << ", " << int(v.y()) << ")";
     return o;
 }

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2003-01-02 20:30:23 grahn Exp $
+# $Id: Makefile,v 1.2 2003-01-04 16:09:29 grahn Exp $
 #
 # Makefile
 #
@@ -16,9 +16,12 @@ LDFLAGS=
 LIBS=
 
 OBJS=geese.o vector.o
-OUTS=
+OUTS=geese
 
-all: objs
+all: $(OUTS)
+
+geese: $(OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 objs: $(OBJS)
 

@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: vector.h,v 1.1 2003-01-02 20:30:23 grahn Exp $
+ * $Id: vector.h,v 1.2 2003-01-04 16:09:29 grahn Exp $
  *
  * vector.h
  *
@@ -36,9 +36,13 @@ private:
 Vector operator+ (const Vector& a, const Vector& b);
 Vector operator- (const Vector& a, const Vector& b);
 
-double angle(const Vector& a, const Vector& b) {return (b-a).angle();}
+inline double angle(const Vector& a, const Vector& b) {
+    return (b-a).angle();
+}
 
-double distance(const Vector& a, const Vector& b) {return (b-a).length();}
+inline double distance(const Vector& a, const Vector& b) {
+    return (b-a).length();
+}
 
 std::ostream& operator<< (std::ostream& o, const Vector& v);
 
