@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.6 2004-10-03 17:39:39 grahn Exp $
+# $Id: library.py,v 1.7 2004-10-12 20:31:28 grahn Exp $
 
 import re
 from geese import coordinate
@@ -9,6 +9,18 @@ from geese import vector
 
 class Map:
     """Info on a specific image mapping a specific area.
+    - one or more names (probably file names)
+    - zero or more md5sums
+    - dimensions (in pixels)
+    - a mapping to and from a real-word coordinate system
+    and data derived from those things.
+
+    World coordinates are on the form (north, east) - see
+    geese.segrid.
+
+    Pixel coordinates are by ancient convention (x, y) with
+    y growing downwards from an origo in the upper-left
+    corner of the pixmap.
     """
     def __init__(self,
                  names, checksums, dimension,
@@ -105,3 +117,61 @@ def parse(f):
         maps.append(Map(names, md5sums, size,
                         wa, ma, wb, mb))
     return maps
+
+if __name__ == "__main__":
+    import unittest
+    from geese import vector
+    
+    class testMap(unittest.TestCase):
+        plains = (Map(['plain'], [],
+                      (100,100),
+                      (6446000, 1360000), (0, 100),
+                      (6447000, 1360000), (0,   0)),
+                  Map(['plain2'], [],
+                      (100,100),
+                      (6447000, 1360000), (0, 0),
+                      (6446000, 1361000), (100, 100)),
+                  Map(['plain3'], [],
+                      (100,100),
+                      (6446000, 1360000), (0, 100),
+                      (6446500, 1360000), (0,  50)))
+        rots = (Map(['rotated'], [],
+                    (100,100),
+                    (6446000, 1360000), (0,   0),
+                    (6447000, 1360000), (100, 0)),
+                Map(['rotated2'], [],
+                    (100,100),
+                    (6447000, 1360000), (100, 0),
+                    (6446000, 1361000), (0, 100)),
+                Map(['rotated3'], [],
+                    (100,100),
+                    (6446000, 1360000), ( 0, 0),
+                    (6446500, 1360000), (50, 0)))
+        def assertMaps(self, map, world, pixel):
+            "ok iff 'map' maps back & forth between 'world' and 'pixel'"
+            n, e = world
+            x, y = pixel
+            self.assert_(vector.distance(map.pixelOf(n, e),
+                                         pixel) < 1,
+                         '%s != %s' % (map.pixelOf(n, e), pixel))
+            self.assert_(vector.distance(map.coordOf(x, y),
+                                         world) < 1,
+                         '%s ~= %s' % (map.coordOf(x, y), world))
+        def test1(self):
+            for map in self.plains:
+                self.assertMaps(map, (6447000, 1360000), (  0,   0))
+                self.assertMaps(map, (6446000, 1360000), (  0, 100))
+                self.assertMaps(map, (6446000, 1361000), (100, 100))
+                self.assertMaps(map, (6447000, 1361000), (100,   0))
+                self.assertEqual(map.scale(), 10.0)
+                self.assertEqual(map.area(), 1.0e6)
+        def test2(self):
+            for map in self.rots:
+                self.assertMaps(map, (6447000, 1360000), (100,   0))
+                self.assertMaps(map, (6446000, 1360000), (  0,   0))
+                self.assertMaps(map, (6446000, 1361000), (  0, 100))
+                self.assertMaps(map, (6447000, 1361000), (100, 100))
+                self.assertEqual(map.scale(), 10.0)
+                self.assertEqual(map.area(), 1.0e6)
+
+    unittest.main()
