@@ -1,8 +1,13 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.4 2004-07-11 17:45:18 grahn Exp $
+# $Id: find.py,v 1.5 2004-07-11 17:49:43 grahn Exp $
 """Finding a point based on its distance from
 several other known points.
+
+Note that the approximate nature of this can be a problem -
+not because the results are approximate, but because the user
+has no way to get a hint about the size of the error.
+Use with care.
 """
 
 import math
