@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: transform.py,v 1.4 2004-06-17 07:25:10 grahn Exp $
+# $Id: transform.py,v 1.5 2004-06-17 07:29:47 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -61,8 +61,7 @@ if __name__ == "__main__":
             # no assertAlmostEqual() in Python 2.2
             def assertAlmostEqual(self, first, second):
                 if first==second: return
-                delta = first-second
-                if not -0.00001 < delta < 0.00001:
+                if not abs(first*0.9999) < abs(second) < abs(first*1.0001):
                     raise self.failureException, \
                           '%s != %s' % (`first`, `second`)
         vectors = ((70.771, 12.361),
