@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.2 2003-01-10 18:57:34 grahn Exp $
+ * $Id: transform.h,v 1.3 2003-01-11 21:17:55 grahn Exp $
  *
  * transform.h
  *
@@ -109,16 +109,25 @@ private:
  * A lame transform for coordinate systems with origo
  * in the upper-left corner -- e.g. bitmaps.
  *
- *  -----o---->------
- *   ^   |
- *  h|   |
- *   |   v
- *   v
- *  -----------------
- *
- *
- *
+ *  -----o---->------    -----------------
+ *   ^   |                ^
+ *  h|   |               h|   ^
+ *   |   v                |   |
+ *   v                    v   |
+ *  -----------------    -----o---->------
  *
  */
+class BitmapTransform: public Transform
+{
+public:
+    BitmapTransform(double h) : _h(h) {}
+
+    virtual Vector operator() (const Vector& v) const {
+	return Vector(v.x(), _h - v.y());
+    }
+
+private:
+    double _h;
+};
 
 #endif
