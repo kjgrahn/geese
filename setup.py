@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: setup.py,v 1.2 2004-06-17 07:25:10 grahn Exp $
+# $Id: setup.py,v 1.3 2004-07-12 21:58:51 grahn Exp $
 #
 from distutils.core import setup
 
@@ -12,4 +12,8 @@ setup(name = 'geese',
       author = 'Jörgen Grahn',
       author_email = 'jgrahn@algonet.se',
       license = 'BSD',
-      url = 'http://www.algonet.se/~jgrahn/comp/')
+      url = 'http://www.algonet.se/~jgrahn/comp/',
+
+      packages = ['geese'],
+
+      package_dir = {'geese': ''})
