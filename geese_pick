@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_pick,v 1.3 2004-09-11 21:47:25 grahn Exp $
+# $Id: geese_pick,v 1.4 2004-09-11 22:02:24 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -37,7 +37,11 @@ class Child:
         self.os = os
         if not self.pid:
             argv = cmd.split(' ')
-            apply(os.execlp, [argv[0]] +  argv)
+            try:
+                os.execvp(argv[0], argv)
+            except OSError, s:
+                print >>sys.stderr, "couldn't execute `%s'" % cmd
+                print >>sys.stderr, s
             sys.exit(-1)
     def __del__(self):
         try:
@@ -62,12 +66,20 @@ except (ValueError, getopt.GetoptError), s:
     print >>sys.stderr, usage
     sys.exit(1)
 
-coords = library.parse(open(coords, "r"))
+try:
+    coords = library.parse(open(coords, "r"))
+except IOError, s:
+    print >>sys.stderr, s
+    sys.exit(1)
+
+themap = None
 for m in coords:
     if os.path.basename(file) in m.names:
         themap = m
         break
-
+if not themap:
+    print >>sys.stderr, "found no entry for `%s', exiting" % file
+    sys.exit(1)
 if themap.checksums and not md5sum(file) in themap.checksums:
     print >>sys.stderr,\
           '%s: bad checksum - mistrust the resulting coordinates!' % file
