@@ -1,4 +1,4 @@
-/* $Id: geese.cc,v 1.2 2003-01-04 16:09:29 grahn Exp $
+/* $Id: geese.cc,v 1.3 2003-01-05 18:35:24 grahn Exp $
  *
  * geese.cc
  *
@@ -156,28 +156,26 @@ int main()
     using std::cout;
     using std::endl;
 
-    Vector a1(41, 28);
-    Vector b1(628, 1222);
-    Vector a2(6449000, 1368000);
-    Vector b2(6447000, 1370000);
+    const Vector a2(1, 3);
+    const Vector b2(3, 2.5);
 
-    PlaneTransform t(a1, a2, b1, b2);
+    PlaneTransform tt(Vector(0,0), a2,
+		      Vector(1,0), b2);
 
-    cout << a1 << endl;
-    cout << b1 << endl;
+    cout << angle(Vector(0,0), Vector(1,0)) << "; "
+	 << angle(a2, b2) << endl;
+
+    cout << Vector(0,0) << endl;
+    cout << Vector(1,0) << endl;
     cout << a2 << endl;
-    cout << b2 << endl << "---" << endl;
-
-    cout << t(a1) << endl << t(b1) << endl;
-    cout << "---" << endl;
-
-    PlaneTransform tt(Vector(0,0), Vector(1,3),
-		      Vector(1,0), Vector(3,2));
+    cout << b2 << endl;
+    cout << endl;
 
     cout << tt(Vector(0,0)) << endl;
     cout << tt(Vector(1,0)) << endl;
     cout << tt(Vector(0,1)) << endl;
     cout << tt(Vector(1,1)) << endl;
+    cout << tt(Vector(1.2,1.2)) << endl;
 
     return 0;
 }

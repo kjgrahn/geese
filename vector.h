@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: vector.h,v 1.2 2003-01-04 16:09:29 grahn Exp $
+ * $Id: vector.h,v 1.3 2003-01-05 18:35:24 grahn Exp $
  *
  * vector.h
  *
@@ -13,7 +13,7 @@
 #include <iosfwd>
 
 /**
- * A two-dimentional vector; a point in a plane.
+ * A two-dimensional vector; a point in a plane.
  *
  */
 class Vector
