@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.2 2005-01-04 22:48:51 grahn Exp $
+# $Id: geese_plot,v 1.3 2005-01-08 11:19:49 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -29,6 +29,20 @@ def md5sum(file):
     for c in acc.digest():
         s.append('%02x' % ord(c))
     return ''.join(s)
+
+def draw_point(img, x, y):
+    "Draw a red, filled circle at (x, y) in the drawable."
+    img.ellipse((x-10,y-10,x+10,y+10), fill=(100,0,0))
+
+def draw_bull(img, x, y):
+    "Draw a white circle with a black border."
+    img.ellipse((x-8,y-8,x+8,y+8), fill=(0,0,0))
+    img.ellipse((x-5,y-5,x+5,y+5), fill=(255,255,255))
+
+def draw_cross(img, x, y):
+    "Draw a red X at (x, y) in the drawable."
+    img.line((x-10,y-10,x+10,y+10), fill=(100,0,0))
+    img.line((x-10,y+10,x+10,y-10), fill=(100,0,0))
 
 class Child:
     """Wrapper for a forked command which gets killed
@@ -105,6 +119,7 @@ else:
 img = Image.open(file)
 dimg = ImageDraw.Draw(img)
 gridre = re.compile(r'(\d+)\s+(\d+)$')
+tmpname = os.tempnam(None, 'geese')
 
 while 1:
     s = sys.stdin.readline()
@@ -117,12 +132,12 @@ while 1:
             north *= 10
             east *= 10
         x, y = themap.pixelOf(north, east)
-        dimg.ellipse((x-10,y-10,x+10,y+10), fill=(100,0,0))
+        draw_bull(dimg, x, y)
         continue
     if s=='show':
         print 'rendering ...',
         sys.stdout.flush()
-        img.save('/tmp/foo', 'PNG')
+        img.save(tmpname, 'PNG')
         print 'displaying ...',
         sys.stdout.flush()
         xv = Child('xv /tmp/foo')
@@ -131,3 +146,7 @@ while 1:
     if s=='':  continue
     print 'uh? You said "%s"' % s
     continue
+try:
+    os.unlink(tmpname)
+except OSError:
+    pass
