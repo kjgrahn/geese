@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: segrid.py,v 1.2 2004-07-18 20:20:22 grahn Exp $
+# $Id: segrid.py,v 1.3 2005-01-02 11:33:41 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
 # All rights reserved.
@@ -18,7 +18,8 @@ A coordinate in Rikets Nät is usually denoted in print as 64457 13620
 formats can be mixed without risking confusion, since the valid ranges
 are all in [10000 .. 99000].
 
-The two first digits are frequently set in a smaller point size.
+The two first digits are (or were) frequently set
+in a smaller point size.
 
 Continuing with the example 64457 13620, 64457 is named the 'x
 coordinate' and 13620 the 'y coordinate'.  The 'x' coordinate grows
@@ -40,6 +41,8 @@ At one time there seems to have been a convention to truncate rather
 than round coordinate values, so that a coordinate indicated the
 lower-left corner of a square (x, y, x+1, y+1). This module instead
 assumes rounding.
+
+XXX Or possibly truncation is still the norm?
 """
 
 import math
