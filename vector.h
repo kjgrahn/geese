@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: vector.h,v 1.4 2004-06-16 19:02:33 grahn Exp $
+ * $Id: vector.h,v 1.5 2004-07-11 20:15:59 grahn Exp $
  *
  * vector.h
  *
@@ -19,7 +19,7 @@
 class Vector
 {
 public:
-    Vector(double x = 0.0, double y = 0.0) : _x(x), _y(y) {}
+    explicit Vector(double x = 0.0, double y = 0.0) : _x(x), _y(y) {}
 
     double x() const {return _x;}
     double y() const {return _y;}
