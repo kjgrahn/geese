@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: setup.py,v 1.6 2004-09-07 21:10:45 grahn Exp $
+# $Id: setup.py,v 1.7 2004-09-11 18:53:35 grahn Exp $
 #
 from distutils.core import setup
 
@@ -22,6 +22,5 @@ setup(name = name,
       url = 'http://www.algonet.se/~jgrahn/comp/',
 
       packages = ['geese'],
-      scripts = ['geese_pick'],
       
       package_dir = {'geese': ''})
