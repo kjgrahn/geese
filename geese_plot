@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.6 2005-01-09 11:53:26 grahn Exp $
+# $Id: geese_plot,v 1.7 2006-02-06 21:51:32 grahn Exp $
 #
-# Copyright (c) 2004, 2005 Jörgen Grahn <jgrahn@algonet.se>
+# Copyright (c) 2004, 2005, 2006 Jörgen Grahn
 # All rights reserved.
 #
 
@@ -67,88 +67,89 @@ class Child:
             self.os.wait()
         except OSError: pass
 
-prog = os.path.split(sys.argv[0])[1]
-usage = 'usage: %s [-V] [-t format] -f coordinate-file map-file' % prog
-try:
-    opts, files = getopt.getopt(sys.argv[1:], 'Vt:f:')
-    coords = None
-    just_version = 0
-    encoding = 'jpeg'
-    for option, value in opts:
-        if option == '-f': coords = value
-        if option == '-t': encoding = value
-        if option == '-V': just_version = 1
-    if just_version:
-        import geese.version
-        print '%s, part of Geese %s' % (prog, geese.version.version)
-        print 'Copyright (C) 2004, 2005 Jörgen Grahn <jgrahn@algonet.se>'
-        sys.exit(0)
-    if not coords:
-        raise ValueError, 'argument -f missing'
-    if len(files) != 1:
-        raise ValueError, 'needs a single file name'
-    file, = files
-except (ValueError, getopt.GetoptError), s:
-    print >>sys.stderr, 'error:', s
-    print >>sys.stderr, usage
-    sys.exit(1)
+if __name__ == "__main__":
+    prog = os.path.split(sys.argv[0])[1]
+    usage = 'usage: %s [-V] [-t format] -f coordinate-file map-file' % prog
+    try:
+        opts, files = getopt.getopt(sys.argv[1:], 'Vt:f:')
+        coords = None
+        just_version = 0
+        encoding = 'jpeg'
+        for option, value in opts:
+            if option == '-f': coords = value
+            if option == '-t': encoding = value
+            if option == '-V': just_version = 1
+        if just_version:
+            import geese.version
+            print '%s, part of Geese %s' % (prog, geese.version.version)
+            print 'Copyright (C) 2004, 2005, 2006 Jörgen Grahn'
+            sys.exit(0)
+        if not coords:
+            raise ValueError, 'argument -f missing'
+        if len(files) != 1:
+            raise ValueError, 'needs a single file name'
+        file, = files
+    except (ValueError, getopt.GetoptError), s:
+        print >>sys.stderr, 'error:', s
+        print >>sys.stderr, usage
+        sys.exit(1)
 
-try:
-    coords = library.parse(open(coords, "r"))
-except IOError, s:
-    print >>sys.stderr, s
-    sys.exit(1)
+    try:
+        coords = library.parse(open(coords, "r"))
+    except IOError, s:
+        print >>sys.stderr, s
+        sys.exit(1)
 
-themap = None
-for m in coords:
-    if os.path.basename(file) in m.names:
-        themap = m
-        break
-if not themap:
-    print >>sys.stderr, "found no entry for `%s', exiting" % file
-    sys.exit(1)
-if themap.checksums and not md5sum(file) in themap.checksums:
-    print >>sys.stderr,\
-          '%s: bad checksum - mistrust the resulting coordinates!' % file
+    themap = None
+    for m in coords:
+        if os.path.basename(file) in m.names:
+            themap = m
+            break
+    if not themap:
+        print >>sys.stderr, "found no entry for `%s', exiting" % file
+        sys.exit(1)
+    if themap.checksums and not md5sum(file) in themap.checksums:
+        print >>sys.stderr,\
+              '%s: bad checksum - mistrust the resulting coordinates!' % file
 
-print '%s: one pixel is %.1f m wide' % (file, themap.scale())
-ar = themap.area()
-if ar > 100000:
-    print 'the map covers %.2f km²' % (ar/1.0e6)
-else:
-    print 'the map covers %.0f m²' % ar
+    print '%s: one pixel is %.1f m wide' % (file, themap.scale())
+    ar = themap.area()
+    if ar > 100000:
+        print 'the map covers %.2f km²' % (ar/1.0e6)
+    else:
+        print 'the map covers %.0f m²' % ar
 
-img = Image.open(file)
-dimg = ImageDraw.Draw(img)
-gridre = re.compile(r'(\d+)\s+(\d+)$')
-tmpname = os.tempnam(None, 'geese')
+    img = Image.open(file)
+    dimg = ImageDraw.Draw(img)
+    gridre = re.compile(r'(\d+)\s+(\d+)$')
+    tmpname = os.tempnam(None, 'geese')
 
-while 1:
-    s = sys.stdin.readline()
-    if not s: break
-    s = s.strip()
-    m = gridre.match(s)
-    if m:
-        north, east = map(int, m.groups())
-        while north < 1000000:
-            north *= 10
-            east *= 10
-        x, y = themap.pixelOf(north, east)
-        draw_bull(dimg, x, y)
+    while 1:
+        s = sys.stdin.readline()
+        if not s: break
+        s = s.strip()
+        m = gridre.match(s)
+        if m:
+            north, east = map(int, m.groups())
+            while north < 1000000:
+                north *= 10
+                east *= 10
+            x, y = themap.pixelOf(north, east)
+            draw_bull(dimg, x, y)
+            continue
+        if s=='show':
+            print 'rendering ...',
+            sys.stdout.flush()
+            img.save(tmpname, encoding)
+            print 'displaying ...',
+            sys.stdout.flush()
+            xv = Child('xv', tmpname)
+            print 'ok'
+            continue
+        if s=='':  continue
+        print 'uh? You said "%s"' % s
         continue
-    if s=='show':
-        print 'rendering ...',
-        sys.stdout.flush()
-        img.save(tmpname, encoding)
-        print 'displaying ...',
-        sys.stdout.flush()
-        xv = Child('xv', tmpname)
-        print 'ok'
-        continue
-    if s=='':  continue
-    print 'uh? You said "%s"' % s
-    continue
-try:
-    os.unlink(tmpname)
-except OSError:
-    pass
+    try:
+        os.unlink(tmpname)
+    except OSError:
+        pass

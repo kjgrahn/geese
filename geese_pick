@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_pick,v 1.9 2005-01-04 22:48:51 grahn Exp $
+# $Id: geese_pick,v 1.10 2006-02-06 21:51:32 grahn Exp $
 #
-# Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
+# Copyright (c) 2004, 2005, 2006 Jörgen Grahn
 # All rights reserved.
 #
 
@@ -49,73 +49,74 @@ class Child:
             self.os.wait()
         except OSError: pass
 
-prog = os.path.split(sys.argv[0])[1]
-usage = 'usage: %s [-V] -f coordinate-file map-file' % prog
-try:
-    opts, files = getopt.getopt(sys.argv[1:], 'Vf:')
-    coords = None
-    just_version = 0
-    for option, value in opts:
-        if option == '-f': coords = value
-        if option == '-V': just_version = 1
-    if just_version:
-        import geese.version
-        print '%s, part of Geese %s' % (prog, geese.version.version)
-        print 'Copyright (C) 2004, 2005 Jörgen Grahn <jgrahn@algonet.se>'
-        sys.exit(0)
-    if not coords:
-        raise ValueError, 'argument -f missing'
-    if len(files) != 1:
-        raise ValueError, 'needs a single file name'
-    file, = files
-except (ValueError, getopt.GetoptError), s:
-    print >>sys.stderr, 'error:', s
-    print >>sys.stderr, usage
-    sys.exit(1)
+if __name__ == "__main__":
+    prog = os.path.split(sys.argv[0])[1]
+    usage = 'usage: %s [-V] -f coordinate-file map-file' % prog
+    try:
+        opts, files = getopt.getopt(sys.argv[1:], 'Vf:')
+        coords = None
+        just_version = 0
+        for option, value in opts:
+            if option == '-f': coords = value
+            if option == '-V': just_version = 1
+        if just_version:
+            import geese.version
+            print '%s, part of Geese %s' % (prog, geese.version.version)
+            print 'Copyright (c) 2004, 2005, 2006 Jörgen Grahn'
+            sys.exit(0)
+        if not coords:
+            raise ValueError, 'argument -f missing'
+        if len(files) != 1:
+            raise ValueError, 'needs a single file name'
+        file, = files
+    except (ValueError, getopt.GetoptError), s:
+        print >>sys.stderr, 'error:', s
+        print >>sys.stderr, usage
+        sys.exit(1)
 
-try:
-    coords = library.parse(open(coords, "r"))
-except IOError, s:
-    print >>sys.stderr, s
-    sys.exit(1)
+    try:
+        coords = library.parse(open(coords, "r"))
+    except IOError, s:
+        print >>sys.stderr, s
+        sys.exit(1)
 
-themap = None
-for m in coords:
-    if os.path.basename(file) in m.names:
-        themap = m
-        break
-if not themap:
-    print >>sys.stderr, "found no entry for `%s', exiting" % file
-    sys.exit(1)
-if themap.checksums and not md5sum(file) in themap.checksums:
-    print >>sys.stderr,\
-          '%s: bad checksum - mistrust the resulting coordinates!' % file
+    themap = None
+    for m in coords:
+        if os.path.basename(file) in m.names:
+            themap = m
+            break
+    if not themap:
+        print >>sys.stderr, "found no entry for `%s', exiting" % file
+        sys.exit(1)
+    if themap.checksums and not md5sum(file) in themap.checksums:
+        print >>sys.stderr,\
+              '%s: bad checksum - mistrust the resulting coordinates!' % file
 
-# 1802,1387 = 183,147,112  #b79370  ( 29  38  71 HSV)  [  325,  135]
-xvpixel = re.compile(r'\s*(\d+),\s*(\d+)\s=')
+    # 1802,1387 = 183,147,112  #b79370  ( 29  38  71 HSV)  [  325,  135]
+    xvpixel = re.compile(r'\s*(\d+),\s*(\d+)\s=')
 
-xv = Child('xv %s' % file)
+    xv = Child('xv %s' % file)
 
-print 'geese_pick: displaying map ...'
-print 'one pixel is %.1f m wide' % themap.scale()
-ar = themap.area()
-if ar > 100000:
-    print 'the map covers %.2f km²' % (ar/1.0e6)
-else:
-    print 'the map covers %.0f m²' % ar
+    print 'geese_pick: displaying map ...'
+    print 'one pixel is %.1f m wide' % themap.scale()
+    ar = themap.area()
+    if ar > 100000:
+        print 'the map covers %.2f km²' % (ar/1.0e6)
+    else:
+        print 'the map covers %.0f m²' % ar
 
-while 1:
-    s = sys.stdin.readline()
-    if not s: break
-    m = xvpixel.match(s)
-    if not m: continue
-    x, y = map(int, m.groups())
-    c = themap.coordOf(x, y)
-    n, e = c
-    print '1m: %d %d;' % (n,e),
-    n, e = map(lambda n: (n+5)/10, c)
-    print '10m: %d %d;' % (n,e),
-    n, e = map(lambda n: (n+50)/100, c)
-    print '100m: %d %d;' % (n,e),
-    n, e = map(lambda n: (n+500)/1000, c)
-    print '1km: %d %d' % (n,e)
+    while 1:
+        s = sys.stdin.readline()
+        if not s: break
+        m = xvpixel.match(s)
+        if not m: continue
+        x, y = map(int, m.groups())
+        c = themap.coordOf(x, y)
+        n, e = c
+        print '1m: %d %d;' % (n,e),
+        n, e = map(lambda n: (n+5)/10, c)
+        print '10m: %d %d;' % (n,e),
+        n, e = map(lambda n: (n+50)/100, c)
+        print '100m: %d %d;' % (n,e),
+        n, e = map(lambda n: (n+500)/1000, c)
+        print '1km: %d %d' % (n,e)
