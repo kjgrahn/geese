@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.8 2006-02-07 21:35:25 grahn Exp $
+# $Id: geese_plot,v 1.9 2006-02-07 21:53:41 grahn Exp $
 #
 # Copyright (c) 2004, 2005, 2006 Jörgen Grahn
 # All rights reserved.
@@ -30,19 +30,34 @@ def md5sum(file):
         s.append('%02x' % ord(c))
     return ''.join(s)
 
-def draw_point(img, x, y):
-    "Draw a red, filled circle at (x, y) in the drawable."
-    img.ellipse((x-10,y-10,x+10,y+10), fill=(100,0,0))
-
-def draw_bull(img, x, y):
-    "Draw a white circle with a black border."
-    img.ellipse((x-8,y-8,x+8,y+8), fill=(0,0,0))
-    img.ellipse((x-5,y-5,x+5,y+5), fill=(255,255,255))
-
-def draw_cross(img, x, y):
-    "Draw a red X at (x, y) in the drawable."
-    img.line((x-10,y-10,x+10,y+10), fill=(100,0,0))
-    img.line((x-10,y+10,x+10,y-10), fill=(100,0,0))
+class Painter:
+    def __init__(self, image):
+        self._draw = ImageDraw.Draw(image)
+        if image.mode == 'RGB':
+            self._white = (255, 255, 255)
+            self._black = (0, 0, 0)
+            self._red = (100, 0, 0)
+        elif image.mode == 'L':
+            self._white = 255
+            self._black = 0
+            # "red is the new black"
+            self._red = 0
+    def point(self, x, y):
+        "Draw a red, filled circle at (x, y) in the drawable."
+        self._draw.ellipse((x-10,y-10,x+10,y+10),
+                           fill=self._red)
+    def bull(self, x, y):
+        "Draw a white circle with a black border."
+        self._draw.ellipse((x-8,y-8,x+8,y+8),
+                           fill=self._black)
+        self._draw.ellipse((x-5,y-5,x+5,y+5),
+                           fill=self._white)
+    def cross(self, x, y):
+        "Draw a red X at (x, y) in the drawable."
+        self._draw.line((x-10,y-10,x+10,y+10),
+                        fill=self._red)
+        self._draw.line((x-10,y+10,x+10,y-10),
+                        fill=self._red)
 
 class Child:
     """Wrapper for a forked command which gets killed
@@ -120,7 +135,7 @@ if __name__ == "__main__":
         print 'the map covers %.0f m²' % ar
 
     img = Image.open(file)
-    dimg = ImageDraw.Draw(img)
+    dimg = Painter(img)
     gridre = re.compile(r'(\d+)\s+(\d+)$')
     tmpname = os.tempnam(None, 'geese')
 
@@ -135,7 +150,7 @@ if __name__ == "__main__":
                 north *= 10
                 east *= 10
             x, y = themap.pixelOf(north, east)
-            draw_bull(dimg, x, y)
+            dimg.bull(x, y)
             continue
         if s=='show':
             print 'rendering ...',
