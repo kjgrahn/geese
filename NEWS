@@ -4,6 +4,14 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+geese 1.7 (2006-02-07):
+
+  - geese_plot: bug fix. Map images in grayscale format
+    (e.g. grayscale JPEG) would cause crashes. Some other formats
+    (like monochrome or palette-based images) may still have problems,
+    though -- it's not easy to paint into a a general image using the
+    PIL.
+
 geese 1.6 (2005-01-09):
 
   - geese_plot didn't work at all in 1.5 - fixed.
@@ -48,5 +56,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.9 2005-01-09 11:53:26 grahn Exp $
+$Id: NEWS,v 1.10 2006-02-07 21:59:04 grahn Exp $
 $Name:  $
