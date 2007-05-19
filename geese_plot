@@ -1,15 +1,16 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.9 2006-02-07 21:53:41 grahn Exp $
+# $Id: geese_plot,v 1.10 2007-05-19 06:43:21 grahn Exp $
 #
-# Copyright (c) 2004, 2005, 2006 Jörgen Grahn
+# Copyright (c) 2004, 2005, 2006, 2007 Jörgen Grahn
 # All rights reserved.
 #
 
 import re
 import os
 import os.path
+import tempfile
 import getopt
 import sys
 import re
@@ -82,9 +83,28 @@ class Child:
             self.os.wait()
         except OSError: pass
 
+class tempnam:
+    """Python whines about os.tempnam. Here is something similar
+    implemented via module tempfile. For some reason it includes
+    a temporary directory ...
+    """
+    def __init__(self, dir, prefix):
+        self.dirname = tempfile.mkdtemp(prefix=prefix, dir=dir)
+        self.filename = os.path.join(self.dirname, 'geese')
+        open(self.filename, 'w').close()
+    def __str__(self):
+        return self.filename
+    def __del__(self):
+        os.unlink(self.filename)
+        os.rmdir(self.dirname)
+
 if __name__ == "__main__":
     prog = os.path.split(sys.argv[0])[1]
     usage = 'usage: %s [-V] [-t format] -f coordinate-file map-file' % prog
+    cusage = ('usage: north-coord east-coord\n'
+              '       show\n'
+              '       help\n'
+              '       exit')
     try:
         opts, files = getopt.getopt(sys.argv[1:], 'Vt:f:')
         coords = None
@@ -137,7 +157,7 @@ if __name__ == "__main__":
     img = Image.open(file)
     dimg = Painter(img)
     gridre = re.compile(r'(\d+)\s+(\d+)$')
-    tmpname = os.tempnam(None, 'geese')
+    tmpname = tempnam(None, 'geese')
 
     while 1:
         s = sys.stdin.readline()
@@ -152,19 +172,21 @@ if __name__ == "__main__":
             x, y = themap.pixelOf(north, east)
             dimg.bull(x, y)
             continue
-        if s=='show':
+        elif s=='show':
             print 'rendering ...',
             sys.stdout.flush()
-            img.save(tmpname, encoding)
+            img.save(str(tmpname), encoding)
             print 'displaying ...',
             sys.stdout.flush()
-            xv = Child('xv', tmpname)
+            xv = Child('xv', str(tmpname))
             print 'ok'
             continue
-        if s=='':  continue
-        print 'uh? You said "%s"' % s
-        continue
-    try:
-        os.unlink(tmpname)
-    except OSError:
-        pass
+        elif s in ('h', '?', 'help'):
+            print cusage
+            continue
+        elif s=='exit':
+            break
+        elif s=='':  continue
+        else:
+            print 'Uh? You said "%s"' % s
+            print cusage

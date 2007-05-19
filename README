@@ -40,7 +40,7 @@ Use the Makefile ('make install') for installation. This will
 install the command-line tool(s), documentation and (indirectly,
 through Python's 'distutils') the 'geese' Python package.
 
-Python 2.1 or higher is required for installation and use.
+Python 2.3 or higher is required for installation and use.
 
 Some parts also need the Python Imaging Library (the Image and
 ImageDraw modules).  Others need John Bradley's 'xv' image viewer.
@@ -66,5 +66,5 @@ Let's try the GPL for a change, shall we?
   General Public License for more details.
 
 
-$Id: README,v 1.5 2006-02-06 21:51:32 grahn Exp $
+$Id: README,v 1.6 2007-05-19 06:43:21 grahn Exp $
 $Name:  $

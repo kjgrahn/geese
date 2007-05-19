@@ -1,8 +1,8 @@
-.\" $Id: geese_plot.1,v 1.5 2006-02-06 21:51:32 grahn Exp $
+.\" $Id: geese_plot.1,v 1.6 2007-05-19 06:43:21 grahn Exp $
 .\" $Name:  $
 .\" 
 .\"
-.TH geese_plot 1 "JAN 2005" "Geese" "User Manuals"
+.TH geese_plot 1 "MAY 2007" "Geese" "User Manuals"
 .SH "NAME"
 geese_plot \- plot coordinates on maps
 .SH "SYNOPSIS"
@@ -55,11 +55,19 @@ Print version information and exit.
 .SH "USAGE"
 .B geese_plot
 features a really simple command-line interface.
-Input is either a coordinate, or the
+Input is in the form
 .IP
-.I show
+.I coordinate
+.br
+.B show
+.br
+.B help
+.br
+.B exit
 .P
-command, which displays the map with the coordinates plotted
+The
+.B show
+command displays the map with the coordinates plotted
 as small circles,
 using John Bradley's excellent
 .BR xv (1)
@@ -77,7 +85,9 @@ and may have meter-resolution or less:
 .I 64481\ 13702
 .fi
 .P
-Naturally, EOF (Control-D) exits
+Naturally, EOF (Control-D) or
+.B exit
+exits
 .BR geese_plot .
 .
 .SH "AUTHOR"

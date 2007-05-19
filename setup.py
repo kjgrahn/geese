@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: setup.py,v 1.8 2006-02-06 21:51:32 grahn Exp $
+# $Id: setup.py,v 1.9 2007-05-19 06:43:21 grahn Exp $
 #
 from distutils.core import setup
 
@@ -20,7 +20,7 @@ setup(name = name,
       author = 'Jörgen Grahn',
       author_email = 'grahn+src@snipabacken.dyndns.org',
       license = 'GPL',
-      url = 'http://www.algonet.se/~jgrahn/comp/',
+      url = 'http://snipabacken.dyndns.org/~grahn/comp/',
 
       packages = ['geese'],
       
