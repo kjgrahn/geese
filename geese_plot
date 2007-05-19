@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.10 2007-05-19 06:43:21 grahn Exp $
+# $Id: geese_plot,v 1.11 2007-05-19 06:46:36 grahn Exp $
 #
 # Copyright (c) 2004, 2005, 2006, 2007 Jörgen Grahn
 # All rights reserved.
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         if just_version:
             import geese.version
             print '%s, part of Geese %s' % (prog, geese.version.version)
-            print 'Copyright (C) 2004, 2005, 2006 Jörgen Grahn'
+            print 'Copyright (C) 2004, 2005, 2006, 2007 Jörgen Grahn'
             sys.exit(0)
         if not coords:
             raise ValueError, 'argument -f missing'
