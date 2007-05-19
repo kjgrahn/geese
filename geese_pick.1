@@ -1,8 +1,8 @@
-.\" $Id: geese_pick.1,v 1.5 2006-02-06 21:51:32 grahn Exp $
+.\" $Id: geese_pick.1,v 1.6 2007-05-19 07:30:31 grahn Exp $
 .\" $Name:  $
 .\" 
 .\"
-.TH geese_pick 1 "SEP 2004" "Geese" "User Manuals"
+.TH geese_pick 1 "MAY 2007" "Geese" "User Manuals"
 .SH "NAME"
 geese_pick \- pick coordinates from digital maps
 .SH "SYNOPSIS"
@@ -51,6 +51,17 @@ When this string is pasted into stdin, the pixel coordinate
 is translated to the world coordinate system and printed
 (several times, rounded in different ways
 so you can pick the one you want).
+The distance to the previously selected coordinate is also shown.
+.IP
+.nf
+one pixel is 5.0 m wide
+the map covers 138.31 km²
+.B "1209,1118 =   4,  2,  4  #040204  (300  50   1 HSV)  [    0,    0]"
+1m: 6441591 1362845; 10m: 644159 136285; 100m: 64416 13628; 1km: 6442 1363
+.B "1192,1129 = 252,254,252  #fcfefc  (120   0  99 HSV)  [    0,    0]"
+1m: 6441536 1362760; 10m: 644154 136276; 100m: 64415 13628; 1km: 6442 1363
+    101m from previous coordinate
+.fi
 .
 .SH "MAPPING FILE FORMAT"
 This file contains a series of entries describing different maps.
