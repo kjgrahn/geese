@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: geese_plot,v 1.12 2007-05-19 06:58:24 grahn Exp $
+# $Id: geese_plot,v 1.13 2007-08-26 19:10:16 grahn Exp $
 #
 # Copyright (c) 2004, 2005, 2006, 2007 Jörgen Grahn
 # All rights reserved.
@@ -35,33 +35,58 @@ def md5sum(file):
     return acc.hexdigest().lower()
 
 class Painter:
+
+    class Bullseye:
+
+        def __init__(self, painter, color,
+                     innerw, outerw):
+            self._painter = painter
+            if color=='black':
+                self._innerc = painter.black
+                self._outerc = painter.white
+            elif color=='white':
+                self._innerc = painter.white
+                self._outerc = painter.black
+            else:
+                raise ValueError('unsupported color "%s"' % color)
+            self._innerrad = (innerw+1)/2
+            self._outerrad = (outerw+1)/2
+
+        def draw(self, x, y):
+            d = self._painter._draw
+            for w, c in ((self._outerrad, self._outerc),
+                         (self._innerrad, self._innerc)):
+                d.ellipse((x-w, y-w, x+w, y+w), fill=c)
+
     def __init__(self, image):
         self._draw = ImageDraw.Draw(image)
         if image.mode == 'RGB':
-            self._white = (255, 255, 255)
-            self._black = (0, 0, 0)
-            self._red = (100, 0, 0)
+            self.white = (255, 255, 255)
+            self.black = (0, 0, 0)
+            self.red = (100, 0, 0)
         elif image.mode == 'L':
-            self._white = 255
-            self._black = 0
+            self.white = 255
+            self.black = 0
             # "red is the new black"
-            self._red = 0
+            self.red = 0
+
+    def bullseye(self, color, innerw, outerw):
+        return self.Bullseye(self, color, innerw, outerw)
+
     def point(self, x, y):
         "Draw a red, filled circle at (x, y) in the drawable."
         self._draw.ellipse((x-10,y-10,x+10,y+10),
-                           fill=self._red)
+                           fill=self.red)
     def bull(self, x, y):
         "Draw a white circle with a black border."
-        self._draw.ellipse((x-8,y-8,x+8,y+8),
-                           fill=self._black)
-        self._draw.ellipse((x-5,y-5,x+5,y+5),
-                           fill=self._white)
+        self.bullseye('white', 10, 16).draw(x, y)
+
     def cross(self, x, y):
         "Draw a red X at (x, y) in the drawable."
         self._draw.line((x-10,y-10,x+10,y+10),
-                        fill=self._red)
+                        fill=self.red)
         self._draw.line((x-10,y+10,x+10,y-10),
-                        fill=self._red)
+                        fill=self.red)
 
 class Child:
     """Wrapper for a forked command which gets killed
@@ -106,6 +131,7 @@ if __name__ == "__main__":
     usage = 'usage: %s [-V] [-t format] -f coordinate-file map-file' % prog
     cusage = ('usage: north-coord east-coord\n'
               '       show\n'
+              '       bullseye white|black width\n'
               '       help\n'
               '       exit')
     try:
@@ -159,6 +185,7 @@ if __name__ == "__main__":
 
     img = Image.open(file)
     dimg = Painter(img)
+    bull = dimg.bullseye('white', 10, 16)
     gridre = re.compile(r'(\d+)\s+(\d+)$')
     tmpname = tempnam(None, 'geese')
 
@@ -173,7 +200,7 @@ if __name__ == "__main__":
                 north *= 10
                 east *= 10
             x, y = themap.pixelOf(north, east)
-            dimg.bull(x, y)
+            bull.draw(x, y)
             continue
         elif s=='show':
             print 'rendering ...',
@@ -184,6 +211,10 @@ if __name__ == "__main__":
             xv = Child('xv', str(tmpname))
             print 'ok'
             continue
+        elif s.startswith('bullseye '):
+            dummy, color, inw = s.split()
+            inw = int(inw)
+            bull = dimg.bullseye(color, inw, inw+2)
         elif s in ('h', '?', 'help'):
             print cusage
             continue

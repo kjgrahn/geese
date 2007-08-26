@@ -1,8 +1,8 @@
-.\" $Id: geese_plot.1,v 1.6 2007-05-19 06:43:21 grahn Exp $
+.\" $Id: geese_plot.1,v 1.7 2007-08-26 19:10:16 grahn Exp $
 .\" $Name:  $
 .\" 
 .\"
-.TH geese_plot 1 "MAY 2007" "Geese" "User Manuals"
+.TH geese_plot 1 "AUG 2007" "Geese" "User Manuals"
 .SH "NAME"
 geese_plot \- plot coordinates on maps
 .SH "SYNOPSIS"
@@ -61,6 +61,10 @@ Input is in the form
 .br
 .B show
 .br
+.B bullseye
+.BR white | black
+.I width
+.br
 .B help
 .br
 .B exit
@@ -72,6 +76,13 @@ as small circles,
 using John Bradley's excellent
 .BR xv (1)
 image viewer.
+.P
+The
+.B bullseye
+command controls the color and size of the circles.
+You might need to use this for readability,
+depending on the size and coloring scheme
+of the map, and the number of points to plot.
 .P
 Coordinates are on the form
 .IP
