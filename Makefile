@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.10 2005-01-08 11:18:59 grahn Exp $
+# $Id: Makefile,v 1.11 2007-10-01 19:14:57 grahn Exp $
 #
 # Makefile
 #
@@ -17,7 +17,7 @@ all:
 # <slrncjpp64.s1l.jgrahn-nntq@frailea.sa.invalid>.
 
 install:
-	./setup.py install --force
+	python ./setup.py install --force
 	install -m755 geese_pick geese_plot $(INSTALLBASE)/bin/
 	install -m644 geese_pick.1 geese_plot.1 $(INSTALLBASE)/man/man1/
 
