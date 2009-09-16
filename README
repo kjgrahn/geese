@@ -48,7 +48,7 @@ ImageDraw modules).  Others need John Bradley's 'xv' image viewer.
 
 AUTHOR
 
-Jörgen Grahn <grahn+src@snipabacken.dyndns.org>
+Jörgen Grahn <grahn+src@snipabacken.se>
 
 
 LICENSE
@@ -66,5 +66,5 @@ Let's try the GPL for a change, shall we?
   General Public License for more details.
 
 
-$Id: README,v 1.6 2007-05-19 06:43:21 grahn Exp $
+$Id: README,v 1.7 2009-09-16 18:49:20 grahn Exp $
 $Name:  $
