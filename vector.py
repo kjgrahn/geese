@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: vector.py,v 1.6 2004-08-07 15:58:10 grahn Exp $
+# $Id: vector.py,v 1.7 2010-05-27 21:16:13 grahn Exp $
 #
-# Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
+# Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 #
 """Two-dimensional vector operations, with vectors represented as

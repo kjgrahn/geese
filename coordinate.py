@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.10 2004-10-12 22:00:45 grahn Exp $
+# $Id: coordinate.py,v 1.11 2010-05-27 21:16:13 grahn Exp $
 #
-# Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
+# Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 #
 """Translation between two coordinate systems, where

@@ -1,10 +1,10 @@
 /* -*- c++ -*-
  *
- * $Id: vector.h,v 1.5 2004-07-11 20:15:59 grahn Exp $
+ * $Id: vector.h,v 1.6 2010-05-27 21:16:13 grahn Exp $
  *
  * vector.h
  *
- * Copyright (c) 2003, 2004 Jörgen Grahn <jgrahn@algonet.se>
+ * Copyright (c) 2003, 2004 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 #ifndef VECTOR_H

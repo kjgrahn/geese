@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.10 2004-08-07 15:58:10 grahn Exp $
+# $Id: find.py,v 1.11 2010-05-27 21:16:13 grahn Exp $
 """Finding a point based on its distance from
 several other known points, possibly with minor
 errors in the input data.

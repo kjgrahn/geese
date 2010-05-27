@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: version.py,v 1.1 2005-01-04 22:48:51 grahn Exp $
+# $Id: version.py,v 1.2 2010-05-27 21:16:13 grahn Exp $
 #
 """Maintains two strings: 'name' and 'version'; the package's
 name and version. These are taken from CVS's dollar-Name keyword.

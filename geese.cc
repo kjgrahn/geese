@@ -1,8 +1,8 @@
-/* $Id: geese.cc,v 1.6 2003-01-26 20:04:22 grahn Exp $
+/* $Id: geese.cc,v 1.7 2010-05-27 21:16:13 grahn Exp $
  *
  * geese.cc
  *
- * Copyright (c) 2003 Jörgen Grahn <jgrahn@algonet.se>
+ * Copyright (c) 2003 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 

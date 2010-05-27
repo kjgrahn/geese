@@ -1,8 +1,8 @@
-# $Id: Makefile,v 1.11 2007-10-01 19:14:57 grahn Exp $
+# $Id: Makefile,v 1.12 2010-05-27 21:16:13 grahn Exp $
 #
 # Makefile
 #
-# Copyright (c) 1999--2004 Jörgen Grahn <jgrahn@algonet.se>
+# Copyright (c) 1999--2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 
 SHELL = /bin/sh

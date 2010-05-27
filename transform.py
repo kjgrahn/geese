@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: transform.py,v 1.8 2004-06-27 20:46:21 grahn Exp $
+# $Id: transform.py,v 1.9 2010-05-27 21:16:13 grahn Exp $
 #
-# Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
+# Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 #
 """Two-dimensional vector transform functors:

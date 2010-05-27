@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.7 2004-10-12 20:31:28 grahn Exp $
+# $Id: library.py,v 1.8 2010-05-27 21:16:13 grahn Exp $
 
 import re
 from geese import coordinate

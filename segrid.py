@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: segrid.py,v 1.4 2005-01-09 11:16:14 grahn Exp $
+# $Id: segrid.py,v 1.5 2010-05-27 21:16:13 grahn Exp $
 #
-# Copyright (c) 2004 Jörgen Grahn <jgrahn@algonet.se>
+# Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 #
 """Coordinates in the Rikets Nät, aka the Swedish Grid.

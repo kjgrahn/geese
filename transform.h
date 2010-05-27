@@ -1,10 +1,10 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.4 2004-06-16 19:02:33 grahn Exp $
+ * $Id: transform.h,v 1.5 2010-05-27 21:16:13 grahn Exp $
  *
  * transform.h
  *
- * Copyright (c) 2003, 2004 Jörgen Grahn <jgrahn@algonet.se>
+ * Copyright (c) 2003, 2004 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 #ifndef TRANSFORM_H

@@ -1,9 +1,9 @@
 /*
- * $Id: transform.cc,v 1.1 2003-01-05 23:19:02 grahn Exp $
+ * $Id: transform.cc,v 1.2 2010-05-27 21:16:13 grahn Exp $
  *
  * transform.cc
  *
- * Copyright (c) 2003 Jörgen Grahn <jgrahn@algonet.se>
+ * Copyright (c) 2003 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 
