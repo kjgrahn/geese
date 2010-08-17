@@ -1,8 +1,8 @@
-# $Id: Makefile,v 1.12 2010-05-27 21:16:13 grahn Exp $
+# $Id: Makefile,v 1.13 2010-08-17 19:48:43 grahn Exp $
 #
 # Makefile
 #
-# Copyright (c) 1999--2004 Jörgen Grahn <grahn+src@snipabacken.se>
+# Copyright (c) 1999--2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 
 SHELL = /bin/sh
@@ -13,19 +13,21 @@ all:
 
 # Why not just use distutils all the way for installing this?  Because
 # as far as I can see, it doesn't really support installing anything
-# but modules, and noone answered my query on comp.lang.python,
-# <slrncjpp64.s1l.jgrahn-nntq@frailea.sa.invalid>.
+# but modules.
 
+.PHONY: install
 install:
 	python ./setup.py install --force
 	install -m755 geese_pick geese_plot $(INSTALLBASE)/bin/
 	install -m644 geese_pick.1 geese_plot.1 $(INSTALLBASE)/man/man1/
 
+.PHONY: clean
 clean:
 	$(RM) $(OUTS) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 
-test: coordinate.py find.py library.py segrid.py transform.py vector.py
+.PHONY: check
+check: coordinate.py find.py library.py segrid.py transform.py vector.py
 	for py in $^; \
 	do PYTHONPATH=.. python $$py; \
 	done
