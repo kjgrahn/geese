@@ -1,8 +1,8 @@
-.\" $Id: geese_pick.1,v 1.7 2009-09-16 18:49:20 grahn Exp $
+.\" $Id: geese_pick.1,v 1.8 2010-08-17 21:01:56 grahn Exp $
 .\" $Name:  $
 .\" 
 .\"
-.TH geese_pick 1 "MAY 2007" "Geese" "User Manuals"
+.TH geese_pick 1 "AUG 2010" "Geese" "User Manuals"
 .SH "NAME"
 geese_pick \- pick coordinates from digital maps
 .SH "SYNOPSIS"
@@ -52,13 +52,14 @@ is translated to the world coordinate system and printed
 (several times, rounded in different ways
 so you can pick the one you want).
 The distance to the previously selected coordinate is also shown.
-.IP
+.P
+.ft CW
 .nf
 one pixel is 5.0 m wide
 the map covers 138.31 km²
-.B "1209,1118 =   4,  2,  4  #040204  (300  50   1 HSV)  [    0,    0]"
+1209,1118 =   4,  2,  4  #040204  (300  50   1 HSV)  [    0,    0]
 1m: 6441591 1362845; 10m: 644159 136285; 100m: 64416 13628; 1km: 6442 1363
-.B "1192,1129 = 252,254,252  #fcfefc  (120   0  99 HSV)  [    0,    0]"
+1192,1129 = 252,254,252  #fcfefc  (120   0  99 HSV)  [    0,    0]
 1m: 6441536 1362760; 10m: 644154 136276; 100m: 64415 13628; 1km: 6442 1363
     101m from previous coordinate
 .fi
@@ -117,10 +118,12 @@ Unfortunately,
 .B geese_pick
 provides no means to estimate the size of the errors (1m? 10m? 100m?).
 Use with care and good judgement.
+.P
+
 .
 .SH "AUTHOR"
 J\(:orgen Grahn
-.I <grahn+src@snipabacken.se>
+.I \[fo]grahn+src@snipabacken.se\[fc]
 .
 .SH "SEE ALSO"
 .BR xv (1),
