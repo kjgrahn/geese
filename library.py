@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.9 2010-08-25 18:41:32 grahn Exp $
+# $Id: library.py,v 1.10 2010-08-25 18:42:14 grahn Exp $
 
 import re
 from geese import coordinate
@@ -29,8 +29,6 @@ class Map:
         self.checksums = checksums
         self.dimension = dimension
         w, h = dimension
-        wax, way = map_a
-        wbx, wby = map_b
         self.into = coordinate.Transform(world_a, map_a,
                                          world_b, map_b)
         self.outof = self.into.inverse()
