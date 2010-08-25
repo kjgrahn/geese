@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.8 2010-05-27 21:16:13 grahn Exp $
+# $Id: library.py,v 1.9 2010-08-25 18:41:32 grahn Exp $
 
 import re
 from geese import coordinate
@@ -31,8 +31,8 @@ class Map:
         w, h = dimension
         wax, way = map_a
         wbx, wby = map_b
-        self.into = coordinate.Transform(world_a, (wax, way),
-                                         world_b, (wbx, wby))
+        self.into = coordinate.Transform(world_a, map_a,
+                                         world_b, map_b)
         self.outof = self.into.inverse()
     def coordOf(self, x, y):
         """Find the world coordinate of pixel (x, y).

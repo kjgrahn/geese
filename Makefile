@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.14 2010-08-17 20:55:33 grahn Exp $
+# $Id: Makefile,v 1.15 2010-08-25 18:41:32 grahn Exp $
 #
 # Makefile
 #
@@ -28,7 +28,7 @@ clean:
 	$(RM) geese_*.1.ps
 
 .PHONY: check
-check: coordinate.py find.py library.py segrid.py transform.py vector.py
+check: coordinate.py find.py library.py segrid.py transform.py vector.py world.py
 	for py in $^; \
 	do PYTHONPATH=.. python $$py; \
 	done
