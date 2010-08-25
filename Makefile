@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.15 2010-08-25 18:41:32 grahn Exp $
+# $Id: Makefile,v 1.16 2010-08-25 21:37:40 grahn Exp $
 #
 # Makefile
 #
@@ -23,12 +23,19 @@ install:
 
 .PHONY: clean
 clean:
-	$(RM) $(OUTS) *.o Makefile.bak core TAGS
+	$(RM) tests libtest.a libgeese.a
+	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
 
-.PHONY: check
-check: coordinate.py find.py library.py segrid.py transform.py vector.py world.py
+.PHONY: check checkv
+#check: pycheck
+check: tests
+	./tests
+checkv: tests
+	valgrind -q ./tests
+
+pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py world.py
 	for py in $^; \
 	do PYTHONPATH=.. python $$py; \
 	done
@@ -36,25 +43,26 @@ check: coordinate.py find.py library.py segrid.py transform.py vector.py world.p
 %.1.ps : %.1
 	groff -man $< >$@
 
-# The old C++ transform algorithms
+# C++ transform algorithms
 
-CPPFLAGS=
-CXXFLAGS= -W -Wall -pedantic -ansi -g
-LDFLAGS=
-LIBS=
+CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
 
-OBJS=geese.o vector.o transform.o
-OUTS=geese
+test.cc: libtest.a
+	testicle -o$@ $^
 
-geese: $(OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+tests: test.o libgeese.a libtest.a
+	$(CXX) -o $@ test.o -L. -ltest -lgeese -lm
 
-objs: $(OBJS)
+libgeese.a: geese.o
+libgeese.a: transform.o
+libgeese.a: vector.o
 
-TAGS: tags
+libtest.a: test_point.o
 
-tags:
-	etags *.cc *.hh *.h
+.PHONY: tags
+tags: TAGS
+TAGS:
+	etags *.cc *.h
 
 depend:
 	makedepend -- $(CFLAGS) -- -Y *.cc
