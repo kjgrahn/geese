@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: world.py,v 1.1 2010-08-25 18:41:32 grahn Exp $
+# $Id: world.py,v 1.2 2010-08-25 19:19:27 grahn Exp $
 #
 # Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
@@ -13,7 +13,7 @@ This is the same thing as a GIS [[World file]], again the square-pixel
 special case.
 """
 
-from geese import transform
+from geese import transform, vector
 
 class World(object):
     """An affine transformation
@@ -43,12 +43,12 @@ def WorldOf(src_a, dst_a,
             src_b, dst_b):
     """The World defined by a->a', b->b'.
     """
+    r = vector.angle(dst_a, dst_b) - vector.angle(src_a, src_b)
 
 if __name__ == "__main__":
     import unittest
 
     class test(unittest.TestCase):
-        def test(self):
-            pass
+        pass
 
     unittest.main()
