@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.17 2010-08-26 18:59:23 grahn Exp $
+# $Id: Makefile,v 1.18 2010-08-26 20:06:47 grahn Exp $
 #
 # Makefile
 #
@@ -23,7 +23,7 @@ install:
 
 .PHONY: clean
 clean:
-	$(RM) tests libtest.a libgeese.a
+	$(RM) tests test.cc libtest.a libgeese.a
 	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
