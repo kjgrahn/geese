@@ -1,5 +1,5 @@
 /**
- * $Id: test_point.cc,v 1.2 2010-08-26 18:59:23 grahn Exp $
+ * $Id: test_point.cc,v 1.3 2010-08-26 19:27:55 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -19,8 +19,9 @@ namespace {
 
     void assert_near(double a, double val)
     {
-	testicle::assert_lt(a*0.9999, val);
-	testicle::assert_lt(val, a*1.0001);
+	const double epsilon = 1e-6;
+	testicle::assert_lt(a-epsilon, val);
+	testicle::assert_lt(val, a+epsilon);
     }
 
 }
@@ -57,16 +58,31 @@ namespace point {
 
     void test_sin()
     {
-	assert_near(0, Point(1, 0).sin());
-	assert_near(1, Point(1, 0).cos());
+	assert_near( 0, e.sin());
+	assert_near( 1, n.sin());
+	assert_near( 0, w.sin());
+	assert_near(-1, s.sin());
 
-	assert_near(1, Point(0, 1).sin());
-	assert_near(0, Point(0, 1).cos());
-
-	assert_near(0.70710678, Point(1, 1).sin());
-	assert_near(0.70710678, Point(1, 1).cos());
+	assert_near(0.70710678, ne.sin());
+	assert_near(0.70710678, nw.sin());
+	assert_near(-.70710678, sw.sin());
+	assert_near(-.70710678, se.sin());
 
 	assert_near(0.70710678, Point(1e6, 1e6).sin());
+    }
+
+    void test_cos()
+    {
+	assert_near( 1, e.cos());
+	assert_near( 0, n.cos());
+	assert_near(-1, w.cos());
+	assert_near( 0, s.cos());
+
+	assert_near(0.70710678, ne.cos());
+	assert_near(-.70710678, nw.cos());
+	assert_near(-.70710678, sw.cos());
+	assert_near(0.70710678, se.cos());
+
 	assert_near(0.70710678, Point(1e6, 1e6).cos());
     }
 

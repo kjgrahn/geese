@@ -1,5 +1,5 @@
 /*
- * $Id: point.cc,v 1.2 2010-08-26 19:12:07 grahn Exp $
+ * $Id: point.cc,v 1.3 2010-08-26 19:27:55 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -15,8 +15,8 @@ double Point::len() const
     return std::sqrt(_x*_x + _y*_y); 
 }
 
-double Point::sin() const { return _x / len(); }
-double Point::cos() const { return _y / len(); }
+double Point::sin() const { return _y / len(); }
+double Point::cos() const { return _x / len(); }
 
 
 /**
