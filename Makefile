@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.18 2010-08-26 20:06:47 grahn Exp $
+# $Id: Makefile,v 1.19 2010-08-26 21:18:49 grahn Exp $
 #
 # Makefile
 #
@@ -60,6 +60,7 @@ libgeese.a: point.o
 	$(AR) -r $@ $^
 
 libtest.a: test_point.o
+libtest.a: test_transform.o
 	$(AR) -r $@ $^
 
 .PHONY: tags
