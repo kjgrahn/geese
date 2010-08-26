@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.16 2010-08-25 21:37:40 grahn Exp $
+# $Id: Makefile,v 1.17 2010-08-26 18:59:23 grahn Exp $
 #
 # Makefile
 #
@@ -56,8 +56,11 @@ tests: test.o libgeese.a libtest.a
 libgeese.a: geese.o
 libgeese.a: transform.o
 libgeese.a: vector.o
+libgeese.a: point.o
+	$(AR) -r $@ $^
 
 libtest.a: test_point.o
+	$(AR) -r $@ $^
 
 .PHONY: tags
 tags: TAGS
@@ -73,5 +76,7 @@ love:
 # DO NOT DELETE
 
 geese.o: vector.h transform.h
+point.o: point.h
+test_point.o: point.h
 transform.o: transform.h vector.h
 vector.o: vector.h

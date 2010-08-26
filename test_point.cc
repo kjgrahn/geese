@@ -1,11 +1,11 @@
 /**
- * $Id: test_point.cc,v 1.1 2010-08-25 21:37:40 grahn Exp $
+ * $Id: test_point.cc,v 1.2 2010-08-26 18:59:23 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
  *
  */
-#include <point.h>
+#include "point.h"
 
 #include <testicle.h>
 
@@ -27,12 +27,27 @@ namespace {
 
 namespace point {
 
+    const Point  e( 1,  0);
+    const Point ne( 1,  1);
+    const Point  n( 0,  1);
+    const Point nw(-1,  1);
+    const Point  w(-1,  0);
+    const Point sw(-1, -1);
+    const Point  s( 0, -1);
+    const Point se( 1, -1);
+
     void test_length()
     {
-	assert_near(1, Point(1, 0).len());
-	assert_near(1, Point(0, 1).len());
+	assert_near(1, e.len());
+	assert_near(1, n.len());
+	assert_near(1, w.len());
+	assert_near(1, s.len());
 
-	assert_near(1.414214, Point(1, 1).len());
+	assert_near(1.414214, ne.len());
+	assert_near(1.414214, nw.len());
+	assert_near(1.414214, sw.len());
+	assert_near(1.414214, se.len());
+
 	assert_near(1.118034, Point(1, .5).len());
 
 	assert_near(1000, Point(0, 1000).len());
