@@ -1,12 +1,12 @@
 /* -*- c++ -*-
  *
- * $Id: point.h,v 1.2 2010-08-26 19:12:07 grahn Exp $
+ * $Id: point.h,v 1.3 2010-08-26 21:19:56 grahn Exp $
  *
  * Copyright (c) 2003, 2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef GEESE_POINT_H
+#define GEESE_POINT_H
 
 #include <iosfwd>
 
