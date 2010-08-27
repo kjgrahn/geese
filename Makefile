@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.20 2010-08-27 21:47:52 grahn Exp $
+# $Id: Makefile,v 1.21 2010-08-27 22:26:27 grahn Exp $
 #
 # Makefile
 #
@@ -76,8 +76,9 @@ love:
 
 # DO NOT DELETE
 
-geese.o: vector.h transform.h
+geese.o: vector.h transform.h point.h
 point.o: point.h
 test_point.o: point.h
-transform.o: transform.h vector.h
+test_transform.o: transform.h point.h
+transform.o: transform.h point.h
 vector.o: vector.h
