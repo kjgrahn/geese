@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: point.h,v 1.3 2010-08-26 21:19:56 grahn Exp $
+ * $Id: point.h,v 1.4 2010-08-27 20:42:55 grahn Exp $
  *
  * Copyright (c) 2003, 2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -16,18 +16,24 @@
  */
 class Point {
 public:
-    Point(double x, double y) : _x(x), _y(y) {}
+    Point(double x, double y) : x_(x), y_(y) {}
 
     double len() const;
     double sin() const;
     double cos() const;
 
+    Point operator- (const Point& other) const;
+
     std::ostream& put(std::ostream& os) const;
 
 private:
-    const double _x;
-    const double _y;
+    const double x_;
+    const double y_;
 };
+
+inline double distance(const Point& a, const Point& b) {
+    return (a-b).len();
+}
 
 std::ostream& operator<< (std::ostream& os, const Point& val);
 

@@ -1,5 +1,5 @@
 /*
- * $Id: point.cc,v 1.3 2010-08-26 19:27:55 grahn Exp $
+ * $Id: point.cc,v 1.4 2010-08-27 20:42:55 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -12,11 +12,17 @@
 
 double Point::len() const
 {
-    return std::sqrt(_x*_x + _y*_y); 
+    return std::sqrt(x_*x_ + y_*y_); 
 }
 
-double Point::sin() const { return _y / len(); }
-double Point::cos() const { return _x / len(); }
+double Point::sin() const { return y_ / len(); }
+double Point::cos() const { return x_ / len(); }
+
+
+Point Point::operator- (const Point& other) const
+{
+    return Point(x_-other.x_, y_-other.y_);
+}
 
 
 /**
@@ -25,9 +31,9 @@ double Point::cos() const { return _x / len(); }
 std::ostream& Point::put(std::ostream& os) const
 {
     char buf[8+6];
-    std::sprintf(buf, "%.6e", _x);
+    std::sprintf(buf, "%.6e", x_);
     os << '(' << buf << ", ";
-    std::sprintf(buf, "%.6e", _y);
+    std::sprintf(buf, "%.6e", y_);
     return os << buf << ')';
 }
 
