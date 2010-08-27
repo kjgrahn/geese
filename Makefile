@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.19 2010-08-26 21:18:49 grahn Exp $
+# $Id: Makefile,v 1.20 2010-08-27 21:47:52 grahn Exp $
 #
 # Makefile
 #
@@ -53,9 +53,9 @@ test.cc: libtest.a
 tests: test.o libgeese.a libtest.a
 	$(CXX) -o $@ test.o -L. -ltest -lgeese -lm
 
-libgeese.a: geese.o
+#libgeese.a: geese.o
 libgeese.a: transform.o
-libgeese.a: vector.o
+#libgeese.a: vector.o
 libgeese.a: point.o
 	$(AR) -r $@ $^
 

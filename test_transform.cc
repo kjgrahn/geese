@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.1 2010-08-26 21:18:49 grahn Exp $
+ * $Id: test_transform.cc,v 1.2 2010-08-27 21:47:52 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -24,6 +24,10 @@ namespace {
 	testicle::assert_lt(val, a+epsilon);
     }
 
+    void near(const Pixel& a, const Pixel& b)
+    {
+	testicle::assert_lt(distance(a, b), 1e-6);
+    }
 }
 
 namespace transform {
