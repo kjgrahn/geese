@@ -1,5 +1,5 @@
 /**
- * $Id: test_point.cc,v 1.3 2010-08-26 19:27:55 grahn Exp $
+ * $Id: test_point.cc,v 1.4 2010-08-27 20:35:16 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -84,6 +84,13 @@ namespace point {
 	assert_near(0.70710678, se.cos());
 
 	assert_near(0.70710678, Point(1e6, 1e6).cos());
+    }
+
+    void test_distance()
+    {
+	const Point a(10, 10);
+	const Point b(13, 14);
+	assert_near(5, distance(a, b));
     }
 
 }
