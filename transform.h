@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.8 2010-08-27 22:26:27 grahn Exp $
+ * $Id: transform.h,v 1.9 2010-08-28 08:17:46 grahn Exp $
  *
  * transform.h
  *
@@ -16,13 +16,11 @@
 class RT90 {
 public:
     RT90(double north, double east)
-	: p_(east, north)
+	: p(east, north)
     {}
 
     double distance(const RT90& other) const;
-
-private:
-    Point p_;
+    Point p;
 };
 
 inline double distance(const RT90& a, const RT90& b) {
@@ -33,13 +31,11 @@ inline double distance(const RT90& a, const RT90& b) {
 class Pixel {
 public:
     Pixel(double x, double y)
-	: p_(x, y)
+	: p(x, y)
     {}
 
     double distance(const Pixel& other) const;
-
-private:
-    Point p_;
+    Point p;
 };
 
 inline double distance(const Pixel& a, const Pixel& b) {
@@ -49,11 +45,24 @@ inline double distance(const Pixel& a, const Pixel& b) {
 
 class Transform {
 public:
+    Transform(double a, double b, double c,
+	      double d, double e, double f)
+	: A(a), B(b), C(c),
+	  D(d), E(e), F(f)
+    {}
+
     Transform(const RT90& src_a, const Pixel& dst_a,
 	      const RT90& src_b, const Pixel& dst_b);
 
     Pixel& operator() (const RT90& src) const;
-};
 
+private:
+    double A;
+    double B;
+    double C;
+    double D;
+    double E;
+    double F;
+};
 
 #endif

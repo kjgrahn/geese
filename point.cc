@@ -1,5 +1,5 @@
 /*
- * $Id: point.cc,v 1.4 2010-08-27 20:42:55 grahn Exp $
+ * $Id: point.cc,v 1.5 2010-08-28 08:17:46 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -15,8 +15,12 @@ double Point::len() const
     return std::sqrt(x_*x_ + y_*y_); 
 }
 
-double Point::sin() const { return y_ / len(); }
-double Point::cos() const { return x_ / len(); }
+
+SinCos Point::sincos() const
+{
+    const double n = len();
+    return SinCos(y_/n, x_/n);
+}
 
 
 Point Point::operator- (const Point& other) const
