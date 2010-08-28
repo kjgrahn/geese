@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.9 2010-08-28 08:17:46 grahn Exp $
+ * $Id: transform.h,v 1.10 2010-08-28 14:58:13 grahn Exp $
  *
  * transform.h
  *
@@ -54,7 +54,7 @@ public:
     Transform(const RT90& src_a, const Pixel& dst_a,
 	      const RT90& src_b, const Pixel& dst_b);
 
-    Pixel& operator() (const RT90& src) const;
+    Pixel operator() (const RT90& src) const;
 
 private:
     double A;

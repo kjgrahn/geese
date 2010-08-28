@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.4 2010-08-28 08:17:46 grahn Exp $
+ * $Id: transform.cc,v 1.5 2010-08-28 14:58:13 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -45,7 +45,7 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 }
 
 
-Pixel& Transform::operator() (const RT90& src) const
+Pixel Transform::operator() (const RT90& src) const
 {
     const Point s = src.p;
     return Pixel(A*s.x + B*s.y + C,

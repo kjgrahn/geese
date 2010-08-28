@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: point.h,v 1.5 2010-08-28 08:17:46 grahn Exp $
+ * $Id: point.h,v 1.6 2010-08-28 14:58:13 grahn Exp $
  *
  * Copyright (c) 2003, 2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -26,7 +26,7 @@ struct SinCos {
  */
 class Point {
 public:
-    Point(double x, double y) : x_(x), y_(y) {}
+    Point(double x_, double y_) : x(x_), y(y_) {}
 
     double len() const;
     SinCos sincos() const;
@@ -37,9 +37,8 @@ public:
 
     std::ostream& put(std::ostream& os) const;
 
-private:
-    const double x_;
-    const double y_;
+    const double x;
+    const double y;
 };
 
 inline double distance(const Point& a, const Point& b) {
