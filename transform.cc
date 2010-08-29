@@ -1,10 +1,13 @@
 /*
- * $Id: transform.cc,v 1.5 2010-08-28 14:58:13 grahn Exp $
+ * $Id: transform.cc,v 1.6 2010-08-29 16:39:01 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 #include "transform.h"
+
+#include <cstdio>
+#include <iostream>
 
 namespace {
 
@@ -26,7 +29,40 @@ namespace {
 	return SinCos(a.sin*b.cos + a.cos*b.sin,
 		      a.cos*b.cos + a.sin*b.sin);
     }
+
+    inline Point scale(double s, const Point& p)
+    {
+	return Point(s*p.x, s*p.y);
+    }
+
+    inline Point rotate(const SinCos& r, const Point& p)
+    {
+	return Point(r.cos * p.x - r.sin * p.y,
+		     r.sin * p.x + r.cos * p.y);
+    }
 }
+
+
+/**
+ * Print as e.g. "6442400.0 1362217.0".
+ */
+std::ostream& operator<<  (std::ostream& os, const RT90& val)
+{
+    char buf[30];
+    std::sprintf(buf, "%.1f %.1f", val.p.y, val.p.x);
+    return os << buf;
+}
+
+/**
+ * Print as e.g. "800 600".
+ */
+std::ostream& operator<<  (std::ostream& os, const Pixel& val)
+{
+    char buf[30];
+    std::sprintf(buf, "%.0f %.0f", val.p.x, val.p.y);
+    return os << buf;
+}
+
 
 
 Transform::Transform(const RT90& src_a, const Pixel& dst_a,
@@ -37,11 +73,25 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
     const Point dv = dst_b.p - dst_a.p;
 
     /* The angle, or rotation, between src and dst, expressed as
-     * (sin v, cos v) rather than simply v because ...
-     * well, I guess I mostly want to avoid trigonometry to show off.
+     * (sin v, cos v).
      */
-    const SinCos v = sincos_sub(dv.sincos(), sv.sincos());
+    const SinCos rotation = sincos_sub(dv.sincos(), sv.sincos());
 
+    /* Likewise, the scaling.
+     */
+    const double scaling = dv.len()/sv.len();
+
+    /* The translation can be calculated from e.g. pair A:
+     * T = dst - SR src
+     */
+    const Point transl = dst_a.p - scale(scaling, rotate(rotation, src_a.p));
+
+    A = scaling * rotation.cos;
+    E = A;
+    D = scaling * rotation.sin;
+    B = -D;
+    C = transl.x;
+    F = transl.y;
 }
 
 
