@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.6 2010-08-29 16:39:01 grahn Exp $
+ * $Id: transform.cc,v 1.7 2010-08-29 22:00:08 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -11,22 +11,12 @@
 
 namespace {
 
-    /* sin(a-b) = sin(a)cos(b) + cos(a)sin(b)
+    /* sin(a-b) = sin(a)cos(b) - cos(a)sin(b)
      * cos(a-b) = cos(a)cos(b) + sin(a)sin(b)
      */
-    inline double sin_sub(double sa, double ca, double sb, double cb)
-    {
-	return sa*cb + ca*sb;
-    }
-
-    inline double cos_sub(double sa, double ca, double sb, double cb)
-    {
-	return ca*cb + sa*sb;
-    }
-
     inline SinCos sincos_sub(const SinCos& a, const SinCos& b)
     {
-	return SinCos(a.sin*b.cos + a.cos*b.sin,
+	return SinCos(a.sin*b.cos - a.cos*b.sin,
 		      a.cos*b.cos + a.sin*b.sin);
     }
 
@@ -71,11 +61,14 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 {
     const Point sv = src_b.p - src_a.p;
     const Point dv = dst_b.p - dst_a.p;
+    //std::cerr << "src " << sv.sincos() << '\n';
+    //std::cerr << "dst " << dvs << '\n';
 
     /* The angle, or rotation, between src and dst, expressed as
      * (sin v, cos v).
      */
     const SinCos rotation = sincos_sub(dv.sincos(), sv.sincos());
+    //std::cerr << "rotation " << rotation << '\n';
 
     /* Likewise, the scaling.
      */
