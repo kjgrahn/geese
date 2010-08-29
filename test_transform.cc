@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.3 2010-08-29 16:39:01 grahn Exp $
+ * $Id: test_transform.cc,v 1.4 2010-08-29 21:55:19 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -67,6 +67,13 @@ namespace transform {
     {
 	const Transform T(RT90(5, 1), Pixel(10, 10),
 			  RT90(1, 3), Pixel(30, 50));
+	assert_f(T);
+    }
+
+    void test_ugly()
+    {
+	const Transform T(RT90(5, 1), Pixel(10, 10),
+			  RT90(1, 3), Pixel(40, 50));
 	assert_f(T);
     }
 
