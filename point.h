@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: point.h,v 1.6 2010-08-28 14:58:13 grahn Exp $
+ * $Id: point.h,v 1.7 2010-08-29 18:59:32 grahn Exp $
  *
  * Copyright (c) 2003, 2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -19,6 +19,8 @@ struct SinCos {
     double sin;
     double cos;
 };
+
+std::ostream& operator<< (std::ostream& os, const SinCos& val);
 
 /**
  * A two-dimensional vector; a point in the Cartesian plane.

@@ -1,5 +1,5 @@
 /*
- * $Id: point.cc,v 1.6 2010-08-28 14:58:13 grahn Exp $
+ * $Id: point.cc,v 1.7 2010-08-29 18:59:32 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -9,6 +9,17 @@
 #include <iostream>
 #include <cstring>
 #include <cmath>
+
+
+std::ostream& operator<< (std::ostream& os, const SinCos& val)
+{
+    char buf[8];
+    std::sprintf(buf, "%.4f", val.sin);
+    os << "(sin=" << buf << ", ";
+    std::sprintf(buf, "%.4f", val.cos);
+    return os << "cos=" << buf << ')';
+}
+
 
 double Point::len() const
 {
