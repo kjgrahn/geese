@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.11 2010-08-29 16:39:01 grahn Exp $
+ * $Id: transform.h,v 1.12 2010-08-29 22:54:02 grahn Exp $
  *
  * transform.h
  *
@@ -35,12 +35,13 @@ inline double distance(const RT90& a, const RT90& b) {
 
 /**
  * A coordinate in a raster image, with the usual origo
- * in the upper left corner.
+ * in the upper left corner. Hoping it will simplify things,
+ * it's represented by a Point with negative y.
  */
 class Pixel {
 public:
     Pixel(double x, double y)
-	: p(x, y)
+	: p(x, -y)
     {}
 
     Point p;
