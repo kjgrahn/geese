@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.7 2010-08-29 22:00:08 grahn Exp $
+ * $Id: transform.cc,v 1.8 2010-08-30 22:18:20 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -49,7 +49,7 @@ std::ostream& operator<<  (std::ostream& os, const RT90& val)
 std::ostream& operator<<  (std::ostream& os, const Pixel& val)
 {
     char buf[30];
-    std::sprintf(buf, "%.0f %.0f", val.p.x, val.p.y);
+    std::sprintf(buf, "%.1f %.1f", val.p.x, val.p.y);
     return os << buf;
 }
 
