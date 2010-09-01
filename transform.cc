@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.9 2010-09-01 20:27:00 grahn Exp $
+ * $Id: transform.cc,v 1.10 2010-09-01 21:40:30 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -53,8 +53,6 @@ std::ostream& operator<<  (std::ostream& os, const Pixel& val)
     return os << buf;
 }
 
-
-
 Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 		     const RT90& src_b, const Pixel& dst_b)
     : A(0), B(0), C(0), D(0), E(0), F(0)
@@ -93,4 +91,15 @@ Pixel Transform::operator() (const RT90& src) const
     const Point s = src.p;
     return Pixel(A*s.x + B*s.y + C,
 		 D*s.x + E*s.y + F);
+}
+
+
+std::ostream& Transform::put(std::ostream& os) const
+{
+    char buf[50];
+    std::sprintf(buf, "%+.3e  %+.3e  %+.3e", A, B, C);
+    os << "A B C [" << buf << "]\n";
+    std::sprintf(buf, "%+.3e  %+.3e  %+.3e", D, E, F);
+    os << "D E F [" << buf << "]\n";
+    return os;
 }

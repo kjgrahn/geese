@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.12 2010-08-29 22:54:02 grahn Exp $
+ * $Id: transform.h,v 1.13 2010-09-01 21:40:30 grahn Exp $
  *
  * transform.h
  *
@@ -86,6 +86,8 @@ public:
     Pixel operator() (const RT90& src) const;
     RT90 operator() (const Pixel& src) const;
 
+    std::ostream& put(std::ostream& os) const;
+
 private:
     double A;
     double B;
@@ -94,5 +96,10 @@ private:
     double E;
     double F;
 };
+
+inline std::ostream& operator<<  (std::ostream& os, const Transform& val)
+{
+    return val.put(os);
+}
 
 #endif
