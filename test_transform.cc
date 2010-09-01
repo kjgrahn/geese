@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.7 2010-09-01 19:46:07 grahn Exp $
+ * $Id: test_transform.cc,v 1.8 2010-09-01 20:26:26 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -93,6 +93,7 @@ namespace Aaa {
 
     void print(std::ostream& os, const Transform& T)
     {
+	os << '\n';
 	for(int n=0; n<N; ++n) {
 	    Pixel p = T(src[n]);
 	    os << p << '\n';
@@ -135,7 +136,7 @@ namespace transform {
 			  RT90(0,16), Pixel(30,20));
 
 	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel( 0,20),  1e-6, T);
+	assert_near(RT90(0, 0),  Pixel( 0,20), 1e-6, T);
 	assert_near(RT90(0, 16), Pixel(30,20), 1e-6, T);
     }
 
@@ -145,42 +146,50 @@ namespace transform {
 			  RT90(0,16), Pixel(30,30));
 
 	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0), Pixel( 0,20),  1e-6, T);
+	assert_near(RT90(0, 0), Pixel( 0,20), 1e-6, T);
 	assert_near(RT90(0,16), Pixel(30,30), 1e-6, T);
     }
 }
 
-
+#if 1
 namespace fun {
 
-    void print_unrotated()
+    void test_unrotated()
     {
 	const Transform T(RT90(8, 0),  Pixel(0, 0),
 			  RT90(0, 16), Pixel(16, 8));
 	Aaa::print(std::cout, T);
     }
 
-    void print_transposed()
+    void test_transposed()
     {
 	const Transform T(RT90(8, 0),  Pixel(4, 10),
 			  RT90(0, 16), Pixel(20,18));
 	Aaa::print(std::cout, T);
     }
 
-    void print_down()
+    void test_down()
     {
 	const Transform T(RT90(0, 0),  Pixel(10,20),
 			  RT90(0, 16), Pixel(10,36));
 	Aaa::print(std::cout, T);
     }
 
-    void print_blowup()
+    void test_blowup()
     {
 	const Transform T(RT90(0, 0),  Pixel(0,20),
 			  RT90(0, 16), Pixel(30,20));
 	Aaa::print(std::cout, T);
     }
+
+    void test_slant()
+    {
+	const Transform T(RT90(0, 0),  Pixel(0,20),
+			  RT90(0, 16), Pixel(30,30));
+	Aaa::print(std::cout, T);
+    }
 }
+#endif
 
 #if 0
 namespace transform {
