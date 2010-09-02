@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.13 2010-09-01 21:40:30 grahn Exp $
+ * $Id: transform.h,v 1.14 2010-09-02 21:17:09 grahn Exp $
  *
  * transform.h
  *
@@ -35,13 +35,12 @@ inline double distance(const RT90& a, const RT90& b) {
 
 /**
  * A coordinate in a raster image, with the usual origo
- * in the upper left corner. Hoping it will simplify things,
- * it's represented by a Point with negative y.
+ * in the upper left corner.
  */
 class Pixel {
 public:
     Pixel(double x, double y)
-	: p(x, -y)
+	: p(x, y)
     {}
 
     Point p;
@@ -64,9 +63,12 @@ inline double distance(const Pixel& a, const Pixel& b) {
  *   dst = AB src + C
  *         DE       F
  *
- * but the constructor which takes two pairs src/dst coordinates
- * defines a subset where the transformation is just a uniform
- * scaling, a rotation and a translation:
+ * (Note that this one describes the transformation from map to world,
+ * i.e. from src Pixel to dst RT90.)
+ *
+ * On the other hand, the constructor which takes two pairs src/dst
+ * coordinates defines a subset where the transformation is just a
+ * uniform scaling, a rotation and a translation:
  *
  *   dst = S R src + T
  *

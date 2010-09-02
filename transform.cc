@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.10 2010-09-01 21:40:30 grahn Exp $
+ * $Id: transform.cc,v 1.11 2010-09-02 21:17:09 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -18,6 +18,11 @@ namespace {
     {
 	return SinCos(a.sin*b.cos - a.cos*b.sin,
 		      a.cos*b.cos + a.sin*b.sin);
+    }
+
+    inline SinCos mirror(const SinCos a)
+    {
+	return SinCos(-a.sin, a.cos);
     }
 
     inline Point scale(double s, const Point& p)
@@ -49,9 +54,10 @@ std::ostream& operator<<  (std::ostream& os, const RT90& val)
 std::ostream& operator<<  (std::ostream& os, const Pixel& val)
 {
     char buf[30];
-    std::sprintf(buf, "%.1f %.1f", val.p.x, -val.p.y);
+    std::sprintf(buf, "%.1f %.1f", val.p.x, val.p.y);
     return os << buf;
 }
+
 
 Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 		     const RT90& src_b, const Pixel& dst_b)
@@ -65,7 +71,7 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
     /* The angle, or rotation, between src and dst, expressed as
      * (sin v, cos v).
      */
-    const SinCos rotation = sincos_sub(dv.sincos(), sv.sincos());
+    const SinCos rotation = sincos_sub(mirror(dv.sincos()), sv.sincos());
     //std::cerr << "rotation " << rotation << '\n';
 
     /* Likewise, the scaling.
@@ -78,9 +84,9 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
     const Point transl = dst_a.p - scale(scaling, rotate(rotation, src_a.p));
 
     A = scaling * rotation.cos;
-    E = A;
+    E = -A;
     D = scaling * rotation.sin;
-    B = -D;
+    B = D;
     C = transl.x;
     F = transl.y;
 }
