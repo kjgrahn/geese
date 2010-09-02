@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.9 2010-09-01 21:40:30 grahn Exp $
+ * $Id: test_transform.cc,v 1.10 2010-09-02 21:15:22 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -166,6 +166,7 @@ namespace fun {
     {
 	const Transform T(RT90(8, 0),  Pixel(4, 10),
 			  RT90(0, 16), Pixel(20,18));
+	std::cout << '\n' << T << '\n';
 	Aaa::print(std::cout, T);
     }
 
@@ -173,6 +174,7 @@ namespace fun {
     {
 	const Transform T(RT90(0, 0),  Pixel(10,20),
 			  RT90(0, 16), Pixel(10,36));
+	std::cout << '\n' << T << '\n';
 	Aaa::print(std::cout, T);
     }
 
@@ -180,6 +182,7 @@ namespace fun {
     {
 	const Transform T(RT90(0, 0),  Pixel(0,20),
 			  RT90(0, 16), Pixel(30,20));
+	std::cout << '\n' << T << '\n';
 	Aaa::print(std::cout, T);
     }
 
@@ -187,6 +190,7 @@ namespace fun {
     {
 	const Transform T(RT90(0, 0),  Pixel(0,20),
 			  RT90(0, 16), Pixel(30,30));
+	std::cout << '\n' << T << '\n';
 	Aaa::print(std::cout, T);
     }
 }
