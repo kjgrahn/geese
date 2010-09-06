@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.11 2010-09-02 21:17:09 grahn Exp $
+ * $Id: transform.cc,v 1.12 2010-09-06 21:03:04 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -71,7 +71,7 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
     /* The angle, or rotation, between src and dst, expressed as
      * (sin v, cos v).
      */
-    const SinCos rotation = sincos_sub(mirror(dv.sincos()), sv.sincos());
+    const SinCos rotation = sincos_sub(sv.sincos(), mirror(dv.sincos()));
     //std::cerr << "rotation " << rotation << '\n';
 
     /* Likewise, the scaling.
