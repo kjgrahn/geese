@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.11 2010-09-06 21:02:41 grahn Exp $
+ * $Id: test_transform.cc,v 1.12 2010-09-06 21:21:00 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -151,45 +151,55 @@ namespace transform {
     }
 }
 
-#if 1
 namespace rotation {
 
     void test_e()
     {
 	const Transform T(RT90(0, 0),  Pixel(0, 0),
 			  RT90(0, 16), Pixel(16, 0));
-	Aaa::print(std::cout, T);
+	assert_uniform(Aaa::src, Aaa::N, T);
+	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	assert_near(RT90(0, 16), Pixel(16, 0), 1e-6, T);
     }
 
     void test_s()
     {
 	const Transform T(RT90(0, 0),  Pixel(0, 0),
 			  RT90(0, 16), Pixel(0, 16));
-	Aaa::print(std::cout, T);
+	assert_uniform(Aaa::src, Aaa::N, T);
+	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	assert_near(RT90(0, 16), Pixel(0, 16), 1e-6, T);
     }
 
     void test_w()
     {
 	const Transform T(RT90(0, 0),  Pixel(0, 0),
 			  RT90(0, 16), Pixel(-16, 0));
-	Aaa::print(std::cout, T);
+	assert_uniform(Aaa::src, Aaa::N, T);
+	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	assert_near(RT90(0, 16), Pixel(-16, 0), 1e-6, T);
     }
 
     void test_n()
     {
 	const Transform T(RT90(0, 0),  Pixel(0, 0),
 			  RT90(0, 16), Pixel(0, -16));
-	Aaa::print(std::cout, T);
+	assert_uniform(Aaa::src, Aaa::N, T);
+	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	assert_near(RT90(0, 16), Pixel(0, -16), 1e-6, T);
     }
 
     void test_se()
     {
 	const Transform T(RT90(0, 0),  Pixel(0, 0),
 			  RT90(0, 16), Pixel(11.31, 11.31));
-	Aaa::print(std::cout, T);
+	assert_uniform(Aaa::src, Aaa::N, T);
+	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	assert_near(RT90(0, 16), Pixel(11.31, 11.31), 1e-6, T);
     }
 }
 
+#if 0
 namespace fun {
 
     void test_unrotated()
