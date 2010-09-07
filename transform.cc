@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.12 2010-09-06 21:03:04 grahn Exp $
+ * $Id: transform.cc,v 1.13 2010-09-07 21:53:16 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -23,6 +23,11 @@ namespace {
     inline SinCos mirror(const SinCos a)
     {
 	return SinCos(-a.sin, a.cos);
+    }
+
+    inline Point mirror(const Point a)
+    {
+	return Point(a.x, -a.y);
     }
 
     inline Point scale(double s, const Point& p)
@@ -65,14 +70,11 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 {
     const Point sv = src_b.p - src_a.p;
     const Point dv = dst_b.p - dst_a.p;
-    //std::cerr << "src " << sv.sincos() << '\n';
-    //std::cerr << "dst " << dvs << '\n';
 
     /* The angle, or rotation, between src and dst, expressed as
      * (sin v, cos v).
      */
     const SinCos rotation = sincos_sub(sv.sincos(), mirror(dv.sincos()));
-    //std::cerr << "rotation " << rotation << '\n';
 
     /* Likewise, the scaling.
      */
@@ -80,8 +82,9 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 
     /* The translation can be calculated from e.g. pair A:
      * T = dst - SR src
+     * and some mirroring I don't quite understand
      */
-    const Point transl = dst_a.p - scale(scaling, rotate(rotation, src_a.p));
+    const Point transl = dst_a.p - scale(scaling, rotate(rotation, mirror(src_a.p)));
 
     A = scaling * rotation.cos;
     E = -A;

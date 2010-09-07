@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.21 2010-08-27 22:26:27 grahn Exp $
+# $Id: Makefile,v 1.22 2010-09-07 21:53:16 grahn Exp $
 #
 # Makefile
 #
@@ -33,7 +33,7 @@ clean:
 check: tests
 	./tests
 checkv: tests
-	valgrind -q ./tests
+	valgrind -q ./tests -v
 
 pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py world.py
 	for py in $^; \
