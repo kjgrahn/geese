@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.14 2010-09-07 21:01:04 grahn Exp $
+ * $Id: test_transform.cc,v 1.15 2010-09-07 21:05:40 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -207,12 +207,6 @@ namespace transposition {
 		     RT90(0, 16), Pixel(x+16, y+8));
 	    }
 	}
-    }
-
-    void test_wtf()
-    {
-	test(RT90(8.0, 0.0),  Pixel(0.0, 0.0),
-	     RT90(0.0, 16.0), Pixel(16.0, 8.0));
     }
 
     void test_unrotated()
