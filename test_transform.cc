@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.15 2010-09-07 21:05:40 grahn Exp $
+ * $Id: test_transform.cc,v 1.16 2010-09-07 21:10:11 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -101,7 +101,6 @@ namespace Aaa {
     }
 }
 
-
 namespace {
 
     void test(const RT90& sa, const Pixel& da,
@@ -117,46 +116,6 @@ namespace {
  	assert_uniform(Aaa::src, Aaa::N, T2);
     }
 }
-
-namespace transform {
-
-    void test_unrotated()
-    {
-	const Transform T(RT90(8, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(16, 8));
-
-#if 0
-	std::cout << distance(T(RT90(8, 0)), Pixel(0, 0)) << '\n';
-	std::cout << distance(T(RT90(0, 16)), Pixel(16, 8)) << '\n';
-	std::cout << T(RT90(0, 16)) << '\n';
-	std::cout << Pixel(16, 8) << '\n';
-#endif
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(8, 0), Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0,16), Pixel(16,8), 1e-6, T);
-    }
-
-    void test_transposed()
-    {
-	const Transform T(RT90(8, 0),  Pixel(4, 10),
-			  RT90(0, 16), Pixel(20,18));
-
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(8, 0), Pixel(4, 10), 1e-6, T);
-	assert_near(RT90(0,16), Pixel(20,18), 1e-6, T);
-    }
-
-    void test_slant()
-    {
-	const Transform T(RT90(0, 0), Pixel( 0,20),
-			  RT90(0,16), Pixel(30,30));
-
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0), Pixel( 0,20), 1e-6, T);
-	assert_near(RT90(0,16), Pixel(30,30), 1e-6, T);
-    }
-}
-
 
 namespace freeform {
 
@@ -181,9 +140,7 @@ namespace freeform {
 	    }
 	}
     }
-
 }
-
 
 namespace transposition {
 
@@ -213,6 +170,12 @@ namespace transposition {
     {
 	const Transform T(RT90(8, 0),  Pixel(0, 0),
 			  RT90(0, 16), Pixel(16, 8));
+#if 0
+	std::cout << distance(T(RT90(8, 0)), Pixel(0, 0)) << '\n';
+	std::cout << distance(T(RT90(0, 16)), Pixel(16, 8)) << '\n';
+	std::cout << T(RT90(0, 16)) << '\n';
+	std::cout << Pixel(16, 8) << '\n';
+#endif
 	assert_uniform(Aaa::src, Aaa::N, T);
 	assert_near(RT90(8, 0), Pixel(0, 0), 1e-6, T);
 	assert_near(RT90(0,16), Pixel(16,8), 1e-6, T);
