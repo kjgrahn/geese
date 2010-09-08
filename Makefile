@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.22 2010-09-07 21:53:16 grahn Exp $
+# $Id: Makefile,v 1.23 2010-09-08 20:56:43 grahn Exp $
 #
 # Makefile
 #
@@ -9,7 +9,9 @@ SHELL = /bin/sh
 
 INSTALLBASE = /usr/local
 
-all:
+.PHONY: all
+all: geese_pick
+all: geese_plot
 
 # Why not just use distutils all the way for installing this?  Because
 # as far as I can see, it doesn't really support installing anything
@@ -53,9 +55,7 @@ test.cc: libtest.a
 tests: test.o libgeese.a libtest.a
 	$(CXX) -o $@ test.o -L. -ltest -lgeese -lm
 
-#libgeese.a: geese.o
 libgeese.a: transform.o
-#libgeese.a: vector.o
 libgeese.a: point.o
 	$(AR) -r $@ $^
 
