@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.24 2010-09-08 20:57:43 grahn Exp $
+# $Id: Makefile,v 1.25 2010-09-09 20:38:58 grahn Exp $
 #
 # Makefile
 #
@@ -49,6 +49,9 @@ pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py world
 
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
 
+geese_pick: geese_pick.o libgeese.a
+	$(CXX) -o $@ geese_pick.o -L. -lgeese
+
 test.cc: libtest.a
 	testicle -o$@ $^
 
@@ -76,6 +79,7 @@ love:
 
 # DO NOT DELETE
 
+geese_pick.o: regex.h
 point.o: point.h
 test_point.o: point.h
 test_transform.o: transform.h point.h
