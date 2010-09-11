@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.5 2010-09-11 18:15:05 grahn Exp $
+/* $Id: library.cc,v 1.6 2010-09-11 18:18:58 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -126,7 +126,7 @@ namespace {
 	}
 
 	const Mapping& a = mappings[0];
-	const Mapping& b = mappings[0];
+	const Mapping& b = mappings[1];
 
 	const Map map(checksums, dim,
 		      Transform(RT90(a.a, a.b), Pixel(a.c, a.d),
