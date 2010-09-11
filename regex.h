@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: regex.h,v 1.1 2010-09-09 20:38:58 grahn Exp $
+ * $Id: regex.h,v 1.2 2010-09-11 07:51:50 grahn Exp $
  *
  * regex.h
  *
@@ -34,7 +34,7 @@ public:
     }
     ~Regex() {regfree(&_preg);}
 
-    bool matches(const std::string& s) const {
+    bool match(const std::string& s) const {
 	return !regexec(&_preg, s.c_str(), 0, 0, 0);
     }
 
