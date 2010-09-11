@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.26 2010-09-11 08:39:55 grahn Exp $
+# $Id: Makefile,v 1.27 2010-09-11 18:15:05 grahn Exp $
 #
 # Makefile
 #
@@ -11,7 +11,7 @@ INSTALLBASE = /usr/local
 
 .PHONY: all
 all: geese_pickc
-all: geese_pick
+#all: geese_pick
 all: geese_plot
 
 # Why not just use distutils all the way for installing this?  Because
@@ -30,6 +30,7 @@ clean:
 	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
+	$(RM) geese_pickc
 
 .PHONY: check checkv
 #check: pycheck

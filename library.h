@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: library.h,v 1.3 2010-09-11 17:33:18 grahn Exp $
+ * $Id: library.h,v 1.4 2010-09-11 18:15:05 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -22,20 +22,18 @@ struct Dimensions {
 };
 
 struct Map {
-    Map();
+    Map() {}
     Map(const std::vector<std::string>& checksums_,
 	const Dimensions& dimensions_,
 	const Transform& transform)
 	: checksums(checksums_),
-	dimensions(dimensions_),
-	t(new Transform(transform))
+	  dimensions(dimensions_),
+	  t(transform)
     {}
-    Map(const Map& other);
-    ~Map();
 
     std::vector<std::string> checksums;
     Dimensions dimensions;
-    const Transform* t;
+    Transform t;
 };
 
 typedef std::map<std::string, Map> Library;

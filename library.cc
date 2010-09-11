@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.4 2010-09-11 17:33:18 grahn Exp $
+/* $Id: library.cc,v 1.5 2010-09-11 18:15:05 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -50,6 +50,8 @@ namespace {
 
     void parse(Library& lib,
 	       const Lines& acc,
+	       const std::string& filename,
+	       const unsigned lineno,
 	       std::ostream& log)
     {
 	vector<string> names;
@@ -103,20 +105,24 @@ namespace {
 		mappings.push_back(m);
 	    }
 	    else {
-		log << "warning: ignoring line \"" << s << "\"\n";
+		log << filename << ':' << lineno << ": "
+		    << "warning: ignoring line \"" << s << "\"\n";
 	    }
 	}
 
 	if(names.empty()) {
-	    log << "warning: entry without file name discarded\n";
+	    log << filename << ':' << lineno << ": "
+		<< "warning: entry without file name discarded\n";
 	    return;
 	}
 	if(mappings.size()<2) {
-	    log << "warning: entry without mappings discarded\n";
+	    log << filename << ':' << lineno << ": "
+		<< "warning: entry without mappings discarded\n";
 	    return;
 	}
 	if(mappings.size()>2) {
-	    log << "warning: ignoring extra mappings (I only use two)\n";
+	    log << filename << ':' << lineno << ": "
+		<< "warning: ignoring extra mappings (I only use two)\n";
 	}
 
 	const Mapping& a = mappings[0];
@@ -150,14 +156,16 @@ Library parse_lib(const std::string& libfile, std::ostream& log)
 
     Lines acc;
     std::string s;
+    unsigned n = 0;
 
     while(std::getline(is, s)) {
+	++n;
 	if(!s.empty() && s[0] == '#') {
 	    continue;
 	}
 
 	if(s.empty() && !acc.empty()) {
-	    parse(lib, acc, log);
+	    parse(lib, acc, libfile, n, log);
 	    acc.clear();
 	    continue;
 	}
@@ -165,7 +173,7 @@ Library parse_lib(const std::string& libfile, std::ostream& log)
 	acc.push_back(s);
     }
 
-    if(is.fail()) {
+    if(!is.eof()) {
 	log << "error reading " << libfile << ": "
 	    << std::strerror(errno) << '\n';
     }
