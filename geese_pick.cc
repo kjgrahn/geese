@@ -1,10 +1,11 @@
-/* $Id: geese_pick.cc,v 1.1 2010-09-09 20:38:58 grahn Exp $
+/* $Id: geese_pick.cc,v 1.2 2010-09-11 07:52:10 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
  *
  */
 #include "regex.h"
+#include "transform.h"
 
 #include <iostream>
 #include <fstream>
@@ -41,7 +42,23 @@ namespace {
     using std::vector;
     using std::string;
 
-    struct Map {};
+    struct Dimensions {
+	double width;
+	double height;
+    };
+
+    struct Map {
+	Map(const std::vector<std::string>& checksums_,
+	    const Dimensions& dimensions_,
+	    const Transform& transform)
+	    : checksums(checksums_),
+	      dimensions(dimensions_),
+	      t(transform)
+	{}
+	std::vector<std::string> checksums;
+	Dimensions dimensions;
+	const Transform* t;
+    };
 
     typedef std::map<std::string, Map> Library;
     typedef std::vector<std::string> Lines;
@@ -55,24 +72,23 @@ namespace {
 	return string(path, n+1);
     }
 
-    bool is_md5(const std::string&s)
-    {
-	return s.size()==32 && 
-	    s.find_first_not_of("0123456789abcdef")==string::npos;
-    }
-
     void parse(Library& lib,
 	       const Lines& acc,
 	       std::ostream& log)
     {
 	vector<string> names;
-	Map map;
+	vector<string> checksums;
 
-	for(Lines::const_iterator i = acc.begin(); i!=acc.end(); ++i) {
+	Lines::const_iterator i;
+	for(i = acc.begin(); i!=acc.end(); ++i) {
 	    const string& s = *i;
-	    
+	    if(re::dimension.match(s) || re::mapping.match(s)) break;
+	    if(re::md5.match(s)) checksums.push_back(s);
+	    names.push_back(s);
 	}
 
+	Transform T;
+	const Map map(checksums, Dimensions(), T);
 	for(vector<string>::const_iterator i = names.begin(); i!=names.end(); ++i) {
 	    lib[*i] = map;
 	}
