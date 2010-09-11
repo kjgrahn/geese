@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.3 2010-09-11 15:24:19 grahn Exp $
+/* $Id: library.cc,v 1.4 2010-09-11 17:33:18 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -7,6 +7,8 @@
 #include "library.h"
 #include "regex.h"
 
+#include <cstdlib>
+#include <cctype>
 #include <iostream>
 #include <fstream>
 #include <cerrno>
@@ -39,6 +41,13 @@ namespace {
 		      "[0-9]+(\\.[0-9]+)?");
     }
 
+    struct Mapping {
+	double a;
+	double b;
+	double c;
+	double d;
+    };
+
     void parse(Library& lib,
 	       const Lines& acc,
 	       std::ostream& log)
@@ -54,8 +63,69 @@ namespace {
 	    names.push_back(s);
 	}
 
-	Transform T;
-	const Map map(checksums, Dimensions(), T);
+	Dimensions dim;
+	vector<Mapping> mappings;
+
+	for(; i!=acc.end(); ++i) {
+	    const std::string& s = *i;
+	    const char* p = s.c_str();
+	    if(re::dimension.match(s)) {
+		char* end;
+		dim.width = std::strtod(p, &end);
+		assert(end!=p);
+		assert(*end);
+		p = end;
+		while(isspace(*p)) p++;
+		assert(*p=='x');
+		p++;
+		dim.height = std::strtod(p, &end);
+		assert(end!=p);
+	    }
+	    else if(re::mapping.match(s)) {
+		Mapping m;
+		char* end;
+		m.a = std::strtod(p, &end);
+		p = end;
+		m.b = std::strtod(p, &end);
+		p = end;
+		while(isspace(*p)) p++;
+		assert(*p=='-');
+		p++;
+		assert(*p=='>');
+		p++;
+		m.c = std::strtod(p, &end);
+		p = end;
+		while(isspace(*p)) p++;
+		assert(*p==',');
+		p++;
+		m.d = std::strtod(p, &end);
+
+		mappings.push_back(m);
+	    }
+	    else {
+		log << "warning: ignoring line \"" << s << "\"\n";
+	    }
+	}
+
+	if(names.empty()) {
+	    log << "warning: entry without file name discarded\n";
+	    return;
+	}
+	if(mappings.size()<2) {
+	    log << "warning: entry without mappings discarded\n";
+	    return;
+	}
+	if(mappings.size()>2) {
+	    log << "warning: ignoring extra mappings (I only use two)\n";
+	}
+
+	const Mapping& a = mappings[0];
+	const Mapping& b = mappings[0];
+
+	const Map map(checksums, dim,
+		      Transform(RT90(a.a, a.b), Pixel(a.c, a.d),
+				RT90(b.a, b.b), Pixel(b.c, b.d)));
+
 	for(vector<string>::const_iterator i = names.begin(); i!=names.end(); ++i) {
 	    lib[*i] = map;
 	}

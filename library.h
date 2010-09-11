@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: library.h,v 1.2 2010-09-11 15:24:19 grahn Exp $
+ * $Id: library.h,v 1.3 2010-09-11 17:33:18 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -16,6 +16,7 @@
 #include "transform.h"
 
 struct Dimensions {
+    Dimensions() : width(0), height(0) {}
     double width;
     double height;
 };
