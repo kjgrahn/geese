@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.2 2010-09-11 15:17:04 grahn Exp $
+/* $Id: library.cc,v 1.3 2010-09-11 15:24:19 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -6,10 +6,12 @@
  */
 #include "library.h"
 #include "regex.h"
-#include "transform.h"
 
-#include <map>
-#include <vector>
+#include <iostream>
+#include <fstream>
+#include <cerrno>
+#include <cstring>
+
 
 using std::vector;
 using std::string;
@@ -37,15 +39,6 @@ namespace {
 		      "[0-9]+(\\.[0-9]+)?");
     }
 
-    std::string basename(const std::string& path)
-    {
-	string::size_type n = path.rfind('/');
-	if(n==string::npos) {
-	    return path;
-	}
-	return string(path, n+1);
-    }
-
     void parse(Library& lib,
 	       const Lines& acc,
 	       std::ostream& log)
@@ -71,6 +64,10 @@ namespace {
 }
 
 
+/**
+ * Read a map "library" from 'libfile', printing errors/warnings to 'log'.
+ * Returns an empty library in case of complete failure.
+ */
 Library parse_lib(const std::string& libfile, std::ostream& log)
 {
     Library lib;

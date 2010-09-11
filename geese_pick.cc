@@ -1,19 +1,28 @@
-/* $Id: geese_pick.cc,v 1.3 2010-09-11 08:39:55 grahn Exp $
+/* $Id: geese_pick.cc,v 1.4 2010-09-11 15:24:19 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
  *
  */
 #include <iostream>
-#include <fstream>
 #include <string>
 
 #include <cstdlib>
-#include <cerrno>
-#include <cstring>
 #include <getopt.h>
 
 #include "library.h"
+
+namespace {
+
+    std::string basename(const std::string& path)
+    {
+	std::string::size_type n = path.rfind('/');
+	if(n==std::string::npos) {
+	    return path;
+	}
+	return std::string(path, n+1);
+    }
+}
 
 
 int main(int argc, char ** argv)

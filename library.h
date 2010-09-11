@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: library.h,v 1.1 2010-09-11 08:39:55 grahn Exp $
+ * $Id: library.h,v 1.2 2010-09-11 15:24:19 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -21,6 +21,7 @@ struct Dimensions {
 };
 
 struct Map {
+    Map();
     Map(const std::vector<std::string>& checksums_,
 	const Dimensions& dimensions_,
 	const Transform& transform)
