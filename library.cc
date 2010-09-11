@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.1 2010-09-11 08:39:55 grahn Exp $
+/* $Id: library.cc,v 1.2 2010-09-11 15:17:04 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -11,32 +11,31 @@
 #include <map>
 #include <vector>
 
+using std::vector;
+using std::string;
 
-namespace re {
-
-    /* 21da8fb51edd4c398765e012b9cc8738 */
-    Regex md5("^[[:xdigit:]]{32}$");
-
-    /* 2146 x 2578 */
-    Regex dimension("^ *[0-9]+ *x *[0-9]+$");
-
-    /* 6447181 1356800 -> 0,0 */
-    Regex mapping("^ *"
-		  "[0-9]+(\\.[0-9]+)?"
-		  " +"
-		  "[0-9]+(\\.[0-9]+)?"
-		  " *-> *"
-		  "[0-9]+(\\.[0-9]+)?"
-		  " *, *"
-		  "[0-9]+(\\.[0-9]+)?");
-}
+typedef std::vector<std::string> Lines;
 
 namespace {
 
-    using std::vector;
-    using std::string;
+    namespace re {
 
-    typedef std::vector<std::string> Lines;
+	/* 21da8fb51edd4c398765e012b9cc8738 */
+	Regex md5("^[[:xdigit:]]{32}$");
+
+	/* 2146 x 2578 */
+	Regex dimension("^ *[0-9]+ *x *[0-9]+$");
+
+	/* 6447181 1356800 -> 0,0 */
+	Regex mapping("^ *"
+		      "[0-9]+(\\.[0-9]+)?"
+		      " +"
+		      "[0-9]+(\\.[0-9]+)?"
+		      " *-> *"
+		      "[0-9]+(\\.[0-9]+)?"
+		      " *, *"
+		      "[0-9]+(\\.[0-9]+)?");
+    }
 
     std::string basename(const std::string& path)
     {
@@ -69,37 +68,39 @@ namespace {
 	}
     }
 
-    Library parse_lib(const std::string& libfile, std::ostream& log)
-    {
-	Library lib;
-	std::ifstream is(libfile.c_str());
-	if(is.fail()) {
-	    log << "error: cannot open " << libfile << ": "
-		<< std::strerror(errno) << '\n';
-	    return lib;
-	}
+}
 
-	Lines acc;
-	std::string s;
 
-	while(std::getline(is, s)) {
-	    if(!s.empty() && s[0] == '#') {
-		continue;
-	    }
-
-	    if(s.empty() && !acc.empty()) {
-		parse(lib, acc, log);
-		acc.clear();
-		continue;
-	    }
-
-	    acc.push_back(s);
-	}
-
-	if(is.fail()) {
-	    log << "error reading " << libfile << ": "
-		<< std::strerror(errno) << '\n';
-	}
+Library parse_lib(const std::string& libfile, std::ostream& log)
+{
+    Library lib;
+    std::ifstream is(libfile.c_str());
+    if(is.fail()) {
+	log << "error: cannot open " << libfile << ": "
+	    << std::strerror(errno) << '\n';
 	return lib;
     }
+
+    Lines acc;
+    std::string s;
+
+    while(std::getline(is, s)) {
+	if(!s.empty() && s[0] == '#') {
+	    continue;
+	}
+
+	if(s.empty() && !acc.empty()) {
+	    parse(lib, acc, log);
+	    acc.clear();
+	    continue;
+	}
+
+	acc.push_back(s);
+    }
+
+    if(is.fail()) {
+	log << "error reading " << libfile << ": "
+	    << std::strerror(errno) << '\n';
+    }
+    return lib;
 }
