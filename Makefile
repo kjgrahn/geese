@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.25 2010-09-09 20:38:58 grahn Exp $
+# $Id: Makefile,v 1.26 2010-09-11 08:39:55 grahn Exp $
 #
 # Makefile
 #
@@ -10,6 +10,7 @@ SHELL = /bin/sh
 INSTALLBASE = /usr/local
 
 .PHONY: all
+all: geese_pickc
 all: geese_pick
 all: geese_plot
 
@@ -49,7 +50,7 @@ pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py world
 
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
 
-geese_pick: geese_pick.o libgeese.a
+geese_pickc: geese_pick.o libgeese.a
 	$(CXX) -o $@ geese_pick.o -L. -lgeese
 
 test.cc: libtest.a
@@ -58,6 +59,7 @@ test.cc: libtest.a
 tests: test.o libgeese.a libtest.a
 	$(CXX) -o $@ test.o -L. -ltest -lgeese -lm
 
+libgeese.a: library.o
 libgeese.a: transform.o
 libgeese.a: point.o
 	$(AR) -r $@ $^
@@ -79,7 +81,8 @@ love:
 
 # DO NOT DELETE
 
-geese_pick.o: regex.h
+geese_pick.o: library.h transform.h point.h
+library.o: library.h transform.h point.h regex.h
 point.o: point.h
 test_point.o: point.h
 test_transform.o: transform.h point.h
