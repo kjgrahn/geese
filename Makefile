@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.27 2010-09-11 18:15:05 grahn Exp $
+# $Id: Makefile,v 1.28 2010-09-12 14:42:02 grahn Exp $
 #
 # Makefile
 #
@@ -10,8 +10,7 @@ SHELL = /bin/sh
 INSTALLBASE = /usr/local
 
 .PHONY: all
-all: geese_pickc
-#all: geese_pick
+all: geese_pick
 all: geese_plot
 
 # Why not just use distutils all the way for installing this?  Because
@@ -30,7 +29,7 @@ clean:
 	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
-	$(RM) geese_pickc
+	$(RM) geese_pick
 
 .PHONY: check checkv
 #check: pycheck
@@ -51,7 +50,7 @@ pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py world
 
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
 
-geese_pickc: geese_pick.o libgeese.a
+geese_pick: geese_pick.o libgeese.a
 	$(CXX) -o $@ geese_pick.o -L. -lgeese
 
 test.cc: libtest.a
