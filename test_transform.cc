@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.16 2010-09-07 21:10:11 grahn Exp $
+ * $Id: test_transform.cc,v 1.17 2010-09-12 06:19:37 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -289,48 +289,3 @@ namespace rotation {
 	assert_near(RT90(0, 16), Pixel(11.31, 11.31), 1e-6, T);
     }
 }
-
-#if 0
-namespace fun {
-
-    void test_unrotated()
-    {
-	const Transform T(RT90(8, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(16, 8));
-	std::cout << '\n' << T << '\n';
-	Aaa::print(std::cout, T);
-    }
-
-    void test_transposed()
-    {
-	const Transform T(RT90(8, 0),  Pixel(4, 10),
-			  RT90(0, 16), Pixel(20,18));
-	std::cout << '\n' << T << '\n';
-	Aaa::print(std::cout, T);
-    }
-
-    void test_down()
-    {
-	const Transform T(RT90(0, 0),  Pixel(10,20),
-			  RT90(0, 16), Pixel(10,36));
-	std::cout << '\n' << T << '\n';
-	Aaa::print(std::cout, T);
-    }
-
-    void test_blowup()
-    {
-	const Transform T(RT90(0, 0),  Pixel(0,20),
-			  RT90(0, 16), Pixel(30,20));
-	std::cout << '\n' << T << '\n';
-	Aaa::print(std::cout, T);
-    }
-
-    void test_slant()
-    {
-	const Transform T(RT90(0, 0),  Pixel(0,20),
-			  RT90(0, 16), Pixel(30,30));
-	std::cout << '\n' << T << '\n';
-	Aaa::print(std::cout, T);
-    }
-}
-#endif
