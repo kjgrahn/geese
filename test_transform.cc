@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.20 2010-09-12 09:31:11 grahn Exp $
+ * $Id: test_transform.cc,v 1.21 2010-09-12 09:45:30 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -37,21 +37,10 @@ namespace {
 	assert_near(distance(T(a), b), 0, epsilon);
     }
 
-    /**
-     * T scales the distance between any two points in 'src[]'
-     * by the same factor, 1/T.scale().
-     */
-    void assert_uniform(const RT90* const src, const int N,
-			const Transform& T)
+    void assert_near(const Pixel& a, const RT90& b, double epsilon,
+		     const Transform& T)
     {
-	const double s = 1 / T.scale();
-	for(int m=0; m<N; ++m) for(int n=0; n<N; ++n) {
-	    const RT90 a = src[m];
-	    const RT90 b = src[n];
-	    assert_near(distance(T(a), T(b)),
-			s * distance(a, b),
-			1e-6);
-	}
+	assert_near(distance(T(a), b), 0, epsilon);
     }
 }
 
@@ -101,7 +90,28 @@ namespace Aaa {
     }
 }
 
-namespace {
+
+/* Testing the 'in' transformation -- from the real world onto the
+ * map, i.e. from RT90 to Pixel.
+ */
+namespace in {
+
+    /**
+     * T(RT90) scales the distance between any two points in 'src[]'
+     * by the same factor, 1/T.scale().
+     */
+    void assert_uniform(const RT90* const src, const int N,
+			const Transform& T)
+    {
+	const double s = 1 / T.scale();
+	for(int m=0; m<N; ++m) for(int n=0; n<N; ++n) {
+	    const RT90 a = src[m];
+	    const RT90 b = src[n];
+	    assert_near(distance(T(a), T(b)),
+			s * distance(a, b),
+			1e-6);
+	}
+    }
 
     void test(const RT90& sa, const Pixel& da,
 	      const RT90& sb, const Pixel& db)
@@ -115,13 +125,6 @@ namespace {
  	assert_uniform(Aaa::src, Aaa::N, T1);
  	assert_uniform(Aaa::src, Aaa::N, T2);
     }
-}
-
-namespace in {
-
-    /* Testing the 'in' transformation -- from the real world onto the
-     * map, i.e. from RT90 to Pixel.
-     */
 
     namespace freeform {
 
@@ -298,10 +301,71 @@ namespace in {
 }
 
 
-namespace props {
+/* Testing the 'out' transformation -- from the map out onto the real world,
+ * i.e. from Pixel to RT90.  Assumes the other direction works.
+ */
+namespace out {
 
-    /* Testing Transform::scale() and Transform::rotation().
+    /**
+     * T(Pixel) scales the distance between any two points in 'src[]'
+     * by the same factor, T.scale().
      */
+    void assert_uniform(const RT90* const src, const int N,
+			const Transform& T)
+    {
+	const double s = T.scale();
+	for(int m=0; m<N; ++m) for(int n=0; n<N; ++n) {
+	    const Pixel a = T(src[m]);
+	    const Pixel b = T(src[n]);
+	    assert_near(distance(T(a), T(b)),
+			s * distance(a, b),
+			1e-6);
+	}
+    }
+
+    void test(const RT90& sa, const Pixel& da,
+	      const RT90& sb, const Pixel& db)
+    {
+	const Transform T1(sa, da, sb, db);
+	const Transform T2(sb, db, sa, da);
+ 	assert_near(da, sa, 1e-6, T1);
+ 	assert_near(da, sa, 1e-6, T2);
+ 	assert_near(db, sb, 1e-6, T1);
+ 	assert_near(db, sb, 1e-6, T2);
+ 	assert_uniform(Aaa::src, Aaa::N, T1);
+ 	assert_uniform(Aaa::src, Aaa::N, T2);
+    }
+
+    namespace freeform {
+
+	void test_a()
+	{
+	    for(int x=-100; x<100; x+=2) {
+		for(int y=-100; y<100; y+=2) {
+
+		    test(RT90(0, 0),  Pixel(11, 11),
+			 RT90(0, 16), Pixel(x, y));
+		}
+	    }
+	}
+
+	void test_b()
+	{
+	    for(int x=-100; x<100; x+=2) {
+		for(int y=-100; y<100; y+=2) {
+
+		    test(RT90(1, 1),  Pixel(11, 11),
+			 RT90(1, 16), Pixel(x, y));
+		}
+	    }
+	}
+    }
+}
+
+
+/* Testing Transform::scale() and Transform::rotation().
+ */
+namespace props {
 
     const RT90 A(0, 0);
     const RT90 B(1, 0);
