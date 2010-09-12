@@ -1,4 +1,4 @@
-/* $Id: geese_pick.cc,v 1.9 2010-09-12 16:00:12 grahn Exp $
+/* $Id: geese_pick.cc,v 1.10 2010-09-12 21:06:41 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -15,6 +15,7 @@
 #include "library.h"
 #include "child.h"
 #include "xvpixel.h"
+#include "worldfile.h"
 
 namespace {
 
@@ -79,9 +80,10 @@ int main(int argc, char ** argv)
 
     const string prog = argv[0];
     const string usage = string("usage: ")
-	+ prog
-	+ " -f mapping-file map-file";
-    const char optstring[] = "+f:h";
+	+ prog + " [-f mapping-file] map-file\n"
+	"       "
+	+ prog + " -w world-file map-file";
+    const char optstring[] = "+f:w:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
 	{"help", 0, 0, 'h'},
@@ -89,6 +91,7 @@ int main(int argc, char ** argv)
     };
 
     string libfile;
+    string worldfile;
 
     std::cin.sync_with_stdio(false);
     std::cout.sync_with_stdio(false);
@@ -99,6 +102,9 @@ int main(int argc, char ** argv)
 	switch(ch) {
 	case 'f':
 	    libfile = optarg;
+	    break;
+	case 'w':
+	    worldfile = optarg;
 	    break;
 	case 'h':
 	    std::cout << usage << '\n';
@@ -118,37 +124,51 @@ int main(int argc, char ** argv)
 	}
     }
 
-    if(libfile.empty() || optind==argc) {
+    if((libfile.empty() && worldfile.empty())) {
+	std::cerr << usage << '\n';
+	return 1;
+    }
+    if(optind+1 != argc) {
+	std::cerr << "error: extra or too few arguments\n";
 	std::cerr << usage << '\n';
 	return 1;
     }
 
     const string mapfile = argv[optind];
 
-    const Library library = parse_lib(libfile, std::cerr);
-    if(library.empty()) {
-	return 1;
+    Transform t;
+    double area = 0;
+
+    if(!worldfile.empty()) {
+	if(!parse_world(t, worldfile, std::cerr)) {
+	    return 1;
+	}
+    }
+    else if(!find_world(t, mapfile, std::cerr)) {
+	const Library library = parse_lib(libfile, std::cerr);
+	if(library.empty()) {
+	    return 1;
+	}
+
+	Library::const_iterator i = library.find(basename(mapfile));
+	if(i==library.end()) {
+	    std::cerr << "No mapping found for \"" << mapfile << "\": exiting\n";
+	    return 1;
+	}
+	const Map& mapping = i->second;
+	t = mapping.t;
+	const double scale = t.scale();
+	area = scale * mapping.dimensions.width
+	     * scale * mapping.dimensions.height; 
     }
 
-    Library::const_iterator i = library.find(basename(mapfile));
-    if(i==library.end()) {
-	std::cerr << "No mapping found for \"" << mapfile << "\": exiting\n";
-	return 1;
-    }
-
-    const Map& mapping = i->second;
-    const Transform t = mapping.t;
-    const double scale = t.scale();
-    const double area = scale * mapping.dimensions.width
-	              * scale * mapping.dimensions.height; 
-    std::cout << std::setprecision(3);
     std::cout << "geese_pick: displaying map ...\n"
-	      << "one pixel is " << fmt(scale) << " m wide\n"
+	      << "one pixel is " << fmt(t.scale()) << " m wide\n"
 	      << "the map covers " << fmt(area/1e6) << " km²\n"
 	      << "and is rotated " << fmt(t.rotation()) << "°\n"
 	      << t << '\n';
 
-    pick(mapping.t, mapfile);
+    pick(t, mapfile);
 
     return 0;
 }
