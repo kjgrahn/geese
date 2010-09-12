@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.16 2010-09-12 06:56:17 grahn Exp $
+ * $Id: transform.h,v 1.17 2010-09-12 09:54:36 grahn Exp $
  *
  * transform.h
  *
@@ -63,8 +63,9 @@ inline double distance(const Pixel& a, const Pixel& b) {
  *   dst = AB src + C
  *         DE       F
  *
- * (Note that this one describes the transformation from map to world,
- * i.e. from src Pixel to dst RT90.)
+ * Note that this one describes the transformation from map to world,
+ * i.e. from src Pixel to dst RT90. I call that the "out" transform,
+ * and I call the inverse (world to map) the "in" transformation.
  *
  * On the other hand, the constructor which takes two pairs src/dst
  * coordinates defines a subset where the transformation is just a
@@ -93,8 +94,11 @@ public:
     double scale() const;
     double rotation() const;
 
-    Pixel operator() (const RT90& src) const;
-    RT90 operator() (const Pixel& src) const;
+    Pixel in(const RT90& src) const;
+    RT90 out(const Pixel& src) const;
+
+    Pixel operator() (const RT90& src) const { return in(src); }
+    RT90 operator() (const Pixel& src) const { return out(src); }
 
     std::ostream& put(std::ostream& os) const;
 
