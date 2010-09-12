@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: point.h,v 1.7 2010-08-29 18:59:32 grahn Exp $
+ * $Id: point.h,v 1.8 2010-09-12 14:35:18 grahn Exp $
  *
  * Copyright (c) 2003, 2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -39,8 +39,8 @@ public:
 
     std::ostream& put(std::ostream& os) const;
 
-    const double x;
-    const double y;
+    double x;
+    double y;
 };
 
 inline double distance(const Point& a, const Point& b) {

@@ -1,4 +1,4 @@
-/* $Id: geese_pick.cc,v 1.7 2010-09-12 09:03:27 grahn Exp $
+/* $Id: geese_pick.cc,v 1.8 2010-09-12 14:35:18 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -82,6 +82,8 @@ namespace {
 	const char* xvargs[] = { "xv", mapfile.c_str(), 0 };
 	Child xv(const_cast<char**>(xvargs));
 
+	int i = 0;
+	RT90 prev(0,0);
 	std::string s;
 	while(std::getline(std::cin, s)) {
 	    /*  773, 846 = 252,254,2... */
@@ -97,7 +99,17 @@ namespace {
 	    if(*p != '=') continue;
 
 	    const Pixel pixel(x, y);
-	    std::cout << pixel << '\n';
+	    const RT90 coord = t(pixel);
+
+	    std::cout << "1m: " << coord.fmt(1)
+		      << "; 10m: " << coord.fmt(10)
+		      << "; 100m: " << coord.fmt(100)
+		      << "; 1km: " << coord.fmt(1000) << '\n';
+	    if(i++) {
+		std::cout << "    " << distance(prev, coord)
+			  << "m from previous coordinate\n";
+	    }
+	    prev = coord;
 	}
     }
 }

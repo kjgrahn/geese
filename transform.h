@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.18 2010-09-12 12:59:14 grahn Exp $
+ * $Id: transform.h,v 1.19 2010-09-12 14:35:18 grahn Exp $
  *
  * transform.h
  *
@@ -22,13 +22,23 @@ public:
     RT90(double north, double east) : p(east, north) {}
     explicit RT90(const Point& pp) : p(pp) {}
     Point p;
+
+    struct Format {
+	Format(unsigned n, const RT90& p) : n_(n), p_(p) {}
+	const unsigned n_;
+	const RT90& p_;
+    };
+
+    Format fmt(unsigned n) const { return Format(n, *this); }
 };
 
-std::ostream& operator<<  (std::ostream& os, const RT90& val);
+std::ostream& operator<< (std::ostream& os, const RT90& val);
 
 inline double distance(const RT90& a, const RT90& b) {
     return distance(a.p, b.p);
 }
+
+std::ostream& operator<< (std::ostream& os, const RT90::Format f);
 
 
 /**
@@ -42,7 +52,7 @@ public:
     Point p;
 };
 
-std::ostream& operator<<  (std::ostream& os, const Pixel& val);
+std::ostream& operator<< (std::ostream& os, const Pixel& val);
 
 inline double distance(const Pixel& a, const Pixel& b) {
     return distance(a.p, b.p);
