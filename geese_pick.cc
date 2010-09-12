@@ -1,4 +1,4 @@
-/* $Id: geese_pick.cc,v 1.8 2010-09-12 14:35:18 grahn Exp $
+/* $Id: geese_pick.cc,v 1.9 2010-09-12 16:00:12 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -10,14 +10,11 @@
 
 #include <cstdlib>
 #include <getopt.h>
-#include <unistd.h>
 #include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-#include <errno.h>
-#include <string.h>
 
 #include "library.h"
+#include "child.h"
+#include "xvpixel.h"
 
 namespace {
 
@@ -44,36 +41,6 @@ namespace {
     }
 
 
-    struct Child {
-	explicit Child(char** argv);
-	~Child();
-	int child;
-    private:
-	Child();
-	Child(const Child&);
-	Child& operator= (const Child&);
-    };
-
-    Child::Child(char** argv)
-    {
-	child = fork();
-	if(child) return;
-
-	execvp(argv[0], argv);
-	std::cerr << "failed to exec '" << argv[0]
-		  << "': " << strerror(errno) << '\n';
-	exit(1);
-    }
-
-    Child::~Child()
-    {
-	if(child>0) {
-	    kill(child, SIGINT);
-	    int status;
-	    wait(&status);
-	}
-    }
-
     /**
      * The core "picking" part.
      */
@@ -86,19 +53,10 @@ namespace {
 	RT90 prev(0,0);
 	std::string s;
 	while(std::getline(std::cin, s)) {
-	    /*  773, 846 = 252,254,2... */
-	    const char* p = s.c_str();
-	    char* end;
-	    unsigned x = std::strtoul(p, &end, 10);
-	    if(end==p || *end!=',') continue;
-	    p = end + 1;
-	    unsigned y = std::strtoul(p, &end, 10);
-	    if(end==p || *end!=' ') continue;
-	    p = end;
-	    while(std::isspace(*p)) ++p;
-	    if(*p != '=') continue;
+	    bool err = false;
+	    const Pixel pixel = xvpixel(s, err);
+	    if(err) continue;
 
-	    const Pixel pixel(x, y);
 	    const RT90 coord = t(pixel);
 
 	    std::cout << "1m: " << coord.fmt(1)
