@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.6 2010-09-11 18:18:58 grahn Exp $
+/* $Id: library.cc,v 1.7 2010-09-12 21:55:04 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -164,9 +164,11 @@ Library parse_lib(const std::string& libfile, std::ostream& log)
 	    continue;
 	}
 
-	if(s.empty() && !acc.empty()) {
-	    parse(lib, acc, libfile, n, log);
-	    acc.clear();
+	if(s.empty()) {
+	    if(!acc.empty()) {
+		parse(lib, acc, libfile, n, log);
+		acc.clear();
+	    }
 	    continue;
 	}
 
