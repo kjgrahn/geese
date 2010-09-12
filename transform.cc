@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.14 2010-09-12 06:56:17 grahn Exp $
+ * $Id: transform.cc,v 1.15 2010-09-12 09:03:27 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -116,6 +116,17 @@ double Transform::scale() const
 }
 
 
+/**
+ * The rotation part of the transform, in degrees, in the direction
+ * Pixel->RT90.  For example, rotation()==45 means "if you rotate the
+ * map 45° counter-clockwise, the grids are aligned".
+ */
+double Transform::rotation() const
+{
+    return std::atan2(D, A) * 180 / M_PI;
+}
+
+
 Pixel Transform::operator() (const RT90& src) const
 {
     const Point s = src.p;
@@ -130,6 +141,6 @@ std::ostream& Transform::put(std::ostream& os) const
     std::sprintf(buf, "%+.3e  %+.3e  %+.3e", A, B, C);
     os << "A B C [" << buf << "]\n";
     std::sprintf(buf, "%+.3e  %+.3e  %+.3e", D, E, F);
-    os << "D E F [" << buf << "]\n";
+    os << "D E F [" << buf << "]";
     return os;
 }

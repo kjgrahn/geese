@@ -1,10 +1,11 @@
-/* $Id: geese_pick.cc,v 1.6 2010-09-12 06:56:17 grahn Exp $
+/* $Id: geese_pick.cc,v 1.7 2010-09-12 09:03:27 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
  *
  */
 #include <iostream>
+#include <iomanip>
 #include <string>
 
 #include <cstdlib>
@@ -28,6 +29,20 @@ namespace {
 	}
 	return std::string(path, n+1);
     }
+
+
+    struct fmt {
+	explicit fmt(double v) : val(v) {}
+	double val;
+    };
+
+    std::ostream& operator<< (std::ostream& os, const fmt& val)
+    {
+	char buf[30];
+	std::sprintf(buf, "%.2f", val.val);
+	return os << buf;
+    }
+
 
     struct Child {
 	explicit Child(char** argv);
@@ -152,12 +167,16 @@ int main(int argc, char ** argv)
     }
 
     const Map& mapping = i->second;
-    const double scale = mapping.t.scale();
+    const Transform t = mapping.t;
+    const double scale = t.scale();
     const double area = scale * mapping.dimensions.width
 	              * scale * mapping.dimensions.height; 
+    std::cout << std::setprecision(3);
     std::cout << "geese_pick: displaying map ...\n"
-	      << "one pixel is " << scale << " m wide\n"
-	      << "the map covers " << area/1e6 << " km²\n";
+	      << "one pixel is " << fmt(scale) << " m wide\n"
+	      << "the map covers " << fmt(area/1e6) << " km²\n"
+	      << "and is rotated " << fmt(t.rotation()) << "°\n"
+	      << t << '\n';
 
     pick(mapping.t, mapfile);
 
