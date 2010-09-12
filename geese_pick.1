@@ -1,13 +1,21 @@
-.\" $Id: geese_pick.1,v 1.10 2010-09-12 16:11:11 grahn Exp $
+.\" $Id: geese_pick.1,v 1.11 2010-09-12 16:46:20 grahn Exp $
 .\" $Name:  $
-.\" 
-.\"
-.TH geese_pick 1 "AUG 2010" "Geese" "User Manuals"
+.
+.ss 12 0
+.
+.TH geese_pick 1 "SEP 2010" "Geese" "User Manuals"
+.
 .SH "NAME"
 geese_pick \- pick coordinates from digital maps
+.
 .SH "SYNOPSIS"
 .B geese_pick
-.BI \-f\  mapping-file
+.RB [ \-f
+.IR mapping-file ]
+.I map-file
+.br
+.B geese_pick
+.I world-file
 .I map-file
 .br
 .B geese_pick
@@ -22,14 +30,15 @@ is a small interactive utility for picking coordinates from
 digital maps, given
 .IR map-file ,
 the actual image file containing the map,
-and
-.IR mapping-file ,
-which describes how one or more images map onto the real world.
+and georeferencing information.
 .P
-Doing this with a real paper map is difficult, boring and
-error-prone, even if it has a superimposed grid.
-On the other hand, it is relatively simple and safe to
-scan, borrow or buy maps and finding their coordinate systems.
+The georeferencing information can come either from the map's
+.BR "world file" ,
+or from
+.I mapping-file
+which carries similar information, but is specific for
+.B geese
+and describes how many images map onto the real world.
 .
 .SH "OPTIONS"
 .IP \-f\ \fImapping-file
@@ -37,8 +46,8 @@ The mapping file, describing a number of images and the
 geographical areas they cover.
 See below for details.
 .
-.IP \-V
-Print version information and exit.
+.IP
+The mapping file is only used if no world file can be found.
 .
 .SH "USAGE"
 .B geese_pick
@@ -102,7 +111,7 @@ If a map entry has checksums, one of them must match the file provided to
 .BR geese_pick .
 The purpose of this is to minimize the risk of picking the wrong combination
 of image and map entry (perhaps someone scaled or rotated the image file
-since it was coordinated), and getting insane coordinates as a result.
+since it was georeferenced), and getting insane coordinates as a result.
 .
 .IP \-
 Image dimensions in pixels, on the form
@@ -116,6 +125,31 @@ even if the image is rotated versus the coordinate system\(em\
 as if we had taken a flat Earth, put it rather sloppily
 in God's Great Xerox Machine, and pressed the button.
 .
+.SH "WORLD FILE FORMAT"
+A world file is a (MS-DOS) text file with six numbers, one per line,
+defining an
+.I "affine transformation"
+from pixel coordinates to map coordinates:
+.IP
+.ft CW
+.nf
+A  5.000000      coord = AB pixel + C
+D  0                     DE         F
+B  0
+E  -5.000000
+C  1356800.500000
+F  6447181.500000
+.fi
+.P
+World files are named by either appending a
+.B w
+to the map image's name, or appending it after removing the middle character
+of the name's three-letter extension.
+Typical names are
+.B foo.jpgw
+or
+.B foo.jgw .
+.
 .SH "NOTES"
 Many things contribute to errors when using this approach to finding coordinates:
 inaccurate maps, bad original mapping, rounding errors.
@@ -123,6 +157,11 @@ Unfortunately,
 .B geese_pick
 provides no means to estimate the size of the errors (1m? 10m? 100m?).
 Use with care and good judgement.
+.P
+The world file format is more flexible than geese_pick, in that it can describe
+e.g. shearing and different scalings on the x and y axis.
+Such mappings are surely rare or nonexistant in practice, but if you stumble
+across one, geese_pick will silently produce incorrect results.
 .
 .SH "AUTHOR"
 J\(:orgen Grahn
@@ -131,4 +170,7 @@ J\(:orgen Grahn
 .SH "SEE ALSO"
 .BR xv (1),
 .BR geese_plot (1),
+.BR geese_world (1),
 .BR md5sum (1).
+Wikipedia:
+.BR "World file" .
