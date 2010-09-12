@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.18 2010-09-12 06:56:17 grahn Exp $
+ * $Id: test_transform.cc,v 1.19 2010-09-12 09:29:49 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -72,14 +72,14 @@ namespace Aaa {
 	RT90( 4,  4), RT90( 3,  4), RT90( 3,  3),
 	RT90( 3,  2), RT90( 3,  1), RT90( 2,  4),
 	RT90( 1,  4), RT90( 0,  4),
-    
+
 	RT90( 5,  7), RT90( 5,  8), RT90( 5,  9),
 	RT90( 4, 10), RT90( 3, 10), RT90( 3,  9),
 	RT90( 3,  8), RT90( 3,  7), RT90( 2,  6),
 	RT90( 1,  6), RT90( 0,  7), RT90( 0,  8),
 	RT90( 1,  9), RT90( 2, 10), RT90( 1, 10),
 	RT90( 0, 10),
-    
+
 	RT90( 0, 16), RT90( 0, 15), RT90( 0, 14),
 	RT90( 0, 13), RT90( 1, 12), RT90( 2, 12),
 	RT90( 3, 12), RT90( 4, 12), RT90( 5, 12),
@@ -117,175 +117,232 @@ namespace {
     }
 }
 
-namespace freeform {
+namespace in {
+    namespace freeform {
 
-    void test_a()
-    {
-	for(int x=-100; x<100; x+=2) {
-	    for(int y=-100; y<100; y+=2) {
+	void test_a()
+	{
+	    for(int x=-100; x<100; x+=2) {
+		for(int y=-100; y<100; y+=2) {
 
-		test(RT90(0, 0),  Pixel(11, 11),
-		     RT90(0, 16), Pixel(x, y));
+		    test(RT90(0, 0),  Pixel(11, 11),
+			 RT90(0, 16), Pixel(x, y));
+		}
+	    }
+	}
+
+	void test_b()
+	{
+	    for(int x=-100; x<100; x+=2) {
+		for(int y=-100; y<100; y+=2) {
+
+		    test(RT90(1, 1),  Pixel(11, 11),
+			 RT90(1, 16), Pixel(x, y));
+		}
 	    }
 	}
     }
 
-    void test_b()
-    {
-	for(int x=-100; x<100; x+=2) {
-	    for(int y=-100; y<100; y+=2) {
+    namespace transposition {
 
-		test(RT90(1, 1),  Pixel(11, 11),
-		     RT90(1, 16), Pixel(x, y));
+	void test_carpet()
+	{
+	    for(int x=-100; x<100; x+=2) {
+		for(int y=-100; y<100; y+=2) {
+
+		    test(RT90(0, 0),  Pixel(x, y),
+			 RT90(0, 16), Pixel(x+16, y));
+		}
 	    }
 	}
-    }
-}
 
-namespace transposition {
+	void test_carpet2()
+	{
+	    for(int x=-100; x<100; ++x) {
+		for(int y=-100; y<100; ++y) {
 
-    void test_carpet()
-    {
-	for(int x=-100; x<100; x+=2) {
-	    for(int y=-100; y<100; y+=2) {
-
-		test(RT90(0, 0),  Pixel(x, y),
-		     RT90(0, 16), Pixel(x+16, y));
+		    test(RT90(8, 0),  Pixel(x, y),
+			 RT90(0, 16), Pixel(x+16, y+8));
+		}
 	    }
 	}
-    }
 
-    void test_carpet2()
-    {
-	for(int x=-100; x<100; ++x) {
-	    for(int y=-100; y<100; ++y) {
-
-		test(RT90(8, 0),  Pixel(x, y),
-		     RT90(0, 16), Pixel(x+16, y+8));
-	    }
-	}
-    }
-
-    void test_unrotated()
-    {
-	const Transform T(RT90(8, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(16, 8));
+	void test_unrotated()
+	{
+	    const Transform T(RT90(8, 0),  Pixel(0, 0),
+			      RT90(0, 16), Pixel(16, 8));
 #if 0
-	std::cout << distance(T(RT90(8, 0)), Pixel(0, 0)) << '\n';
-	std::cout << distance(T(RT90(0, 16)), Pixel(16, 8)) << '\n';
-	std::cout << T(RT90(0, 16)) << '\n';
-	std::cout << Pixel(16, 8) << '\n';
+	    std::cout << distance(T(RT90(8, 0)), Pixel(0, 0)) << '\n';
+	    std::cout << distance(T(RT90(0, 16)), Pixel(16, 8)) << '\n';
+	    std::cout << T(RT90(0, 16)) << '\n';
+	    std::cout << Pixel(16, 8) << '\n';
 #endif
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(8, 0), Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0,16), Pixel(16,8), 1e-6, T);
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(8, 0), Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0,16), Pixel(16,8), 1e-6, T);
+	}
+    }
+
+    namespace scaling {
+
+	void test_blowup1()
+	{
+	    const Transform T(RT90(0, 0), Pixel(0,16),
+			      RT90(0,16), Pixel(32,16));
+
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0,0),  Pixel(0,16), 1e-6, T);
+	    assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
+	}
+
+	void test_blowup2()
+	{
+	    const Transform T(RT90(0, 0), Pixel(0,16),
+			      RT90(8, 0), Pixel(0, 0));
+
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0,0),  Pixel(0,16), 1e-6, T);
+	    assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
+	}
+
+	void test_blowup3()
+	{
+	    const Transform T(RT90(0,16), Pixel(32,16),
+			      RT90(8, 0), Pixel( 0, 0));
+
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0,0),  Pixel(0,16), 1e-6, T);
+	    assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
+	}
+    }
+
+    namespace rotation {
+
+	void test_e()
+	{
+	    const Transform T(RT90(0, 0),  Pixel(0, 0),
+			      RT90(0, 16), Pixel(16, 0));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(16, 0), 1e-6, T);
+	}
+
+	void test_e2()
+	{
+	    const Transform T(RT90(0, 16), Pixel(16, 0),
+			      RT90(0, 0),  Pixel(0, 0));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(16, 0), 1e-6, T);
+	}
+
+	void test_s()
+	{
+	    const Transform T(RT90(0, 0),  Pixel(0, 0),
+			      RT90(0, 16), Pixel(0, 16));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(0, 16), 1e-6, T);
+	}
+
+	void test_w()
+	{
+	    const Transform T(RT90(0, 0),  Pixel(0, 0),
+			      RT90(0, 16), Pixel(-16, 0));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(-16, 0), 1e-6, T);
+	}
+
+	void test_w2()
+	{
+	    const Transform T(RT90(0, 16), Pixel(-16, 0),
+			      RT90(0, 0),  Pixel(0, 0));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(-16, 0), 1e-6, T);
+	}
+
+	void test_n()
+	{
+	    const Transform T(RT90(0, 0),  Pixel(0, 0),
+			      RT90(0, 16), Pixel(0, -16));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(0, -16), 1e-6, T);
+	}
+
+	void test_se()
+	{
+	    const Transform T(RT90(0, 0),  Pixel(0, 0),
+			      RT90(0, 16), Pixel(11.31, 11.31));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(11.31, 11.31), 1e-6, T);
+	}
+
+	void test_se2()
+	{
+	    const Transform T(RT90(0, 16), Pixel(11.31, 11.31),
+			      RT90(0, 0),  Pixel(0, 0));
+	    assert_uniform(Aaa::src, Aaa::N, T);
+	    assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
+	    assert_near(RT90(0, 16), Pixel(11.31, 11.31), 1e-6, T);
+	}
     }
 }
 
-namespace scaling {
 
-    void test_blowup1()
+namespace props {
+
+    /* Testing Transform::scale() and Transform::rotation().
+     */
+
+    const RT90 A(0, 0);
+    const RT90 B(1, 0);
+    const Pixel a(0, 0);
+
+    void test_scale()
     {
-	const Transform T(RT90(0, 0), Pixel(0,16),
-			  RT90(0,16), Pixel(32,16));
-
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0,0),  Pixel(0,16), 1e-6, T);
-	assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
+	assert_near(Transform(A, a, B, Pixel(1, 0)).scale(),
+		    1, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(0, -1)).scale(),
+		    1, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(1e-3, 0)).scale(),
+		    1e3, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(3, 4)).scale(),
+		    1/5.0, 1e-6);
     }
 
-    void test_blowup2()
+    void test_rotation()
     {
-	const Transform T(RT90(0, 0), Pixel(0,16),
-			  RT90(8, 0), Pixel(0, 0));
+       	/*     	 1
+	 *    8	 |  5
+	 *     \ | /
+	 *      \|/
+       	 *  4 ---+--- 2
+	 *    	/|\
+	 *     / | \
+	 *    7	 |  6
+	 *     	 3
+	 */
+	assert_near(Transform(A, a, B, Pixel(0, -2)).rotation(),
+		    0, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(2, 0)).rotation(),
+		    90, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(0, 2)).rotation(),
+		    180, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(-2, 0)).rotation(),
+		    -90, 1e-6);
 
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0,0),  Pixel(0,16), 1e-6, T);
-	assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
+	assert_near(Transform(A, a, B, Pixel(2, -2)).rotation(),
+		    45, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(2, 2)).rotation(),
+		    135, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(-2, 2)).rotation(),
+		    -135, 1e-6);
+	assert_near(Transform(A, a, B, Pixel(-2, -2)).rotation(),
+		    -45, 1e-6);
     }
 
-    void test_blowup3()
-    {
-	const Transform T(RT90(0,16), Pixel(32,16),
-			  RT90(8, 0), Pixel( 0, 0));
-
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0,0),  Pixel(0,16), 1e-6, T);
-	assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
-    }
-}
-
-namespace rotation {
-
-    void test_e()
-    {
-	const Transform T(RT90(0, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(16, 0));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(16, 0), 1e-6, T);
-    }
-
-    void test_e2()
-    {
-	const Transform T(RT90(0, 16), Pixel(16, 0),
-			  RT90(0, 0),  Pixel(0, 0));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(16, 0), 1e-6, T);
-    }
-
-    void test_s()
-    {
-	const Transform T(RT90(0, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(0, 16));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(0, 16), 1e-6, T);
-    }
-
-    void test_w()
-    {
-	const Transform T(RT90(0, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(-16, 0));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(-16, 0), 1e-6, T);
-    }
-
-    void test_w2()
-    {
-	const Transform T(RT90(0, 16), Pixel(-16, 0),
-			  RT90(0, 0),  Pixel(0, 0));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(-16, 0), 1e-6, T);
-    }
-
-    void test_n()
-    {
-	const Transform T(RT90(0, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(0, -16));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(0, -16), 1e-6, T);
-    }
-
-    void test_se()
-    {
-	const Transform T(RT90(0, 0),  Pixel(0, 0),
-			  RT90(0, 16), Pixel(11.31, 11.31));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(11.31, 11.31), 1e-6, T);
-    }
-
-    void test_se2()
-    {
-	const Transform T(RT90(0, 16), Pixel(11.31, 11.31),
-			  RT90(0, 0),  Pixel(0, 0));
-	assert_uniform(Aaa::src, Aaa::N, T);
-	assert_near(RT90(0, 0),  Pixel(0, 0), 1e-6, T);
-	assert_near(RT90(0, 16), Pixel(11.31, 11.31), 1e-6, T);
-    }
 }
