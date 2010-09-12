@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.16 2010-09-12 09:54:36 grahn Exp $
+ * $Id: transform.cc,v 1.17 2010-09-12 12:59:14 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -72,10 +72,18 @@ std::ostream& operator<<  (std::ostream& os, const Pixel& val)
  */
 Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 		     const RT90& src_b, const Pixel& dst_b)
-    : A(0), B(0), C(0), D(0), E(0), F(0)
+    : in_(src_a.p, dst_a.p,
+	  src_b.p, dst_b.p),
+      out_(dst_a.p, src_a.p,
+	   dst_b.p, src_b.p)
+{}
+
+
+Transform::Srrt::Srrt(const Point& src_a, const Point& dst_a,
+		      const Point& src_b, const Point& dst_b)
 {
-    const Point sv = src_b.p - src_a.p;
-    const Point dv = dst_b.p - dst_a.p;
+    const Point sv = src_b - src_a;
+    const Point dv = dst_b - dst_a;
 
     /* The angle, or rotation, between src and dst, expressed as
      * (sin v, cos v).
@@ -90,7 +98,7 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
      * T = dst - SR src
      * and some mirroring I don't quite understand
      */
-    const Point transl = dst_a.p - ::scale(scaling, rotate(rotation, mirror(src_a.p)));
+    const Point transl = dst_a - ::scale(scaling, rotate(rotation, mirror(src_a)));
 
     A = scaling * rotation.cos;
     E = -A;
@@ -112,6 +120,8 @@ double Transform::scale() const
      * scaling = sqrt(A² + D²)
      * ... and we're really looking for its inverse
      */
+    const double A = in_.A;
+    const double D = in_.D;
     return 1/std::sqrt(A*A+D*D);
 }
 
@@ -123,22 +133,32 @@ double Transform::scale() const
  */
 double Transform::rotation() const
 {
+    const double A = in_.A;
+    const double D = in_.D;
     return std::atan2(D, A) * 180 / M_PI;
 }
 
 
-Pixel Transform::in(const RT90& src) const
+std::ostream& Transform::put(std::ostream& os) const
 {
-    const Point s = src.p;
-    return Pixel(A*s.x + B*s.y + C,
+    return out_.put(os);
+}
+
+
+Transform::Srrt::Srrt()
+    : A(1), B(0),  C(0),
+      D(0), E(-1), F(0)
+{}
+
+
+Point Transform::Srrt::operator() (const Point& s) const
+{
+    return Point(A*s.x + B*s.y + C,
 		 D*s.x + E*s.y + F);
 }
 
 
-RT90 Transform::out(const Pixel& src) const;
-
-
-std::ostream& Transform::put(std::ostream& os) const
+std::ostream& Transform::Srrt::put(std::ostream& os) const
 {
     char buf[50];
     std::sprintf(buf, "%+.3e  %+.3e  %+.3e", A, B, C);

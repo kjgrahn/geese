@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.17 2010-09-12 09:54:36 grahn Exp $
+ * $Id: transform.h,v 1.18 2010-09-12 12:59:14 grahn Exp $
  *
  * transform.h
  *
@@ -19,10 +19,8 @@
  */
 class RT90 {
 public:
-    RT90(double north, double east)
-	: p(east, north)
-    {}
-
+    RT90(double north, double east) : p(east, north) {}
+    explicit RT90(const Point& pp) : p(pp) {}
     Point p;
 };
 
@@ -39,10 +37,8 @@ inline double distance(const RT90& a, const RT90& b) {
  */
 class Pixel {
 public:
-    Pixel(double x, double y)
-	: p(x, y)
-    {}
-
+    Pixel(double x, double y) : p(x, y) {}
+    explicit Pixel(const Point& pp) : p(pp) {}
     Point p;
 };
 
@@ -63,7 +59,7 @@ inline double distance(const Pixel& a, const Pixel& b) {
  *   dst = AB src + C
  *         DE       F
  *
- * Note that this one describes the transformation from map to world,
+ * Note that 'world files' describe the transformation from map to world,
  * i.e. from src Pixel to dst RT90. I call that the "out" transform,
  * and I call the inverse (world to map) the "in" transformation.
  *
@@ -76,39 +72,43 @@ inline double distance(const Pixel& a, const Pixel& b) {
  * (plus the reflection of the y axis in raster images).
  */
 class Transform {
+private:
+    struct Srrt {
+	Srrt();
+	Srrt(const Point& src_a, const Point& dst_a,
+	     const Point& src_b, const Point& dst_b);
+	Point operator() (const Point& src) const;
+	std::ostream& put(std::ostream& os) const;
+	double A;
+	double B;
+	double C;
+	double D;
+	double E;
+	double F;
+    };
+
+    Srrt in_;
+    Srrt out_;
+
 public:
     Transform(double a, double b, double c,
-	      double d, double e, double f)
-	: A(a), B(b), C(c),
-	  D(d), E(e), F(f)
-    {}
+	      double d, double e, double f);
 
     Transform(const RT90& src_a, const Pixel& dst_a,
 	      const RT90& src_b, const Pixel& dst_b);
 
-    Transform()
-	: A(1), B(0),  C(0),
-	  D(0), E(-1), F(0)
-    {}
+    Transform() {}
 
     double scale() const;
     double rotation() const;
 
-    Pixel in(const RT90& src) const;
-    RT90 out(const Pixel& src) const;
+    Pixel in(const RT90& src) const { return Pixel(in_(src.p)); }
+    RT90 out(const Pixel& src) const { return RT90(out_(src.p)); }
 
     Pixel operator() (const RT90& src) const { return in(src); }
     RT90 operator() (const Pixel& src) const { return out(src); }
 
     std::ostream& put(std::ostream& os) const;
-
-private:
-    double A;
-    double B;
-    double C;
-    double D;
-    double E;
-    double F;
 };
 
 inline std::ostream& operator<<  (std::ostream& os, const Transform& val)
