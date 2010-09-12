@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.15 2010-09-11 18:15:05 grahn Exp $
+ * $Id: transform.h,v 1.16 2010-09-12 06:56:17 grahn Exp $
  *
  * transform.h
  *
@@ -89,6 +89,9 @@ public:
 	: A(1), B(0),  C(0),
 	  D(0), E(-1), F(0)
     {}
+
+    double scale() const;
+    double rotation() const;
 
     Pixel operator() (const RT90& src) const;
     RT90 operator() (const Pixel& src) const;

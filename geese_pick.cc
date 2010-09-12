@@ -1,4 +1,4 @@
-/* $Id: geese_pick.cc,v 1.5 2010-09-11 23:52:35 grahn Exp $
+/* $Id: geese_pick.cc,v 1.6 2010-09-12 06:56:17 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -84,7 +84,7 @@ namespace {
 	    const Pixel pixel(x, y);
 	    std::cout << pixel << '\n';
 	}
-   }
+    }
 }
 
 
@@ -151,9 +151,15 @@ int main(int argc, char ** argv)
 	return 1;
     }
 
-    const Transform& transform = i->second.t;
+    const Map& mapping = i->second;
+    const double scale = mapping.t.scale();
+    const double area = scale * mapping.dimensions.width
+	              * scale * mapping.dimensions.height; 
+    std::cout << "geese_pick: displaying map ...\n"
+	      << "one pixel is " << scale << " m wide\n"
+	      << "the map covers " << area/1e6 << " km²\n";
 
-    pick(transform, mapfile);
+    pick(mapping.t, mapfile);
 
     return 0;
 }

@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.13 2010-09-07 21:53:16 grahn Exp $
+ * $Id: transform.cc,v 1.14 2010-09-12 06:56:17 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -8,6 +8,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <cmath>
 
 namespace {
 
@@ -64,6 +65,11 @@ std::ostream& operator<<  (std::ostream& os, const Pixel& val)
 }
 
 
+/**
+ * The Transform for which
+ *   T(src_a) = dst_a
+ *   T(src_b) = dst_b.
+ */
 Transform::Transform(const RT90& src_a, const Pixel& dst_a,
 		     const RT90& src_b, const Pixel& dst_b)
     : A(0), B(0), C(0), D(0), E(0), F(0)
@@ -84,7 +90,7 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
      * T = dst - SR src
      * and some mirroring I don't quite understand
      */
-    const Point transl = dst_a.p - scale(scaling, rotate(rotation, mirror(src_a.p)));
+    const Point transl = dst_a.p - ::scale(scaling, rotate(rotation, mirror(src_a.p)));
 
     A = scaling * rotation.cos;
     E = -A;
@@ -92,6 +98,21 @@ Transform::Transform(const RT90& src_a, const Pixel& dst_a,
     B = D;
     C = transl.x;
     F = transl.y;
+}
+
+
+/**
+ * The scaling part of the transform, in the direction Pixel->RT90.
+ * For example, scale()==5 means "each pixel is 5m".
+ */
+double Transform::scale() const
+{
+    /* sin²+cos² = 1
+     * A² + D² = scaling²(sin²+cos²)
+     * scaling = sqrt(A² + D²)
+     * ... and we're really looking for its inverse
+     */
+    return 1/std::sqrt(A*A+D*D);
 }
 
 

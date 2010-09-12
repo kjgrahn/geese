@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.17 2010-09-12 06:19:37 grahn Exp $
+ * $Id: test_transform.cc,v 1.18 2010-09-12 06:56:17 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -39,12 +39,12 @@ namespace {
 
     /**
      * T scales the distance between any two points in 'src[]'
-     * by the same factor.
+     * by the same factor, 1/T.scale().
      */
     void assert_uniform(const RT90* const src, const int N,
 			const Transform& T)
     {
-	const double s = distance(T(RT90(0,0)), T(RT90(0,1)));
+	const double s = 1 / T.scale();
 	for(int m=0; m<N; ++m) for(int n=0; n<N; ++n) {
 	    const RT90 a = src[m];
 	    const RT90 b = src[n];
