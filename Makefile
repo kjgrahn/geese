@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.29 2010-09-12 16:00:12 grahn Exp $
+# $Id: Makefile,v 1.30 2010-09-12 21:25:16 grahn Exp $
 #
 # Makefile
 #
@@ -61,6 +61,7 @@ tests: test.o libgeese.a libtest.a
 
 libgeese.a: child.o
 libgeese.a: xvpixel.o
+libgeese.a: worldfile.o
 libgeese.a: library.o
 libgeese.a: transform.o
 libgeese.a: point.o
@@ -84,10 +85,11 @@ love:
 # DO NOT DELETE
 
 child.o: child.h
-geese_pick.o: library.h transform.h point.h child.h xvpixel.h
+geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
 library.o: library.h transform.h point.h regex.h
 point.o: point.h
 test_point.o: point.h
 test_transform.o: transform.h point.h
 transform.o: transform.h point.h
+worldfile.o: worldfile.h transform.h point.h
 xvpixel.o: xvpixel.h transform.h point.h
