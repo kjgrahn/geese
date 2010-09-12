@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.19 2010-09-12 09:29:49 grahn Exp $
+ * $Id: test_transform.cc,v 1.20 2010-09-12 09:31:11 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -118,6 +118,11 @@ namespace {
 }
 
 namespace in {
+
+    /* Testing the 'in' transformation -- from the real world onto the
+     * map, i.e. from RT90 to Pixel.
+     */
+
     namespace freeform {
 
 	void test_a()
