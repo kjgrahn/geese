@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: library.h,v 1.4 2010-09-11 18:15:05 grahn Exp $
+ * $Id: library.h,v 1.5 2010-09-13 22:05:57 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -22,15 +22,17 @@ struct Dimensions {
 };
 
 struct Map {
-    Map() {}
+    Map() : empty(true) {}
     Map(const std::vector<std::string>& checksums_,
 	const Dimensions& dimensions_,
 	const Transform& transform)
-	: checksums(checksums_),
+	: empty(false),
+	  checksums(checksums_),
 	  dimensions(dimensions_),
 	  t(transform)
     {}
 
+    bool empty;
     std::vector<std::string> checksums;
     Dimensions dimensions;
     Transform t;
@@ -39,5 +41,10 @@ struct Map {
 typedef std::map<std::string, Map> Library;
 
 Library parse_lib(const std::string& libfile, std::ostream& log);
+
+Map find_mapping(const std::string& mapfile,
+		 const std::string& libfile,
+		 const std::string& worldfile,
+		 std::ostream& log);
 
 #endif

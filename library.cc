@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.7 2010-09-12 21:55:04 grahn Exp $
+/* $Id: library.cc,v 1.8 2010-09-13 22:05:57 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -6,6 +6,8 @@
  */
 #include "library.h"
 #include "regex.h"
+#include "worldfile.h"
+#include "globbing.h"
 
 #include <cstdlib>
 #include <cctype>
@@ -180,4 +182,114 @@ Library parse_lib(const std::string& libfile, std::ostream& log)
 	    << std::strerror(errno) << '\n';
     }
     return lib;
+}
+
+
+namespace {
+
+    std::string basename(const std::string& path)
+    {
+	std::string::size_type n = path.rfind('/');
+	if(n==std::string::npos) {
+	    return path;
+	}
+	return std::string(path, n+1);
+    }
+
+    /**
+     * "foo" -> "°/foo"
+     * "foo/bar" -> "foo/°/bar"
+     */
+    std::string star(const std::string& path)
+    {
+	string p = path;
+	string::size_type n = p.rfind('/');
+	if(n==string::npos) {
+	    return p.insert(0, 1, '*');
+	}
+	return p.insert(n, "/*");
+    }
+
+    std::string barw(const std::string& path)
+    {
+	return path + "w";
+    }
+
+    std::string brw(const std::string& path)
+    {
+	string p = path;
+	string::size_type n = p.rfind('.');
+	if(n==string::npos) return "";
+	if(n+4!=p.size()) return "";
+	return p.erase(n+2, n+3) + "w";
+    }
+
+    std::string tfw(const std::string& path)
+    {
+	string p = path;
+	string::size_type n = p.rfind('.');
+	if(n==string::npos) return "";
+	return p.replace(n, string::npos, ".tfw");
+    }
+}
+
+
+/**
+ * Find the mapping for image file 'mapfile', if one exists.  Mostly
+ * the transform, but also MD5sum and dimensions (if found in
+ * 'libfile'). Also log I/O errors and warnings to 'log'.
+ *
+ * The search order is (let's pretend 'mapfile' is 'mapfile.bar'):
+ * - only 'worldfile' is searched if it's given
+ * - 'libfile', a geese mapping file
+ * - a world file mapfile.barw
+ * - a world file mapfile.brw
+ * - a world file mapfile.twf (because the GIS community has a TIFF fetish)
+ *
+ */
+Map find_mapping(const string& mapfile,
+		 const string& libfile,
+		 const string& worldfile,
+		 std::ostream& log)
+{
+    Map mapping;
+
+    /* XXX lame error handling */
+
+    if(!worldfile.empty()) {
+	mapping.empty = !parse_world(mapping.t, worldfile, log);
+	return mapping;
+    }
+
+    if(!libfile.empty()) {
+	const Library library = parse_lib(libfile, log);
+
+	const Library::const_iterator i = library.find(basename(mapfile));
+	if(i!=library.end()) {
+	    mapping = i->second;
+	    return mapping;
+	}
+    }
+
+    vector<string> wnames;
+    wnames.push_back(barw(mapfile));
+    glob(star(barw(mapfile)), wnames);
+    const string brw = ::brw(mapfile);
+    const string tfw = ::tfw(mapfile);
+    if(!brw.empty()) {
+	wnames.push_back(brw);
+	glob(star(brw), wnames);
+    }
+    if(!tfw.empty()) {
+	wnames.push_back(tfw);
+	glob(star(tfw), wnames);
+    }
+
+    for(vector<string>::const_iterator i=wnames.begin(); i!=wnames.end(); ++i) {
+
+	mapping.empty = !parse_world(mapping.t, worldfile, log);
+	if(!mapping.empty) break;
+    }
+
+    return mapping;
 }

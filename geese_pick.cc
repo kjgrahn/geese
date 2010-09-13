@@ -1,4 +1,4 @@
-/* $Id: geese_pick.cc,v 1.11 2010-09-12 22:04:45 grahn Exp $
+/* $Id: geese_pick.cc,v 1.12 2010-09-13 22:05:57 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -18,16 +18,6 @@
 #include "worldfile.h"
 
 namespace {
-
-    std::string basename(const std::string& path)
-    {
-	std::string::size_type n = path.rfind('/');
-	if(n==std::string::npos) {
-	    return path;
-	}
-	return std::string(path, n+1);
-    }
-
 
     struct fmt {
 	explicit fmt(double v) : val(v) {}
@@ -136,36 +126,18 @@ int main(int argc, char ** argv)
 
     const string mapfile = argv[optind];
 
-    Transform t;
-    double area = 0;
-
-    /* tedious ... a whole nest of alternatives and fallbacks */
-
-    if(!worldfile.empty()) {
-	if(!parse_world(t, worldfile, std::cerr)) {
-	    return 1;
-	}
+    const Map mapping = find_mapping(mapfile,
+				     libfile, worldfile,
+				     std::cerr);
+    if(mapping.empty) {
+	std::cerr << "No mapping found for \"" << mapfile << "\": exiting\n";
+	return 1;
     }
-    else {
-	const Library library = parse_lib(libfile, std::cerr);
-	if(library.empty()) {
-	    return 1;
-	}
-	const Library::const_iterator i = library.find(basename(mapfile));
-	if(i!=library.end()) {
-	    const Map& mapping = i->second;
-	    t = mapping.t;
-	    const double scale = t.scale();
-	    area = scale * mapping.dimensions.width
-		 * scale * mapping.dimensions.height; 
-	}
-	else {
-	    if(!find_world(t, mapfile, std::cerr)) {
-		std::cerr << "No mapping found for \"" << mapfile << "\": exiting\n";
-		return 1;
-	    }
-	}
-    }
+
+    const Transform& t = mapping.t;
+    const double scale = t.scale();
+    const double area = scale * mapping.dimensions.width
+	              * scale * mapping.dimensions.height; 
 
     std::cout << "geese_pick: displaying map ...\n"
 	      << "one pixel is " << fmt(t.scale()) << " m wide\n"

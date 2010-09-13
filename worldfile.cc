@@ -1,5 +1,5 @@
 /*
- * $Id: worldfile.cc,v 1.1 2010-09-12 21:25:16 grahn Exp $
+ * $Id: worldfile.cc,v 1.2 2010-09-13 22:05:57 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -12,10 +12,6 @@
 
 bool parse_world(Transform& t, const std::string& file, std::ostream& log)
 {
-    return false;
-}
-
-bool find_world(Transform& t, const std::string& mapfile, std::ostream& log)
-{
+    log << file << ": XXX no such luck\n";
     return false;
 }
