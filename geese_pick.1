@@ -1,4 +1,4 @@
-.\" $Id: geese_pick.1,v 1.13 2010-09-12 22:04:45 grahn Exp $
+.\" $Id: geese_pick.1,v 1.14 2010-09-14 21:37:36 grahn Exp $
 .\" $Name:  $
 .
 .ss 12 0
@@ -153,6 +153,15 @@ Typical names are
 .B foo.jpgw
 or
 .B foo.jgw .
+.P
+Apart from those,
+.B geese_pick
+also searches for
+.B foo.tfw
+(in case the original map once was a TIFF file)
+and it also searches for these names in subdirectories
+(in case you store all your maps in a directory and all your world files
+in a subdirectory).
 .
 .SH "NOTES"
 Many things contribute to errors when using this approach to finding coordinates:
