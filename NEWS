@@ -4,6 +4,10 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+geese 2.1 (2010-09-14):
+
+  - geese_pick: use "world files" if such things exist.
+
 geese 2.0 (2010-09-12):
 
   - Parts rewritten in C++, in preparation for extending the functionality.
@@ -81,5 +85,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.16 2010-09-12 14:46:42 grahn Exp $
+$Id: NEWS,v 1.17 2010-09-14 21:38:06 grahn Exp $
 $Name:  $
