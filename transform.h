@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.19 2010-09-12 14:35:18 grahn Exp $
+ * $Id: transform.h,v 1.20 2010-09-14 21:16:12 grahn Exp $
  *
  * transform.h
  *
@@ -85,6 +85,8 @@ class Transform {
 private:
     struct Srrt {
 	Srrt();
+	Srrt(double a, double b, double c,
+	     double d, double e, double f);
 	Srrt(const Point& src_a, const Point& dst_a,
 	     const Point& src_b, const Point& dst_b);
 	Point operator() (const Point& src) const;
@@ -101,11 +103,11 @@ private:
     Srrt out_;
 
 public:
-    Transform(double a, double b, double c,
-	      double d, double e, double f);
-
     Transform(const RT90& src_a, const Pixel& dst_a,
 	      const RT90& src_b, const Pixel& dst_b);
+
+    Transform(double a, double b, double c,
+	      double d, double e, double f);
 
     Transform() {}
 

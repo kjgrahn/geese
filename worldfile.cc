@@ -1,5 +1,5 @@
 /*
- * $Id: worldfile.cc,v 1.2 2010-09-13 22:05:57 grahn Exp $
+ * $Id: worldfile.cc,v 1.3 2010-09-14 21:16:12 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -8,10 +8,49 @@
 #include "transform.h"
 
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <vector>
+
+#include <cerrno>
+#include <cstdlib>
+#include <cstring>
 
 bool parse_world(Transform& t, const std::string& file, std::ostream& log)
 {
-    log << file << ": XXX no such luck\n";
-    return false;
+    std::ifstream is(file.c_str());
+    if(is.fail()) {
+	log << "error: cannot open " << file << ": "
+	    << std::strerror(errno) << '\n';
+	return false;
+    }
+
+    std::vector<double> acc;
+    std::string s;
+
+    while(std::getline(is, s)) {
+	const char* p = s.c_str();
+	char* end;
+	acc.push_back(std::strtod(p, &end));
+	const char* q = end;
+	while(isspace(*q)) ++q;
+	if(end==p || *q) {
+	    log << "error: " << file << ": not a world file\n";
+	    return false;
+	}
+    }
+
+    if(!is.eof()) {
+	log << "error reading " << file << ": "
+	    << std::strerror(errno) << '\n';
+	return false;
+    }
+    if(acc.size() != 6) {
+	log << "error: " << file << ": not a world file\n";
+	return false;
+    }
+
+    t = Transform(acc[0],acc[2],acc[4],
+		  acc[1],acc[3],acc[5]);
+    return true;
 }

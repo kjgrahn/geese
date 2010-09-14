@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.18 2010-09-12 14:35:18 grahn Exp $
+ * $Id: transform.cc,v 1.19 2010-09-14 21:16:12 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -128,6 +128,32 @@ Transform::Srrt::Srrt(const Point& src_a, const Point& dst_a,
 
 
 /**
+ * The transform whose 'out' direction is
+ *
+ *   rt90 = AB pixel + C
+ *          DE         F
+ *
+ * This corresponds to the six parameters in a 'world file'.
+ *
+ * XXX Strange things will happen if this isn't strictly
+ * a scaling/rotation/mirroring/translation.
+ */
+Transform::Transform(double a, double b, double c,
+		     double d, double e, double f)
+    : out_(a, b, c,
+	   d, e, f)
+{
+    /* XXX A bit of a cop-out to define one direction by
+     * applying the other on a set of points, perhaps.
+     */
+    const Point p0(0, 0);
+    const Point p1(1, 0);
+    in_ = Srrt(out_(p0), p0,
+	       out_(p1), p1);
+}
+
+
+/**
  * The scaling part of the transform, in the direction Pixel->RT90.
  * For example, scale()==5 means "each pixel is 5m".
  */
@@ -169,6 +195,13 @@ Transform::Srrt::Srrt()
 {}
 
 
+Transform::Srrt::Srrt(double a, double b, double c,
+		      double d, double e, double f)
+    : A(a), B(b), C(c),
+      D(d), E(e), F(f)
+{}
+
+
 Point Transform::Srrt::operator() (const Point& s) const
 {
     return Point(A*s.x + B*s.y + C,
@@ -179,9 +212,9 @@ Point Transform::Srrt::operator() (const Point& s) const
 std::ostream& Transform::Srrt::put(std::ostream& os) const
 {
     char buf[50];
-    std::sprintf(buf, "%+.3e  %+.3e  %+.3e", A, B, C);
+    std::sprintf(buf, "%+.3e  %+.3e  %+.1f", A, B, C);
     os << "A B C [" << buf << "]\n";
-    std::sprintf(buf, "%+.3e  %+.3e  %+.3e", D, E, F);
+    std::sprintf(buf, "%+.3e  %+.3e  %+.1f", D, E, F);
     os << "D E F [" << buf << "]";
     return os;
 }
