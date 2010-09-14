@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.8 2010-09-13 22:05:57 grahn Exp $
+/* $Id: library.cc,v 1.9 2010-09-14 18:56:06 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -221,7 +221,7 @@ namespace {
 	string::size_type n = p.rfind('.');
 	if(n==string::npos) return "";
 	if(n+4!=p.size()) return "";
-	return p.erase(n+2, n+3) + "w";
+	return p.erase(n+2, 1) + "w";
     }
 
     std::string tfw(const std::string& path)
@@ -275,11 +275,11 @@ Map find_mapping(const string& mapfile,
     wnames.push_back(barw(mapfile));
     glob(star(barw(mapfile)), wnames);
     const string brw = ::brw(mapfile);
-    const string tfw = ::tfw(mapfile);
     if(!brw.empty()) {
 	wnames.push_back(brw);
 	glob(star(brw), wnames);
     }
+    const string tfw = ::tfw(mapfile);
     if(!tfw.empty()) {
 	wnames.push_back(tfw);
 	glob(star(tfw), wnames);
@@ -287,7 +287,7 @@ Map find_mapping(const string& mapfile,
 
     for(vector<string>::const_iterator i=wnames.begin(); i!=wnames.end(); ++i) {
 
-	mapping.empty = !parse_world(mapping.t, worldfile, log);
+	mapping.empty = !parse_world(mapping.t, *i, log);
 	if(!mapping.empty) break;
     }
 
