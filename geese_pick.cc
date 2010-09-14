@@ -1,4 +1,4 @@
-/* $Id: geese_pick.cc,v 1.12 2010-09-13 22:05:57 grahn Exp $
+/* $Id: geese_pick.cc,v 1.13 2010-09-14 18:58:43 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -114,10 +114,6 @@ int main(int argc, char ** argv)
 	}
     }
 
-    if((libfile.empty() && worldfile.empty())) {
-	std::cerr << usage << '\n';
-	return 1;
-    }
     if(optind+1 != argc) {
 	std::cerr << "error: extra or too few arguments\n";
 	std::cerr << usage << '\n';
