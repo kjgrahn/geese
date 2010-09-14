@@ -1,4 +1,4 @@
-/* $Id: geese_pick.cc,v 1.13 2010-09-14 18:58:43 grahn Exp $
+/* $Id: geese_pick.cc,v 1.14 2010-09-14 21:14:52 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -55,7 +55,7 @@ namespace {
 		      << "; 100m: " << coord.fmt(100)
 		      << "; 1km: " << coord.fmt(1000) << '\n';
 	    if(i++) {
-		std::cout << "    " << distance(prev, coord)
+		std::cout << "    " << int(.5+distance(prev, coord))
 			  << "m from previous coordinate\n";
 	    }
 	    prev = coord;
