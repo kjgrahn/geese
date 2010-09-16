@@ -1,5 +1,5 @@
 /**
- * $Id: test_transform.cc,v 1.22 2010-09-14 21:38:06 grahn Exp $
+ * $Id: test_transform.cc,v 1.23 2010-09-16 19:54:25 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -366,6 +366,17 @@ namespace out {
 	    }
 	}
     }
+}
+
+
+/* Testing the Transform created from 'world files'. For now just
+ * leech onto the 'out' tests, and steal the parameters from an
+ * ordinary Transform.
+ */
+namespace world {
+
+    using out::assert_uniform;
+
 }
 
 
