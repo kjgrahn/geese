@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: transform.h,v 1.20 2010-09-14 21:16:12 grahn Exp $
+ * $Id: transform.h,v 1.21 2010-09-16 21:44:06 grahn Exp $
  *
  * transform.h
  *
@@ -121,6 +121,7 @@ public:
     RT90 operator() (const Pixel& src) const { return out(src); }
 
     std::ostream& put(std::ostream& os) const;
+    std::ostream& worldfile(std::ostream& os) const;
 };
 
 inline std::ostream& operator<<  (std::ostream& os, const Transform& val)

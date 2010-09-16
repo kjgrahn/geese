@@ -1,4 +1,4 @@
-/* $Id: geese_ref.cc,v 1.1 2010-09-16 21:07:38 grahn Exp $
+/* $Id: geese_ref.cc,v 1.2 2010-09-16 21:44:06 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -82,9 +82,14 @@ namespace {
 
 		const Transform tb(sa, da, sb, db);
 
-		cout << map << '\n'
+		cout << '\n'
+		     << map << '\n'
 		     << sa << " -> " << da << '\n'
 		     << sb << " -> " << db << '\n';
+
+		cout << '\n';
+		tb.worldfile(cout);
+		cout << '\n';
 
 		pp.erase(pp.begin(), pp.begin()+2);
 	    }

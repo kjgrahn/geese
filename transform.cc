@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.19 2010-09-14 21:16:12 grahn Exp $
+ * $Id: transform.cc,v 1.20 2010-09-16 21:44:06 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -217,4 +217,28 @@ std::ostream& Transform::Srrt::put(std::ostream& os) const
     std::sprintf(buf, "%+.3e  %+.3e  %+.1f", D, E, F);
     os << "D E F [" << buf << "]";
     return os;
+}
+
+
+/**
+ * Print in the "world file" format, except without
+ * MS-DOS line endings which seem common in the wild.
+ *
+ * Note that it's the map-to-world transform that gets
+ * printed, and note the fairly careful choice of precision.
+ */
+std::ostream& Transform::worldfile(std::ostream& os) const
+{
+    char buf[80];
+    const Srrt& s = out_;
+    std::sprintf(buf,
+		 "%.4f\n"
+		 "%.4f\n"
+		 "%.4f\n"
+		 "%.4f\n"
+		 "%.1f\n"
+		 "%.1f\n",
+		 s.A, s.D, s.B,
+		 s.E, s.C, s.F);
+    return os << buf;
 }
