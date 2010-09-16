@@ -4,6 +4,10 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+geese 2.2 (2010-09-16):
+
+  - New utility 'geese_ref' for georeferencing maps.
+
 geese 2.1 (2010-09-14):
 
   - geese_pick: use "world files" if such things exist and the normal
@@ -86,5 +90,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.18 2010-09-14 21:39:59 grahn Exp $
+$Id: NEWS,v 1.19 2010-09-16 21:45:09 grahn Exp $
 $Name:  $
