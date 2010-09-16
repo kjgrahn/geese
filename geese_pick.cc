@@ -1,16 +1,14 @@
-/* $Id: geese_pick.cc,v 1.14 2010-09-14 21:14:52 grahn Exp $
+/* $Id: geese_pick.cc,v 1.15 2010-09-16 20:53:41 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
  *
  */
 #include <iostream>
-#include <iomanip>
 #include <string>
 
 #include <cstdlib>
 #include <getopt.h>
-#include <sys/types.h>
 
 #include "library.h"
 #include "child.h"
@@ -136,7 +134,7 @@ int main(int argc, char ** argv)
 	              * scale * mapping.dimensions.height; 
 
     std::cout << "geese_pick: displaying map ...\n"
-	      << "one pixel is " << fmt(t.scale()) << " m wide\n"
+	      << "one pixel is " << fmt(scale) << " m wide\n"
 	      << "the map covers " << fmt(area/1e6) << " km²\n"
 	      << "and is rotated " << fmt(t.rotation()) << "°\n"
 	      << t << '\n';
