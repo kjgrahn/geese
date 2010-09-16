@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.31 2010-09-13 22:05:57 grahn Exp $
+# $Id: Makefile,v 1.32 2010-09-16 21:07:38 grahn Exp $
 #
 # Makefile
 #
@@ -11,6 +11,7 @@ INSTALLBASE = /usr/local
 
 .PHONY: all
 all: geese_pick
+all: geese_ref
 all: geese_plot
 
 # Why not just use distutils all the way for installing this?  Because
@@ -20,8 +21,8 @@ all: geese_plot
 .PHONY: install
 install:
 	python ./setup.py install --force
-	install -m755 geese_pick geese_plot $(INSTALLBASE)/bin/
-	install -m644 geese_pick.1 geese_plot.1 $(INSTALLBASE)/man/man1/
+	install -m755 geese_pick geese_ref geese_plot $(INSTALLBASE)/bin/
+	install -m644 geese_pick.1 geese_ref.1 geese_plot.1 $(INSTALLBASE)/man/man1/
 
 .PHONY: clean
 clean:
@@ -29,16 +30,16 @@ clean:
 	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
-	$(RM) geese_pick
+	$(RM) geese_pick geese_ref
 
 .PHONY: check checkv
-#check: pycheck
+check: pycheck
 check: tests
 	./tests
 checkv: tests
 	valgrind -q ./tests -v
 
-pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py world.py
+pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py
 	for py in $^; \
 	do PYTHONPATH=.. python $$py; \
 	done
@@ -52,6 +53,9 @@ CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
 
 geese_pick: geese_pick.o libgeese.a
 	$(CXX) -o $@ geese_pick.o -L. -lgeese
+
+geese_ref: geese_ref.o libgeese.a
+	$(CXX) -o $@ geese_ref.o -L. -lgeese
 
 test.cc: libtest.a
 	testicle -o$@ $^
@@ -87,6 +91,7 @@ love:
 
 child.o: child.h
 geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
+geese_ref.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
 globbing.o: globbing.h
 library.o: library.h transform.h point.h regex.h worldfile.h globbing.h
 point.o: point.h

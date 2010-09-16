@@ -1,0 +1,80 @@
+.\" $Id: geese_ref.1,v 1.1 2010-09-16 21:07:38 grahn Exp $
+.\" $Name:  $
+.
+.
+.ss 12 0
+.
+.
+.TH geese_ref 1 "SEP 2010" "Geese" "User Manuals"
+.
+.SH "NAME"
+geese_ref \- georeference digital maps
+.
+.SH "SYNOPSIS"
+.B geese_ref
+.RB [ \-f
+.IR mapping-file ]
+.I reference-map
+.I map
+.br
+.B geese_ref
+.B --version
+.br
+.B geese_ref
+.B --help
+.
+.SH "DESCRIPTION"
+.B geese_ref
+let's you
+.I georeference
+a digital map, i.e. specify how the image is scaled, rotated etc compared to
+some coordinate system like RT90.
+You do it by specifying two points on
+.I reference-map
+(which has already been georeferenced)
+and the same two point on
+.I map
+(the one you want to georeference).
+.PP
+The result is printed on standard output in two forms:
+information which can form an entry in a mapping file,
+and six numbers which form a world file.
+.IP
+.ft CW
+.nf
+luttra_n.png
+.\"b3f1b2e3fcafeb2c14f43d7261e0d62a
+.\"847 x 367
+6450000 1368000 -> 183, 336
+6451000 1370000 -> 775,  43
+
+5.000000
+0
+0
+-5.000000
+1356800.500000
+6447181.500000
+.fi
+.PP
+Since you only give two points, the transformation must be a simple
+scaling and rotation. And you better be careful with the positioning,
+choose points far apart, and have a good reference.
+.PP
+The
+.I reference-map
+must have the same kind of georeferencing information that
+.BR geese_pick (1)
+needs; either an entry in
+.IR mapping-file ,
+or have a valid world file.
+.
+.SH "OPTIONS"
+.IP \-
+.
+.SH "AUTHOR"
+J\(:orgen Grahn
+.I \[fo]grahn+src@snipabacken.se\[fc]
+.
+.SH "SEE ALSO"
+.BR xv (1),
+.BR geese_pick (1).
