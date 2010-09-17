@@ -1,13 +1,13 @@
-# $Id: Makefile,v 1.32 2010-09-16 21:07:38 grahn Exp $
+# $Id: Makefile,v 1.33 2010-09-17 18:48:41 grahn Exp $
 #
 # Makefile
 #
 # Copyright (c) 1999--2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 
-SHELL = /bin/sh
+SHELL=/bin/sh
 
-INSTALLBASE = /usr/local
+INSTALLBASE=/usr/local
 
 .PHONY: all
 all: geese_pick
@@ -50,6 +50,7 @@ pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py
 # C++ transform algorithms
 
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
+CFLAGS=-Wall -Wextra -pedantic -std=c99 -g -O3
 
 geese_pick: geese_pick.o libgeese.a
 	$(CXX) -o $@ geese_pick.o -L. -lgeese
@@ -63,6 +64,7 @@ test.cc: libtest.a
 tests: test.o libgeese.a libtest.a
 	$(CXX) -o $@ test.o -L. -ltest -lgeese -lm
 
+libgeese.a: md5.o
 libgeese.a: globbing.o
 libgeese.a: child.o
 libgeese.a: xvpixel.o
