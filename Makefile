@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.33 2010-09-17 18:48:41 grahn Exp $
+# $Id: Makefile,v 1.34 2010-09-17 18:49:25 grahn Exp $
 #
 # Makefile
 #
@@ -84,7 +84,7 @@ TAGS:
 	etags *.cc *.h
 
 depend:
-	makedepend -- $(CFLAGS) -- -Y *.cc
+	makedepend -- $(CFLAGS) -- -Y *.cc *.c
 
 love:
 	@echo "not war?"
@@ -102,3 +102,4 @@ test_transform.o: transform.h point.h
 transform.o: transform.h point.h
 worldfile.o: worldfile.h transform.h point.h
 xvpixel.o: xvpixel.h transform.h point.h
+md5.o: md5.h
