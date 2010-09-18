@@ -1,11 +1,13 @@
-/* $Id: geese_pick.cc,v 1.15 2010-09-16 20:53:41 grahn Exp $
+/* $Id: geese_pick.cc,v 1.16 2010-09-18 09:17:27 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
  *
  */
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <algorithm>
 
 #include <cstdlib>
 #include <getopt.h>
@@ -14,6 +16,7 @@
 #include "child.h"
 #include "xvpixel.h"
 #include "worldfile.h"
+#include "md5pp.h"
 
 namespace {
 
@@ -29,6 +32,18 @@ namespace {
 	return os << buf;
     }
 
+    std::string md5sum(const std::string& file)
+    {
+	std::ifstream is(file.c_str());
+	md5::Ctx ctx;
+	return ctx.update(is).digest().hex();
+    }
+
+    template<class Container, class Value>
+    bool contains(const Container& c, const Value& value)
+    {
+	return std::find(c.begin(), c.end(), value) != c.end();
+    }
 
     /**
      * The core "picking" part.
@@ -126,6 +141,14 @@ int main(int argc, char ** argv)
     if(mapping.empty) {
 	std::cerr << "No mapping found for \"" << mapfile << "\": exiting\n";
 	return 1;
+    }
+    if(!mapping.checksums.empty()) {
+
+	const std::string digest = md5sum(mapfile);
+	if(!contains(mapping.checksums, digest)) {
+	    std::cout << "warning: " << mapfile
+		      << ": bad checksum - distrust the coordinates!\n";
+	}
     }
 
     const Transform& t = mapping.t;

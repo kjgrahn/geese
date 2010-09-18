@@ -1,12 +1,14 @@
-/* $Id: geese_ref.cc,v 1.2 2010-09-16 21:44:06 grahn Exp $
+/* $Id: geese_ref.cc,v 1.3 2010-09-18 09:17:27 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
  *
  */
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include <cstdlib>
 #include <getopt.h>
@@ -15,6 +17,7 @@
 #include "child.h"
 #include "xvpixel.h"
 #include "worldfile.h"
+#include "md5pp.h"
 
 namespace {
 
@@ -30,6 +33,18 @@ namespace {
 	return os << buf;
     }
 
+    std::string md5sum(const std::string& file)
+    {
+	std::ifstream is(file.c_str());
+	md5::Ctx ctx;
+	return ctx.update(is).digest().hex();
+    }
+
+    template<class Container, class Value>
+    bool contains(const Container& c, const Value& value)
+    {
+	return std::find(c.begin(), c.end(), value) != c.end();
+    }
 
     /**
      * Georeference 'map' against 'refmap', which itself has the
@@ -40,6 +55,8 @@ namespace {
 		   const std::string& map)
     {
 	using std::cout;
+
+	const std::string checksum = md5sum(map);
 
 	const char* xvargs[] = { "xv", refmap.c_str(), 0 };
 	Child rxv(const_cast<char**>(xvargs));
@@ -84,6 +101,7 @@ namespace {
 
 		cout << '\n'
 		     << map << '\n'
+		     << checksum << '\n'
 		     << sa << " -> " << da << '\n'
 		     << sb << " -> " << db << '\n';
 
@@ -157,6 +175,16 @@ int main(int argc, char ** argv)
     if(refmapping.empty) {
 	std::cerr << "No mapping found for \"" << refmapfile << "\": exiting\n";
 	return 1;
+    }
+
+    if(!refmapping.checksums.empty()) {
+
+	const std::string digest = md5sum(refmapfile);
+	if(!contains(refmapping.checksums, digest)) {
+	    std::cerr << "warning: " << refmapfile
+		      << ": bad MD5 checksum; aborting\n";
+	    return 1;
+	}
     }
 
     const Transform& rt = refmapping.t;

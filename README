@@ -7,6 +7,9 @@ It's both a library for use from other Python programs (the 'skatan'
 stuff depends on parts of it) and utilities you can run, namely
 'geese_pick' and 'geese_plot'.
 
+Some of these have been (re)written in C++, but the Python library
+still exists.
+
 Basically, geese is based on the following observations:
 
 - Finding coordinates from maps by hand is difficult, boring and
@@ -28,10 +31,6 @@ Geese is mostly limited to handle coordinates in the "Rikets Nät"
 trivial to generalize it to other national systems working along the
 same principles, but I don't want to mess with broad generalizations
 for which I have no test data or documentation ...
-
-The original ISO C++ source for the core parts of geese is still in
-the distribution, but it's unused and might suffer from bit rot now or
-in the future.
 
 
 INSTALLATION AND REQUIREMENTS
@@ -66,5 +65,5 @@ Let's try the GPL for a change, shall we?
   General Public License for more details.
 
 
-$Id: README,v 1.7 2009-09-16 18:49:20 grahn Exp $
+$Id: README,v 1.8 2010-09-18 09:17:27 grahn Exp $
 $Name:  $
