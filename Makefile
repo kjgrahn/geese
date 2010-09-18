@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.38 2010-09-18 11:51:42 grahn Exp $
+# $Id: Makefile,v 1.39 2010-09-18 12:34:55 grahn Exp $
 #
 # Makefile
 #
@@ -99,7 +99,10 @@ love:
 
 child.o: child.h
 geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
+geese_pick.o: md5pp.h md5.h
 geese_ref.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
+geese_ref.o: md5pp.h md5.h
+geese_world.o: library.h transform.h point.h worldfile.h md5pp.h md5.h
 globbing.o: globbing.h
 library.o: library.h transform.h point.h regex.h worldfile.h globbing.h
 md5pp.o: md5pp.h md5.h

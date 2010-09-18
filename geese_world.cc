@@ -1,4 +1,4 @@
-/* $Id: geese_world.cc,v 1.1 2010-09-18 11:51:42 grahn Exp $
+/* $Id: geese_world.cc,v 1.2 2010-09-18 12:34:55 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -45,12 +45,44 @@ namespace {
     }
 
 
-    void describe_maps(const std::string& libfile,
+    void describe_maps(const Library& lib,
 		       const char* const * argv)
-    {}
+    {
+	using std::cout;
+
+	while(const char* const p = *argv++) {
+	    const std::string f(p);
+
+	    const Map m = find_mapping(f, lib, "", std::cerr);
+	    if(m.empty) {
+		std::cerr << f << ": no coordinate info found\n";
+		continue;
+	    }
+
+	    cout << '\n'
+		 << f << '\n';
+	    // XXX should check the checksums, too
+	    for(std::vector<std::string>::const_iterator i = m.checksums.begin();
+		i != m.checksums.end();
+		++i) {
+		cout << *i << '\n';
+	    }
+
+	    const Transform& t = m.t;
+	    const Pixel da(0, 0);
+	    const Pixel db(1000, 0);
+
+	    cout << t(da) << " -> " << da << '\n'
+		 << t(db) << " -> " << db << '\n';
+
+	    cout << '\n';
+	    t.worldfile(cout);
+	    cout << '\n';
+	}
+    }
 
 
-    void delta_maps(const std::string& libfile,
+    void delta_maps(const Library& lib,
 		    const std::string& dstfile,
 		    const char* const * argv)
     {}
@@ -113,11 +145,17 @@ int main(int argc, char ** argv)
 	return 1;
     }
 
+    Library lib;
+    if(!libfile.empty()) {
+	lib = parse_lib(libfile, std::cerr);
+	if(lib.empty()) return 1;
+    }
+
     if(dstfile.empty()) {
-	describe_maps(libfile, argv+optind);
+	describe_maps(lib, argv+optind);
     }
     else {
-	delta_maps(libfile, dstfile, argv+optind);
+	delta_maps(lib, dstfile, argv+optind);
     }
 
     return 0;

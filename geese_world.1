@@ -1,4 +1,4 @@
-.\" $Id: geese_world.1,v 1.4 2010-09-18 11:20:20 grahn Exp $
+.\" $Id: geese_world.1,v 1.5 2010-09-18 12:34:55 grahn Exp $
 .\" $Name:  $
 .
 .
@@ -43,6 +43,21 @@ in the same two formats as
 .BR geese_ref (1).
 This can be used to create world files or mapping file entries
 (whichever doesn't exist) for the images.
+.IP
+.ft CR
+.nf
+luttra_n.png
+b3f1b2e3fcafeb2c14f43d7261e0d62a
+6451134.9 1367375.9 -> 0.0 0.0
+6451148.7 1370761.1 -> 1000.0 0.0
+
+3.3852
+0.0138
+0.0138
+-3.3852
+1367375.9
+6451134.9
+.fi
 .PP
 The second form describes which scaling and rotation you have to
 apply to each
@@ -65,6 +80,11 @@ uses.
 The
 .I destination-map
 in the second form.
+.
+.SH "BUGS"
+The mapping file output is based on the two fixed pixels
+(0,\~0) and (1000,\~0) \- not on whatever is in the actual mapping file,
+if one is the source of the information.
 .
 .SH "AUTHOR"
 J\(:orgen Grahn
