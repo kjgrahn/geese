@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.36 2010-09-18 06:18:29 grahn Exp $
+# $Id: Makefile,v 1.37 2010-09-18 07:29:22 grahn Exp $
 #
 # Makefile
 #
@@ -98,7 +98,9 @@ geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
 geese_ref.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
 globbing.o: globbing.h
 library.o: library.h transform.h point.h regex.h worldfile.h globbing.h
+md5pp.o: md5pp.h md5.h
 point.o: point.h
+test_md5.o: md5.h md5pp.h
 test_point.o: point.h
 test_transform.o: transform.h point.h
 transform.o: transform.h point.h

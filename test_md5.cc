@@ -1,5 +1,5 @@
 /**
- * $Id: test_md5.cc,v 1.1 2010-09-18 06:14:34 grahn Exp $
+ * $Id: test_md5.cc,v 1.2 2010-09-18 07:29:22 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -10,6 +10,8 @@
 
 #include <testicle.h>
 #include <string>
+#include <vector>
+#include <list>
 
 namespace {
 
