@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.35 2010-09-18 06:14:34 grahn Exp $
+# $Id: Makefile,v 1.36 2010-09-18 06:18:29 grahn Exp $
 #
 # Makefile
 #
@@ -65,6 +65,7 @@ tests: test.o libgeese.a libtest.a
 	$(CXX) -o $@ test.o -L. -ltest -lgeese -lm
 
 libgeese.a: md5.o
+libgeese.a: md5pp.o
 libgeese.a: globbing.o
 libgeese.a: child.o
 libgeese.a: xvpixel.o
