@@ -1,4 +1,4 @@
-/* $Id: geese_ref.cc,v 1.3 2010-09-18 09:17:27 grahn Exp $
+/* $Id: geese_ref.cc,v 1.4 2010-09-18 11:19:48 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -122,7 +122,7 @@ int main(int argc, char ** argv)
 
     const string prog = argv[0];
     const string usage = string("usage: ")
-	+ prog + " [-f mapping-file] referece-map map";
+	+ prog + " [-f mapping-file] reference-map map";
     const char optstring[] = "+f:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
