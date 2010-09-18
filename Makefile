@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.37 2010-09-18 07:29:22 grahn Exp $
+# $Id: Makefile,v 1.38 2010-09-18 11:51:42 grahn Exp $
 #
 # Makefile
 #
@@ -12,6 +12,7 @@ INSTALLBASE=/usr/local
 .PHONY: all
 all: geese_pick
 all: geese_ref
+all: geese_world
 all: geese_plot
 
 # Why not just use distutils all the way for installing this?  Because
@@ -21,8 +22,8 @@ all: geese_plot
 .PHONY: install
 install:
 	python ./setup.py install --force
-	install -m755 geese_pick geese_ref geese_plot $(INSTALLBASE)/bin/
-	install -m644 geese_pick.1 geese_ref.1 geese_plot.1 $(INSTALLBASE)/man/man1/
+	install -m755 geese_{pick,ref,world,plot} $(INSTALLBASE)/bin/
+	install -m644 geese_{pick,ref,world,plot}.1 $(INSTALLBASE)/man/man1/
 
 .PHONY: clean
 clean:
@@ -57,6 +58,9 @@ geese_pick: geese_pick.o libgeese.a
 
 geese_ref: geese_ref.o libgeese.a
 	$(CXX) -o $@ geese_ref.o -L. -lgeese
+
+geese_world: geese_world.o libgeese.a
+	$(CXX) -o $@ geese_world.o -L. -lgeese
 
 test.cc: libtest.a
 	testicle -o$@ $^
