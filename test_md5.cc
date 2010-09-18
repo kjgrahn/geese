@@ -1,5 +1,5 @@
 /**
- * $Id: test_md5.cc,v 1.3 2010-09-18 07:41:53 grahn Exp $
+ * $Id: test_md5.cc,v 1.4 2010-09-18 07:47:07 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <sstream>
 
 namespace {
 
@@ -114,6 +115,16 @@ namespace md5 {
 	    ctx.update(d.begin(), d.end());
 	    assert_eq("6cd3556deb0da54bca060b4c39479839",
 		      ctx.digest());
+	}
+
+	void test_istream()
+	{
+	    std::istringstream is(hw);
+	    md5::Ctx ctx;
+	    ctx.update(is);
+	    assert_eq("6cd3556deb0da54bca060b4c39479839",
+		      ctx.digest());
+	    assert_(is.eof());
 	}
     }
 }
