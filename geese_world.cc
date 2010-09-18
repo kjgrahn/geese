@@ -1,4 +1,4 @@
-/* $Id: geese_world.cc,v 1.2 2010-09-18 12:34:55 grahn Exp $
+/* $Id: geese_world.cc,v 1.3 2010-09-18 12:50:03 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -85,7 +85,31 @@ namespace {
     void delta_maps(const Library& lib,
 		    const std::string& dstfile,
 		    const char* const * argv)
-    {}
+    {
+	using std::cout;
+
+	const Map ref = find_mapping(dstfile, lib, "", std::cerr);
+	if(ref.empty) {
+	    std::cerr << dstfile << ": no coordinate info found\n";
+	    return;
+	}
+
+	while(const char* const p = *argv++) {
+	    const std::string f(p);
+
+	    const Map m = find_mapping(f, lib, "", std::cerr);
+	    if(m.empty) {
+		std::cerr << f << ": no coordinate info found\n";
+		continue;
+	    }
+
+	    const double scale = m.t.scale()/ref.t.scale();
+	    const double rot = ref.t.rotation() - m.t.rotation();
+
+	    cout << f << ": scale by " << scale << " (" << fmt(scale*1e2)
+		 << "%); rotate " << fmt(rot) << "°\n";
+	}
+    }
 }
 
 
