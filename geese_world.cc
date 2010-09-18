@@ -1,4 +1,4 @@
-/* $Id: geese_world.cc,v 1.4 2010-09-18 20:35:48 grahn Exp $
+/* $Id: geese_world.cc,v 1.5 2010-09-18 21:02:45 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -60,15 +60,25 @@ namespace {
 		continue;
 	    }
 
+	    const std::string digest = md5sum(f);
+
+	    if(!m.checksums.empty() &&
+	       !contains(m.checksums, digest)) {
+		std::cout << "error: " << f << ": bad checksum!\n";
+		continue;
+	    }
+
 	    if(i++) {
 		cout << '\n';
 	    }
 	    cout << f << '\n';
-	    // XXX should check the checksums, too
 	    for(std::vector<std::string>::const_iterator i = m.checksums.begin();
 		i != m.checksums.end();
 		++i) {
 		cout << *i << '\n';
+	    }
+	    if(m.checksums.empty()) {
+		cout << digest << '\n';
 	    }
 
 	    const Transform& t = m.t;
@@ -109,7 +119,7 @@ namespace {
 	    const double rot = ref.t.rotation() - m.t.rotation();
 
 	    cout << f << ": scale by " << scale << " (" << fmt(scale*1e2)
-		 << "%); rotate " << fmt(rot) << "°\n";
+		 << " %); rotate " << fmt(rot) << "°\n";
 	}
     }
 }
