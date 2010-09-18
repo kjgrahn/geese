@@ -1,5 +1,5 @@
 /*
- * $Id: md5pp.cc,v 1.2 2010-09-18 07:29:22 grahn Exp $
+ * $Id: md5pp.cc,v 1.3 2010-09-18 07:53:17 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -74,6 +74,20 @@ Ctx& Ctx::update(const std::vector<unsigned char>& data)
 {
     if(!data.empty()) {
 	update(&data[0], data.size());
+    }
+    return *this;
+}
+
+
+/**
+ * Checksum a stream (e.g. an open file).
+ */
+Ctx& Ctx::update(std::istream& in)
+{
+    char buf[4096];
+    while(in) {
+	in.read(buf, 4096);
+	update(buf, in.gcount());
     }
     return *this;
 }

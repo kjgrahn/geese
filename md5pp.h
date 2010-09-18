@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: md5pp.h,v 1.2 2010-09-18 07:29:22 grahn Exp $
+ * $Id: md5pp.h,v 1.3 2010-09-18 07:53:17 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -43,6 +43,7 @@ namespace md5 {
 	Ctx& update(const std::string& data);
 	Ctx& update(const std::vector<char>& data);
 	Ctx& update(const std::vector<unsigned char>& data);
+	Ctx& update(std::istream& in);
 
 	template<class Iter>
 	Ctx& update(Iter a, Iter b);

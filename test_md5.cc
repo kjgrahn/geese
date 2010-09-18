@@ -1,5 +1,5 @@
 /**
- * $Id: test_md5.cc,v 1.4 2010-09-18 07:47:07 grahn Exp $
+ * $Id: test_md5.cc,v 1.5 2010-09-18 07:53:17 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -124,7 +124,7 @@ namespace md5 {
 	    ctx.update(is);
 	    assert_eq("6cd3556deb0da54bca060b4c39479839",
 		      ctx.digest());
-	    assert_(is.eof());
+	    testicle::assert_(is.eof());
 	}
     }
 }
