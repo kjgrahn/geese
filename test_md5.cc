@@ -1,5 +1,5 @@
 /**
- * $Id: test_md5.cc,v 1.2 2010-09-18 07:29:22 grahn Exp $
+ * $Id: test_md5.cc,v 1.3 2010-09-18 07:41:53 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -40,7 +40,7 @@ namespace md5 {
 	    {
 		unsigned char digest[16];
 		MD5_CTX c = ctx;
-		MD5_Final(digest, &ctx);
+		MD5_Final(digest, &c);
 		assert_eq("d41d8cd98f00b204e9800998ecf8427e",
 			  digest);
 	    }
@@ -49,7 +49,7 @@ namespace md5 {
 	    {
 		unsigned char digest[16];
 		MD5_CTX c = ctx;
-		MD5_Final(digest, &ctx);
+		MD5_Final(digest, &c);
 		assert_eq("6cd3556deb0da54bca060b4c39479839",
 			  digest);
 	    }
@@ -61,8 +61,8 @@ namespace md5 {
 	    {
 		unsigned char digest[16];
 		MD5_CTX c = ctx;
-		MD5_Final(digest, &ctx);
-		assert_eq("1fd70283895cca4c1b255051799ea859",
+		MD5_Final(digest, &c);
+		assert_eq("69bb639b030e67e4c360d0206abca653",
 			  digest);
 	    }
 	}
@@ -85,7 +85,7 @@ namespace md5 {
 	    ctx.update("xxxxxxxxxxxxxxxxxxxx"
 		       "xxxxxxxxxxxxxxxxxxxx"
 		       "xxxxxxxxxxxxx", 53);
-	    assert_eq("1fd70283895cca4c1b255051799ea859",
+	    assert_eq("69bb639b030e67e4c360d0206abca653",
 		      ctx.digest());
 	}
 
