@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.9 2010-09-14 18:56:06 grahn Exp $
+/* $Id: library.cc,v 1.10 2010-09-18 12:33:18 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -237,7 +237,7 @@ namespace {
 /**
  * Find the mapping for image file 'mapfile', if one exists.  Mostly
  * the transform, but also MD5sum and dimensions (if found in
- * 'libfile'). Also log I/O errors and warnings to 'log'.
+ * 'lib'). Also log I/O errors and warnings to 'log'.
  *
  * The search order is (let's pretend 'mapfile' is 'mapfile.bar'):
  * - only 'worldfile' is searched if it's given
@@ -248,7 +248,7 @@ namespace {
  *
  */
 Map find_mapping(const string& mapfile,
-		 const string& libfile,
+		 const Library& library,
 		 const string& worldfile,
 		 std::ostream& log)
 {
@@ -261,9 +261,7 @@ Map find_mapping(const string& mapfile,
 	return mapping;
     }
 
-    if(!libfile.empty()) {
-	const Library library = parse_lib(libfile, log);
-
+    if(!library.empty()) {
 	const Library::const_iterator i = library.find(basename(mapfile));
 	if(i!=library.end()) {
 	    mapping = i->second;
@@ -292,4 +290,16 @@ Map find_mapping(const string& mapfile,
     }
 
     return mapping;
+}
+
+
+Map find_mapping(const std::string& mapfile,
+		 const std::string& libfile,
+		 const std::string& worldfile,
+		 std::ostream& log)
+{
+    return find_mapping(mapfile,
+			parse_lib(libfile, log),
+			worldfile,
+			log);
 }

@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: library.h,v 1.5 2010-09-13 22:05:57 grahn Exp $
+ * $Id: library.h,v 1.6 2010-09-18 12:33:18 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -41,6 +41,11 @@ struct Map {
 typedef std::map<std::string, Map> Library;
 
 Library parse_lib(const std::string& libfile, std::ostream& log);
+
+Map find_mapping(const std::string& mapfile,
+		 const Library& library,
+		 const std::string& worldfile,
+		 std::ostream& log);
 
 Map find_mapping(const std::string& mapfile,
 		 const std::string& libfile,
