@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.34 2010-09-17 18:49:25 grahn Exp $
+# $Id: Makefile,v 1.35 2010-09-18 06:14:34 grahn Exp $
 #
 # Makefile
 #
@@ -33,7 +33,7 @@ clean:
 	$(RM) geese_pick geese_ref
 
 .PHONY: check checkv
-check: pycheck
+#check: pycheck
 check: tests
 	./tests
 checkv: tests
@@ -76,6 +76,7 @@ libgeese.a: point.o
 
 libtest.a: test_point.o
 libtest.a: test_transform.o
+libtest.a: test_md5.o
 	$(AR) -r $@ $^
 
 .PHONY: tags
