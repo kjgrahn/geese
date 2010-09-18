@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.10 2010-09-18 12:33:18 grahn Exp $
+/* $Id: library.cc,v 1.11 2010-09-18 20:35:48 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -237,14 +237,20 @@ namespace {
 /**
  * Find the mapping for image file 'mapfile', if one exists.  Mostly
  * the transform, but also MD5sum and dimensions (if found in
- * 'lib'). Also log I/O errors and warnings to 'log'.
+ * 'lib'). Also log I/O errors and warnings to 'log' (but doesn't log
+ * "file not found" since there are no guarantees that one /does/
+ * exist.)
  *
  * The search order is (let's pretend 'mapfile' is 'mapfile.bar'):
  * - only 'worldfile' is searched if it's given
  * - 'libfile', a geese mapping file
- * - a world file mapfile.barw
- * - a world file mapfile.brw
- * - a world file mapfile.twf (because the GIS community has a TIFF fetish)
+ * - world files named
+ *   - mapfile.barw
+ *   - °/mapfile.barw
+ *   - mapfile.brw
+ *   - °/mapfile.brw
+ *   - mapfile.tfw (because the GIS community has a TIFF fetish)
+ *   - °/mapfile.tfw
  *
  */
 Map find_mapping(const string& mapfile,
@@ -253,8 +259,6 @@ Map find_mapping(const string& mapfile,
 		 std::ostream& log)
 {
     Map mapping;
-
-    /* XXX lame error handling */
 
     if(!worldfile.empty()) {
 	mapping.empty = !parse_world(mapping.t, worldfile, log);

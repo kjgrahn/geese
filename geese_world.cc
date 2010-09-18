@@ -1,4 +1,4 @@
-/* $Id: geese_world.cc,v 1.3 2010-09-18 12:50:03 grahn Exp $
+/* $Id: geese_world.cc,v 1.4 2010-09-18 20:35:48 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -50,6 +50,7 @@ namespace {
     {
 	using std::cout;
 
+	unsigned i = 0;
 	while(const char* const p = *argv++) {
 	    const std::string f(p);
 
@@ -59,8 +60,10 @@ namespace {
 		continue;
 	    }
 
-	    cout << '\n'
-		 << f << '\n';
+	    if(i++) {
+		cout << '\n';
+	    }
+	    cout << f << '\n';
 	    // XXX should check the checksums, too
 	    for(std::vector<std::string>::const_iterator i = m.checksums.begin();
 		i != m.checksums.end();
@@ -75,7 +78,6 @@ namespace {
 	    cout << t(da) << " -> " << da << '\n'
 		 << t(db) << " -> " << db << '\n';
 
-	    cout << '\n';
 	    t.worldfile(cout);
 	    cout << '\n';
 	}

@@ -1,5 +1,5 @@
 /*
- * $Id: transform.cc,v 1.20 2010-09-16 21:44:06 grahn Exp $
+ * $Id: transform.cc,v 1.21 2010-09-18 20:35:48 grahn Exp $
  *
  * Copyright (c) 2003, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -237,7 +237,7 @@ std::ostream& Transform::worldfile(std::ostream& os) const
 		 "%.4f\n"
 		 "%.4f\n"
 		 "%.1f\n"
-		 "%.1f\n",
+		 "%.1f",
 		 s.A, s.D, s.B,
 		 s.E, s.C, s.F);
     return os << buf;

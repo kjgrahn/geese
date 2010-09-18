@@ -1,5 +1,5 @@
 /*
- * $Id: worldfile.cc,v 1.3 2010-09-14 21:16:12 grahn Exp $
+ * $Id: worldfile.cc,v 1.4 2010-09-18 20:35:49 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -20,8 +20,10 @@ bool parse_world(Transform& t, const std::string& file, std::ostream& log)
 {
     std::ifstream is(file.c_str());
     if(is.fail()) {
-	log << "error: cannot open " << file << ": "
-	    << std::strerror(errno) << '\n';
+	if(errno!=ENOENT) {
+	    log << "error: cannot open " << file << ": "
+		<< std::strerror(errno) << '\n';
+	}
 	return false;
     }
 

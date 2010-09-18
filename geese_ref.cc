@@ -1,4 +1,4 @@
-/* $Id: geese_ref.cc,v 1.4 2010-09-18 11:19:48 grahn Exp $
+/* $Id: geese_ref.cc,v 1.5 2010-09-18 20:35:48 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -71,6 +71,8 @@ namespace {
 
 	std::string s;
 	while(std::getline(std::cin, s)) {
+	    if(s.empty()) continue;
+
 	    bool err = false;
 	    const Pixel pixel = xvpixel(s, err);
 	    if(err) {
@@ -105,7 +107,6 @@ namespace {
 		     << sa << " -> " << da << '\n'
 		     << sb << " -> " << db << '\n';
 
-		cout << '\n';
 		tb.worldfile(cout);
 		cout << '\n';
 
