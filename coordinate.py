@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: coordinate.py,v 1.11 2010-05-27 21:16:13 grahn Exp $
+# $Id: coordinate.py,v 1.12 2010-09-18 20:08:12 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
@@ -68,7 +68,7 @@ class Transform:
         return Transform(self._dst_a, self._src_a,
                          self._dst_b, self._src_b)
 
-if __name__ == "__main__":
+if 1:
     import unittest
 
     class test(unittest.TestCase):
@@ -138,4 +138,7 @@ if __name__ == "__main__":
                 self.assertMaps(map, (6446, 1361), (10,10))
                 self.assertMaps(map, (6447, 1360), (0,0))
                 self.assertMaps(map, (6447, 1361), (10,0))
+
+if __name__ == "__main__":
+
     unittest.main()

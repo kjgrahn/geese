@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.39 2010-09-18 12:34:55 grahn Exp $
+# $Id: Makefile,v 1.40 2010-09-18 20:08:12 grahn Exp $
 #
 # Makefile
 #
@@ -6,7 +6,6 @@
 # All rights reserved.
 
 SHELL=/bin/sh
-
 INSTALLBASE=/usr/local
 
 .PHONY: all
@@ -14,10 +13,6 @@ all: geese_pick
 all: geese_ref
 all: geese_world
 all: geese_plot
-
-# Why not just use distutils all the way for installing this?  Because
-# as far as I can see, it doesn't really support installing anything
-# but modules.
 
 .PHONY: install
 install:
@@ -34,21 +29,18 @@ clean:
 	$(RM) geese_pick geese_ref
 
 .PHONY: check checkv
-#check: pycheck
+check: pycheck
 check: tests
 	./tests
 checkv: tests
 	valgrind -q ./tests -v
 
-pycheck: coordinate.py find.py library.py segrid.py transform.py vector.py
-	for py in $^; \
-	do PYTHONPATH=.. python $$py; \
-	done
+.PHONY: pycheck
+pycheck: test.py
+	PYTHONPATH=.. ./test.py
 
 %.1.ps : %.1
 	groff -man $< >$@
-
-# C++ transform algorithms
 
 CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
 CFLAGS=-Wall -Wextra -pedantic -std=c99 -g -O3

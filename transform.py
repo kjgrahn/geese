@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: transform.py,v 1.9 2010-05-27 21:16:13 grahn Exp $
+# $Id: transform.py,v 1.10 2010-09-18 20:08:12 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
@@ -53,7 +53,7 @@ class rotate:
         return (cos*x - sin*y,
                 sin*x + cos*y)
 
-if __name__ == "__main__":
+if 1:
     import unittest
 
     class test(unittest.TestCase):
@@ -124,4 +124,5 @@ if __name__ == "__main__":
                     v2 = rf(v)
                     self.assertAlmostEqual(vector.length(v), vector.length(v2))
 
+if __name__ == "__main__":
     unittest.main()

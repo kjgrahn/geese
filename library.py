@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.10 2010-08-25 18:42:14 grahn Exp $
+# $Id: library.py,v 1.11 2010-09-18 20:08:12 grahn Exp $
 
 import re
 from geese import coordinate
@@ -116,9 +116,8 @@ def parse(f):
                         wa, ma, wb, mb))
     return maps
 
-if __name__ == "__main__":
+if 1:
     import unittest
-    from geese import vector
     
     class testMap(unittest.TestCase):
         plains = (Map(['plain'], [],
@@ -172,4 +171,5 @@ if __name__ == "__main__":
                 self.assertEqual(map.scale(), 10.0)
                 self.assertEqual(map.area(), 1.0e6)
 
+if __name__ == "__main__":
     unittest.main()

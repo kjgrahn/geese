@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: find.py,v 1.11 2010-05-27 21:16:13 grahn Exp $
+# $Id: find.py,v 1.12 2010-09-18 20:08:12 grahn Exp $
 """Finding a point based on its distance from
 several other known points, possibly with minor
 errors in the input data.
@@ -224,7 +224,7 @@ def find(neighbors):
     return _mean(findmany(neighbors))
 
 
-if __name__ == "__main__":
+if 1:
     import unittest
 
     class test(unittest.TestCase):
@@ -401,4 +401,5 @@ if __name__ == "__main__":
                                (6440000, 1368000, 4415), (6440000, 1370000, 4984),
                                (6440000, 1370000, 4984)])
 
+if __name__ == "__main__":
     unittest.main()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: vector.py,v 1.7 2010-05-27 21:16:13 grahn Exp $
+# $Id: vector.py,v 1.8 2010-09-18 20:08:12 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
@@ -43,7 +43,7 @@ def distance(v1, v2):
     "The distance between two points (vectors)."
     return math.sqrt(distance2(v1, v2))
 
-if __name__ == "__main__":
+if 1:
     import unittest
 
     class test(unittest.TestCase):
@@ -66,4 +66,5 @@ if __name__ == "__main__":
             self.assertEqual(angle((2,1), (1,1)), math.pi)
             self.assertEqual(angle((1,1), (1,2)), math.pi/2)
 
+if __name__ == "__main__":
     unittest.main()

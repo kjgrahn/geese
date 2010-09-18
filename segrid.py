@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: iso-8859-1 -*-
 #
-# $Id: segrid.py,v 1.5 2010-05-27 21:16:13 grahn Exp $
+# $Id: segrid.py,v 1.6 2010-09-18 20:08:12 grahn Exp $
 #
 # Copyright (c) 2004 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
@@ -93,7 +93,7 @@ class Point:
         return ' '.join(acc)
 
 
-if __name__ == "__main__":
+if 1:
     import unittest
 
     class test(unittest.TestCase):
@@ -114,4 +114,5 @@ if __name__ == "__main__":
             self.assertEqual(Point(6445700, 1362000).tstr(),
                              r'\s-264\s045700 \s-213\s062000')
 
+if __name__ == "__main__":
     unittest.main()
