@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.40 2010-09-18 20:08:12 grahn Exp $
+# $Id: Makefile,v 1.41 2010-09-19 19:54:27 grahn Exp $
 #
 # Makefile
 #
@@ -42,7 +42,7 @@ pycheck: test.py
 %.1.ps : %.1
 	groff -man $< >$@
 
-CXXFLAGS=-Wall -Wextra -pedantic -std=c++98 -g -O3
+CXXFLAGS=-Wall -Wextra -pedantic -Wold-style-cast -std=c++98 -g -O3
 CFLAGS=-Wall -Wextra -pedantic -std=c99 -g -O3
 
 geese_pick: geese_pick.o libgeese.a
