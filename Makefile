@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.41 2010-09-19 19:54:27 grahn Exp $
+# $Id: Makefile,v 1.42 2010-09-19 20:58:58 grahn Exp $
 #
 # Makefile
 #
@@ -26,7 +26,7 @@ clean:
 	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
-	$(RM) geese_pick geese_ref
+	$(RM) geese_{pick,ref,world}
 
 .PHONY: check checkv
 check: pycheck
