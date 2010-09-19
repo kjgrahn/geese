@@ -1,4 +1,4 @@
-.\" $Id: geese_pick.1,v 1.17 2010-09-18 09:17:27 grahn Exp $
+.\" $Id: geese_pick.1,v 1.18 2010-09-19 19:15:52 grahn Exp $
 .\" $Name:  $
 .
 .ss 12 0
@@ -148,11 +148,14 @@ C  1356800.500000
 F  6447181.500000
 .fi
 .P
-World files are named by either appending a
+World files are named by either a
+.B .wld
+file name extension, appending a
 .B w
 to the map image's name, or appending it after removing the middle character
 of the name's three-letter extension.
 Typical names are
+.BR foo.wld ,
 .B foo.jpgw
 or
 .B foo.jgw .
@@ -165,6 +168,12 @@ also searches for
 and it also searches for these names in subdirectories
 (in case you store all your maps in a directory and all your world files
 in a subdirectory).
+.PP
+None of this is my fault. These files should at least have
+.I one
+naming convention, support comment lines, include a checksum
+and contain the name of the coordinate system in order
+to avoid horrible mistakes.
 .
 .SH "NOTES"
 Many things contribute to errors when using this approach to finding coordinates:

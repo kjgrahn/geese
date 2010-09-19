@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.11 2010-09-18 20:35:48 grahn Exp $
+/* $Id: library.cc,v 1.12 2010-09-19 19:15:52 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -196,6 +196,13 @@ namespace {
 	return std::string(path, n+1);
     }
 
+    string::size_type extension(const std::string& path)
+    {
+	string::size_type n = path.find_last_of("./");
+	if(n==string::npos || path[n]=='/') return string::npos;
+	return n;
+    }
+
     /**
      * "foo" -> "°/foo"
      * "foo/bar" -> "foo/°/bar"
@@ -205,7 +212,7 @@ namespace {
 	string p = path;
 	string::size_type n = p.rfind('/');
 	if(n==string::npos) {
-	    return p.insert(0, 1, '*');
+	    return p.insert(0, "*/");
 	}
 	return p.insert(n, "/*");
     }
@@ -218,16 +225,24 @@ namespace {
     std::string brw(const std::string& path)
     {
 	string p = path;
-	string::size_type n = p.rfind('.');
+	string::size_type n = extension(p);
 	if(n==string::npos) return "";
 	if(n+4!=p.size()) return "";
 	return p.erase(n+2, 1) + "w";
     }
 
+    std::string wld(const std::string& path)
+    {
+	string p = path;
+	string::size_type n = extension(p);
+	if(n==string::npos) return "";
+	return p.replace(n, string::npos, ".wld");
+    }
+
     std::string tfw(const std::string& path)
     {
 	string p = path;
-	string::size_type n = p.rfind('.');
+	string::size_type n = extension(p);
 	if(n==string::npos) return "";
 	return p.replace(n, string::npos, ".tfw");
     }
@@ -245,6 +260,8 @@ namespace {
  * - only 'worldfile' is searched if it's given
  * - 'libfile', a geese mapping file
  * - world files named
+ *   - mapfile.wld
+ *   - °/mapfile.wld
  *   - mapfile.barw
  *   - °/mapfile.barw
  *   - mapfile.brw
@@ -274,6 +291,8 @@ Map find_mapping(const string& mapfile,
     }
 
     vector<string> wnames;
+    wnames.push_back(wld(mapfile));
+    glob(star(wld(mapfile)), wnames);
     wnames.push_back(barw(mapfile));
     glob(star(barw(mapfile)), wnames);
     const string brw = ::brw(mapfile);
