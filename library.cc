@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.13 2010-09-22 19:09:30 grahn Exp $
+/* $Id: library.cc,v 1.14 2010-09-23 18:28:46 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -39,7 +39,7 @@ namespace {
 		      "[0-9]+(\\.[0-9]+)?"
 		      " *-> *"
 		      "[0-9]+(\\.[0-9]+)?"
-		      " *, *"
+		      " *,? *"
 		      "[0-9]+(\\.[0-9]+)?");
     }
 
@@ -100,8 +100,9 @@ namespace {
 		m.c = std::strtod(p, &end);
 		p = end;
 		while(isspace(*p)) p++;
-		assert(*p==',');
-		p++;
+		if(*p==',') {
+		    p++;
+		}
 		m.d = std::strtod(p, &end);
 
 		mappings.push_back(m);

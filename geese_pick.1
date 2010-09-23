@@ -1,4 +1,4 @@
-.\" $Id: geese_pick.1,v 1.18 2010-09-19 19:15:52 grahn Exp $
+.\" $Id: geese_pick.1,v 1.19 2010-09-23 18:28:46 grahn Exp $
 .\" $Name:  $
 .
 .ss 12 0
@@ -99,8 +99,8 @@ An example entry:
 luttra_n.png
 b3f1b2e3fcafeb2c14f43d7261e0d62a
 847 x 367
-6450000 1368000 -> 183, 336
-6451000 1370000 -> 775,  43
+6450000 1368000 -> 183 336
+6451000 1370000 -> 775  43
 .fi
 .P
 The things needed to actually describe a map are:
@@ -126,14 +126,17 @@ Image dimensions in pixels, on the form
 .
 .IP \-
 Two mappings from world to pixel coordinates, on the form
-\fInorth east \fB\[->] \fIx\fB, \fIy\fR.
+\fInorth east \fB\[->] \fIx\fB \fIy\fR
+(or \fIx\fB, \fIy\fR).
 These are enough to describe the mapping
 even if the image is rotated versus the coordinate system\(em\
 as if we had taken a flat Earth, put it rather sloppily
 in God's Great Xerox Machine, and pressed the button.
 .
 .SH "WORLD FILE FORMAT"
-A world file is a (MS-DOS) text file with six numbers, one per line,
+A
+.B "world file"
+is a (possibly MS-DOS) text file with six numbers, one per line,
 defining an
 .I "affine transformation"
 from pixel coordinates to map coordinates:
@@ -169,7 +172,8 @@ and it also searches for these names in subdirectories
 (in case you store all your maps in a directory and all your world files
 in a subdirectory).
 .PP
-None of this is my fault. These files should at least have
+None of this is my fault \- world files are used by most GIS applications.
+If I had designed the file format, I would have had made it use
 .I one
 naming convention, support comment lines, include a checksum
 and contain the name of the coordinate system in order
@@ -191,7 +195,7 @@ across one, geese_pick will silently produce incorrect results.
 .SH "AUTHOR"
 J\(:orgen Grahn
 .IR \[fo]grahn+src@snipabacken.se\[fc] .
-License: GNU GPL.
+Licensed under the GNU General Public License.
 .
 .SH "SEE ALSO"
 .BR xv (1),
