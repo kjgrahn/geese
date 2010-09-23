@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
-# $Id: library.py,v 1.11 2010-09-18 20:08:12 grahn Exp $
+# $Id: library.py,v 1.12 2010-09-23 18:44:30 grahn Exp $
 
 import re
 from geese import coordinate
@@ -80,8 +80,10 @@ def parse(f):
         md5sum = re.compile(r'[\da-z]{32}$')
         # 2146 x 2578
         size = re.compile(r'(\d+)\s*x\s*(\d+)$')
-        # 6447181 1356800 -> 0,0
-        mapping = re.compile(r'(\d+)\s+(\d+)\s*->\s*(\d+)\s*,\s*(\d+)$')
+        # 6447181 1356800 -> 0 0
+        n = r'\d+(?:\.\d+)?'
+        nnnn = n,n,n,n
+        mapping = re.compile(r'(%s)\s+(%s)\s*->\s*(%s)\s*,?\s*(%s)$' % nnnn )
         comment = re.compile(r'#')
     maps = []
     md5sums = []
