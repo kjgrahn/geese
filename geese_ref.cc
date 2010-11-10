@@ -1,4 +1,4 @@
-/* $Id: geese_ref.cc,v 1.5 2010-09-18 20:35:48 grahn Exp $
+/* $Id: geese_ref.cc,v 1.6 2010-11-10 21:27:47 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -99,14 +99,13 @@ namespace {
 		const RT90 sb = t(pp[2]);
 		const Pixel db = pp[3];
 
-		const Transform tb(sa, da, sb, db);
-
 		cout << '\n'
 		     << map << '\n'
 		     << checksum << '\n'
 		     << sa << " -> " << da << '\n'
 		     << sb << " -> " << db << '\n';
 
+		const Transform tb(sa, da, sb, db);
 		tb.worldfile(cout);
 		cout << '\n';
 
