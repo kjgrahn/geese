@@ -1,4 +1,4 @@
-/* $Id: geese_fit.cc,v 1.1 2010-12-12 21:40:19 grahn Exp $
+/* $Id: geese_fit.cc,v 1.2 2010-12-12 22:44:30 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -38,73 +38,53 @@ namespace {
 	return ctx.update(is).digest().hex();
     }
 
+    /* XXX merge with the one in library.cc */
+    std::string basename(const std::string& path)
+    {
+	std::string::size_type n = path.rfind('/');
+	if(n==std::string::npos) {
+	    return path;
+	}
+	return std::string(path, n+1);
+    }
+
     template<class Container, class Value>
     bool contains(const Container& c, const Value& value)
     {
 	return std::find(c.begin(), c.end(), value) != c.end();
     }
 
-
-    void describe_maps(const Library& lib,
-		       const char* const * argv)
+    /**
+     * The actual core of the utility, with arguments corresponding
+     * to the command-line arguments.
+     */
+    void fit_maps(const Library& lib,
+		  const std::string& targetdir,
+		  const unsigned prescale,
+		  char** argv)
     {
 	using std::cout;
 
-	unsigned i = 0;
-	while(const char* const p = *argv++) {
-	    const std::string f(p);
+	const std::string base = *argv++;
 
-	    const Map m = find_mapping(f, lib, "", std::cerr);
-	    if(m.empty) {
-		std::cerr << f << ": no coordinate info found\n";
-		continue;
-	    }
-
-	    const std::string digest = md5sum(f);
-
-	    if(!m.checksums.empty() &&
-	       !contains(m.checksums, digest)) {
-		std::cout << "error: " << f << ": bad checksum!\n";
-		continue;
-	    }
-
-	    if(i++) {
-		cout << '\n';
-	    }
-	    cout << f << '\n';
-	    for(std::vector<std::string>::const_iterator i = m.checksums.begin();
-		i != m.checksums.end();
-		++i) {
-		cout << *i << '\n';
-	    }
-	    if(m.checksums.empty()) {
-		cout << digest << '\n';
-	    }
-
-	    const Transform& t = m.t;
-	    const Pixel da(0, 0);
-	    const Pixel db(1000, 0);
-
-	    cout << t(da) << " -> " << da << '\n'
-		 << t(db) << " -> " << db << '\n';
-
-	    t.worldfile(cout);
-	    cout << '\n';
-	}
-    }
-
-
-    void delta_maps(const Library& lib,
-		    const std::string& dstfile,
-		    const char* const * argv)
-    {
-	using std::cout;
-
-	const Map ref = find_mapping(dstfile, lib, "", std::cerr);
-	if(ref.empty) {
-	    std::cerr << dstfile << ": no coordinate info found\n";
+	const Map bmap = find_mapping(base, lib, "", std::cerr);
+	if(bmap.empty) {
+	    std::cerr << base << ": no coordinate info found\n";
 	    return;
 	}
+
+	const double basescale = prescale/1e6;
+
+	if(prescale!=1e6) {
+	    cout << "gm convert -scale " << basescale*100 << '%'
+		 << " \"" << base << "\" "
+		 << '\"' << targetdir << '/' << basename(base) << "\"\n";
+	}
+	else {
+	    cout << "cp \"" << base << "\" targetdir\n";
+	}
+
+#if 0
 
 	while(const char* const p = *argv++) {
 	    const std::string f(p);
@@ -121,6 +101,8 @@ namespace {
 	    cout << f << ": scale by " << scale << " (" << fmt(scale*1e2)
 		 << " %); rotate " << fmt(rot) << "°\n";
 	}
+#endif
+
     }
 }
 
@@ -131,10 +113,8 @@ int main(int argc, char ** argv)
 
     const string prog = argv[0];
     const string usage = string("usage: ")
-	+ prog + " [-f mapping-file] map-file ...\n"
-	+ "       "
-	+ prog + " [-f mapping-file] -d destination-map source-map ...";
-    const char optstring[] = "+f:d:h";
+	+ prog + " [-f mapping-file] [-s scale] -d target-dir map-file ...";
+    const char optstring[] = "+f:s:d:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
 	{"help", 0, 0, 'h'},
@@ -145,7 +125,9 @@ int main(int argc, char ** argv)
     std::cout.sync_with_stdio(false);
 
     string libfile;
-    string dstfile;
+    string targetdir;
+    string scale;
+    unsigned prescale = 1e6;
 
     int ch;
     while((ch = getopt_long(argc, argv,
@@ -154,8 +136,11 @@ int main(int argc, char ** argv)
 	case 'f':
 	    libfile = optarg;
 	    break;
+	case 's':
+	    scale = optarg;
+	    break;
 	case 'd':
-	    dstfile = optarg;
+	    targetdir = optarg;
 	    break;
 	case 'h':
 	    std::cout << usage << '\n';
@@ -175,10 +160,22 @@ int main(int argc, char ** argv)
 	}
     }
 
-    if(optind == argc) {
+    if(argc - optind < 2 || targetdir.empty()) {
 	std::cerr << "error: required argyment missing\n";
 	std::cerr << usage << '\n';
 	return 1;
+    }
+
+    if(!scale.empty()) {
+	/* just an early check */
+	char* end;
+	double s = std::strtod(scale.c_str(), &end);
+	if(*end || s < 1e-3 || s > 1e3) {
+	    std::cerr << "error: invalid -s argument\n";
+	    std::cerr << usage << '\n';
+	    return 1;
+	}
+	prescale = 1e6*(s+0.5e-6);
     }
 
     Library lib;
@@ -187,12 +184,7 @@ int main(int argc, char ** argv)
 	if(lib.empty()) return 1;
     }
 
-    if(dstfile.empty()) {
-	describe_maps(lib, argv+optind);
-    }
-    else {
-	delta_maps(lib, dstfile, argv+optind);
-    }
+    fit_maps(lib, targetdir, prescale, argv+optind);
 
     return 0;
 }
