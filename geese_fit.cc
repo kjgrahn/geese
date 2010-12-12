@@ -1,4 +1,4 @@
-/* $Id: geese_fit.cc,v 1.3 2010-12-12 23:28:37 grahn Exp $
+/* $Id: geese_fit.cc,v 1.4 2010-12-12 23:30:42 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -7,36 +7,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
-#include <algorithm>
 
 #include <cstdlib>
 #include <getopt.h>
 
 #include "library.h"
-#include "worldfile.h"
-#include "md5pp.h"
 
 namespace {
-
-    struct fmt {
-	explicit fmt(double v) : val(v) {}
-	double val;
-    };
-
-    std::ostream& operator<< (std::ostream& os, const fmt& val)
-    {
-	char buf[30];
-	std::sprintf(buf, "%.2f", val.val);
-	return os << buf;
-    }
-
-    std::string md5sum(const std::string& file)
-    {
-	std::ifstream is(file.c_str());
-	md5::Ctx ctx;
-	return ctx.update(is).digest().hex();
-    }
 
     /* XXX merge with the one in library.cc */
     std::string basename(const std::string& path)
@@ -46,12 +23,6 @@ namespace {
 	    return path;
 	}
 	return std::string(path, n+1);
-    }
-
-    template<class Container, class Value>
-    bool contains(const Container& c, const Value& value)
-    {
-	return std::find(c.begin(), c.end(), value) != c.end();
     }
 
     /**

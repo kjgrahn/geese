@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.43 2010-12-12 21:40:19 grahn Exp $
+# $Id: Makefile,v 1.44 2010-12-12 23:30:42 grahn Exp $
 #
 # Makefile
 #
@@ -94,7 +94,7 @@ love:
 # DO NOT DELETE
 
 child.o: child.h
-geese_fit.o: library.h transform.h point.h worldfile.h md5pp.h md5.h
+geese_fit.o: library.h transform.h point.h
 geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
 geese_pick.o: md5pp.h md5.h
 geese_ref.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
