@@ -1,0 +1,82 @@
+.\" $Id: geese_fit.1,v 1.1 2010-12-12 21:37:49 grahn Exp $
+.\" $Name:  $
+.
+.
+.ss 12 0
+.de BP
+.IP \\fB\\$*
+..
+.
+.
+.TH geese_fit 1 "DEC 2010" "Geese" "User Manuals"
+.
+.SH "NAME"
+geese_fit \- scale maps to match georeferencing information
+.
+.SH "SYNOPSIS"
+.B geese_fit
+.RB [ \-f
+.IR mapping-file ]
+.RB [ \-s
+.IR scale ]
+.B \-d
+target-dir
+.I map-file
+\&...
+.br
+.B geese_fit
+.B --version
+.br
+.B geese_fit
+.B --help
+.
+.SH "DESCRIPTION"
+.B geese_fit
+takes two or more map images (let's call them A, B and C)
+and uses the provided georeferencing information
+to scale and rotate B and C so that they fit A.
+None of the target images are changed; the result ends up
+in the directory given by the
+.B \-d
+option.
+.PP
+Optionally, A itself may be scaled itself first,
+perhaps to make the resulting images smaller and easier to manage.
+.
+.SH "OPTIONS"
+.
+.BP \-f
+A
+.I mapping-file
+describing the coordinate systems of the maps involved.
+If omitted, the information must exist in world files instead, found according
+to the same rules as
+.BR geese_pick (1)
+uses.
+.
+.BP \-d
+The
+.I "target directory"
+where the modified images are stored.
+The directory must already exist.
+.
+.BP \-s
+An optional
+.I "scaling factor"
+applied to the first map.
+.B 0.5
+means half the (linear) size;
+.B 2
+means double size, etc.
+.
+.
+.SH "AUTHOR"
+J\(:orgen Grahn
+.IR \[fo]grahn+src@snipabacken.se\[fc] .
+Licensed under the GNU General Public License.
+.
+.SH "SEE ALSO"
+.BR geese_world (1),
+.BR geese_ref (1),
+.BR geese_pick (1),
+.BR geese_plot (1).
