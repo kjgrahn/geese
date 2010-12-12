@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.42 2010-09-19 20:58:58 grahn Exp $
+# $Id: Makefile,v 1.43 2010-12-12 21:40:19 grahn Exp $
 #
 # Makefile
 #
@@ -12,13 +12,14 @@ INSTALLBASE=/usr/local
 all: geese_pick
 all: geese_ref
 all: geese_world
+all: geese_fit
 all: geese_plot
 
 .PHONY: install
 install:
 	python ./setup.py install --force
-	install -m755 geese_{pick,ref,world,plot} $(INSTALLBASE)/bin/
-	install -m644 geese_{pick,ref,world,plot}.1 $(INSTALLBASE)/man/man1/
+	install -m755 geese_{pick,ref,world,fit,plot} $(INSTALLBASE)/bin/
+	install -m644 geese_{pick,ref,world,fit,plot}.1 $(INSTALLBASE)/man/man1/
 
 .PHONY: clean
 clean:
@@ -26,7 +27,7 @@ clean:
 	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
-	$(RM) geese_{pick,ref,world}
+	$(RM) geese_{pick,ref,world,fit}
 
 .PHONY: check checkv
 check: pycheck
@@ -53,6 +54,9 @@ geese_ref: geese_ref.o libgeese.a
 
 geese_world: geese_world.o libgeese.a
 	$(CXX) -o $@ geese_world.o -L. -lgeese
+
+geese_fit: geese_fit.o libgeese.a
+	$(CXX) -o $@ geese_fit.o -L. -lgeese
 
 test.cc: libtest.a
 	testicle -o$@ $^
@@ -90,6 +94,7 @@ love:
 # DO NOT DELETE
 
 child.o: child.h
+geese_fit.o: library.h transform.h point.h worldfile.h md5pp.h md5.h
 geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
 geese_pick.o: md5pp.h md5.h
 geese_ref.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
