@@ -1,4 +1,4 @@
-.\" $Id: geese_fit.1,v 1.1 2010-12-12 21:37:49 grahn Exp $
+.\" $Id: geese_fit.1,v 1.2 2010-12-12 22:25:51 grahn Exp $
 .\" $Name:  $
 .
 .
@@ -34,7 +34,7 @@ target-dir
 .B geese_fit
 takes two or more map images (let's call them A, B and C)
 and uses the provided georeferencing information
-to scale and rotate B and C so that they fit A.
+to scale and rotate B and C so that they fit A, the base map.
 None of the target images are changed; the result ends up
 in the directory given by the
 .B \-d
@@ -63,7 +63,7 @@ The directory must already exist.
 .BP \-s
 An optional
 .I "scaling factor"
-applied to the first map.
+applied to the base map (and by extension the others as well).
 .B 0.5
 means half the (linear) size;
 .B 2
