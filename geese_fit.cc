@@ -1,4 +1,4 @@
-/* $Id: geese_fit.cc,v 1.2 2010-12-12 22:44:30 grahn Exp $
+/* $Id: geese_fit.cc,v 1.3 2010-12-12 23:28:37 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -67,24 +67,22 @@ namespace {
 
 	const std::string base = *argv++;
 
-	const Map bmap = find_mapping(base, lib, "", std::cerr);
-	if(bmap.empty) {
+	const Map ref = find_mapping(base, lib, "", std::cerr);
+	if(ref.empty) {
 	    std::cerr << base << ": no coordinate info found\n";
 	    return;
 	}
 
-	const double basescale = prescale/1e6;
+	const double pscale = prescale/1e6;
 
 	if(prescale!=1e6) {
-	    cout << "gm convert -scale " << basescale*100 << '%'
+	    cout << "gm convert -scale " << pscale*100 << '%'
 		 << " \"" << base << "\" "
 		 << '\"' << targetdir << '/' << basename(base) << "\"\n";
 	}
 	else {
 	    cout << "cp \"" << base << "\" targetdir\n";
 	}
-
-#if 0
 
 	while(const char* const p = *argv++) {
 	    const std::string f(p);
@@ -95,14 +93,15 @@ namespace {
 		continue;
 	    }
 
-	    const double scale = m.t.scale()/ref.t.scale();
+	    const double scale = m.t.scale()/ref.t.scale()*pscale;
 	    const double rot = ref.t.rotation() - m.t.rotation();
 
-	    cout << f << ": scale by " << scale << " (" << fmt(scale*1e2)
-		 << " %); rotate " << fmt(rot) << "°\n";
+	    cout << "gm convert"
+		 << " -rotate " << rot
+		 << " -scale " << scale*100 << '%'
+		 << " \"" << f << "\" "
+		 << '\"' << targetdir << '/' << basename(f) << "\"\n";
 	}
-#endif
-
     }
 }
 
