@@ -1,12 +1,13 @@
 /*
- * $Id: md5pp.cc,v 1.3 2010-09-18 07:53:17 grahn Exp $
+ * $Id: md5pp.cc,v 1.4 2011-01-08 23:30:32 grahn Exp $
  *
- * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
+ * Copyright (c) 2010, 2011 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 #include "md5pp.h"
 
 #include <iostream>
+#include <cstdio>
 
 using namespace md5;
 

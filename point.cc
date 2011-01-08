@@ -1,7 +1,7 @@
 /*
- * $Id: point.cc,v 1.7 2010-08-29 18:59:32 grahn Exp $
+ * $Id: point.cc,v 1.8 2011-01-08 23:30:32 grahn Exp $
  *
- * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
+ * Copyright (c) 2010, 2011 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 #include "point.h"
@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cstring>
 #include <cmath>
+#include <cstdio>
 
 
 std::ostream& operator<< (std::ostream& os, const SinCos& val)
