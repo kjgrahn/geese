@@ -5,7 +5,7 @@ coordinate systems on bitmapped maps.
 
 It's both a library for use from other Python programs (the 'skatan'
 stuff depends on parts of it) and utilities you can run, namely
-'geese_pick' and 'geese_plot'.
+'geese_pick', 'geese_plot', and so on.
 
 Some of these have been (re)written in C++, but the Python library
 still exists.
@@ -65,5 +65,5 @@ Let's try the GPL for a change, shall we?
   General Public License for more details.
 
 
-$Id: README,v 1.8 2010-09-18 09:17:27 grahn Exp $
+$Id: README,v 1.9 2011-01-08 23:37:34 grahn Exp $
 $Name:  $

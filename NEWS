@@ -4,6 +4,14 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+geese 2.8 (2011-01-09):
+
+  - New utility geese_fit(1) - scale maps to match georeferencing
+    information. The version here is incomplete, and may change
+    ... but it's better than having nothing.
+
+  - Minor fixes needed to build with gcc 4.4.
+
 geese 2.7 (2010-09-23):
 
   - Minor relaxation of the mapping file format (that annoying
@@ -116,5 +124,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.24 2010-09-23 18:44:33 grahn Exp $
+$Id: NEWS,v 1.25 2011-01-08 23:37:34 grahn Exp $
 $Name:  $
