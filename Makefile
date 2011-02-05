@@ -1,11 +1,11 @@
-# $Id: Makefile,v 1.44 2010-12-12 23:30:42 grahn Exp $
+# $Id: Makefile,v 1.45 2011-02-05 11:07:13 grahn Exp $
 #
 # Makefile
 #
 # Copyright (c) 1999--2004, 2010 Jörgen Grahn <grahn+src@snipabacken.se>
 # All rights reserved.
 
-SHELL=/bin/sh
+SHELL=/bin/bash
 INSTALLBASE=/usr/local
 
 .PHONY: all
