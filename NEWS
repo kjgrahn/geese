@@ -4,6 +4,8 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+  - geese_foo --version now prints something more readable.
+
 geese 2.8 (2011-01-09):
 
   - New utility geese_fit(1) - scale maps to match georeferencing
@@ -124,5 +126,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.25 2011-01-08 23:37:34 grahn Exp $
+$Id: NEWS,v 1.26 2011-02-05 16:27:51 grahn Exp $
 $Name:  $

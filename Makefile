@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.45 2011-02-05 11:07:13 grahn Exp $
+# $Id: Makefile,v 1.46 2011-02-05 16:27:51 grahn Exp $
 #
 # Makefile
 #
@@ -73,6 +73,7 @@ libgeese.a: worldfile.o
 libgeese.a: library.o
 libgeese.a: transform.o
 libgeese.a: point.o
+libgeese.a: version.o
 	$(AR) -r $@ $^
 
 libtest.a: test_point.o

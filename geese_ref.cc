@@ -1,4 +1,4 @@
-/* $Id: geese_ref.cc,v 1.6 2010-11-10 21:27:47 grahn Exp $
+/* $Id: geese_ref.cc,v 1.7 2011-02-05 16:27:51 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -146,8 +146,9 @@ int main(int argc, char ** argv)
 	    std::cout << usage << '\n';
 	    return 0;
 	case 'v':
-	    std::cout << prog << "\n$Name:  $\n"
-		      << "Copyright (c) 2010 Jörgen Grahn\n";
+	    std::string version();
+	    std::cout << prog << ", part of geese " << version() << "\n"
+		      << "Copyright (c) 2010, 2011 Jörgen Grahn\n";
 	    return 0;
 	    break;
 	case ':':
