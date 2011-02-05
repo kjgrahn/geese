@@ -1,8 +1,8 @@
 /* -*- c++ -*-
  *
- * $Id: library.h,v 1.6 2010-09-18 12:33:18 grahn Exp $
+ * $Id: library.h,v 1.7 2011-02-05 11:08:27 grahn Exp $
  *
- * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
+ * Copyright (c) 2010, 2011 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
  */
 #ifndef GEESE_LIBRARY_H
@@ -51,5 +51,7 @@ Map find_mapping(const std::string& mapfile,
 		 const std::string& libfile,
 		 const std::string& worldfile,
 		 std::ostream& log);
+
+std::string basename(const std::string& path);
 
 #endif

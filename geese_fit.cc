@@ -1,6 +1,6 @@
-/* $Id: geese_fit.cc,v 1.4 2010-12-12 23:30:42 grahn Exp $
+/* $Id: geese_fit.cc,v 1.5 2011-02-05 11:08:27 grahn Exp $
  *
- * Copyright (c) 2010 Jörgen Grahn
+ * Copyright (c) 2010, 2011 Jörgen Grahn
  * All rights reserved.
  *
  */
@@ -14,16 +14,6 @@
 #include "library.h"
 
 namespace {
-
-    /* XXX merge with the one in library.cc */
-    std::string basename(const std::string& path)
-    {
-	std::string::size_type n = path.rfind('/');
-	if(n==std::string::npos) {
-	    return path;
-	}
-	return std::string(path, n+1);
-    }
 
     /**
      * The actual core of the utility, with arguments corresponding

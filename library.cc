@@ -1,6 +1,6 @@
-/* $Id: library.cc,v 1.14 2010-09-23 18:28:46 grahn Exp $
+/* $Id: library.cc,v 1.15 2011-02-05 11:08:27 grahn Exp $
  *
- * Copyright (c) 2010 Jörgen Grahn
+ * Copyright (c) 2010, 2011 Jörgen Grahn
  * All rights reserved.
  *
  */
@@ -190,16 +190,19 @@ Library parse_lib(const std::string& libfile, std::ostream& log)
 }
 
 
-namespace {
-
-    std::string basename(const std::string& path)
-    {
-	std::string::size_type n = path.rfind('/');
-	if(n==std::string::npos) {
-	    return path;
-	}
-	return std::string(path, n+1);
+/**
+ * Kind of like POSIX basename(3), but with certain limitations.
+ */
+std::string basename(const std::string& path)
+{
+    std::string::size_type n = path.rfind('/');
+    if(n==std::string::npos) {
+	return path;
     }
+    return std::string(path, n+1);
+}
+
+namespace {
 
     string::size_type extension(const std::string& path)
     {
