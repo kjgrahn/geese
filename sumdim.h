@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: sumdim.h,v 1.1 2011-02-06 06:54:54 grahn Exp $
+ * $Id: sumdim.h,v 1.2 2011-02-06 07:19:39 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -14,9 +14,13 @@
 
 #include "md5pp.h"
 
-void sum_and_dim(std::istream& in,
-		 md5::Digest& sum,
-		 unsigned& width,
-		 unsigned& height);
+struct SumDim {
+
+    md5::Digest sum;
+    unsigned width;
+    unsigned height;
+    bool bad;
+    explicit SumDim(std::istream& in);
+};
 
 #endif
