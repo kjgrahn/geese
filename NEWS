@@ -4,6 +4,12 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+geese 2.9 (2011-02-06):
+
+  - geese_ref and geese_world now include image dimensions in the
+    output intended for mapping files, assuming the image is in
+    one of the more popular formats.
+
   - geese_foo --version now prints something more readable.
 
 geese 2.8 (2011-01-09):
@@ -126,5 +132,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.26 2011-02-05 16:27:51 grahn Exp $
+$Id: NEWS,v 1.27 2011-02-06 15:15:15 grahn Exp $
 $Name:  $
