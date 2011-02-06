@@ -1,5 +1,5 @@
 /**
- * $Id: test_md5.cc,v 1.5 2010-09-18 07:53:17 grahn Exp $
+ * $Id: test_md5.cc,v 1.6 2011-02-06 07:37:55 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -125,6 +125,23 @@ namespace md5 {
 	    assert_eq("6cd3556deb0da54bca060b4c39479839",
 		      ctx.digest());
 	    testicle::assert_(is.eof());
+	}
+
+	void test_digestobj()
+	{
+	    md5::Ctx ctx;
+	    ctx.update(hw);
+	    const md5::Digest digest = ctx.digest();
+
+	    std::ostringstream o1;
+	    o1 << "foo " << digest.hex();
+	    testicle::assert_eq("foo 6cd3556deb0da54bca060b4c39479839",
+				o1.str());
+
+	    std::ostringstream o2;
+	    o2 << "bar " << digest;
+	    testicle::assert_eq("bar 6cd3556deb0da54bca060b4c39479839",
+				o2.str());
 	}
     }
 }
