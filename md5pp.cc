@@ -1,5 +1,5 @@
 /*
- * $Id: md5pp.cc,v 1.4 2011-01-08 23:30:32 grahn Exp $
+ * $Id: md5pp.cc,v 1.5 2011-02-06 15:05:54 grahn Exp $
  *
  * Copyright (c) 2010, 2011 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -31,7 +31,7 @@ std::string Digest::hex() const
 }
 
 
-std::ostream& operator<< (std::ostream& os, const Digest& val)
+std::ostream& md5::operator<< (std::ostream& os, const Digest& val)
 {
     return os << val.hex();
 }

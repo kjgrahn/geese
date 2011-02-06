@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: md5pp.h,v 1.3 2010-09-18 07:53:17 grahn Exp $
+ * $Id: md5pp.h,v 1.4 2011-02-06 15:05:54 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -71,8 +71,8 @@ namespace md5 {
 	}
 	return *this;
     }
-}
 
-std::ostream& operator<< (std::ostream& os, const md5::Digest& val);
+    std::ostream& operator<< (std::ostream& os, const Digest& val);
+}
 
 #endif

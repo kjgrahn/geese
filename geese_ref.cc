@@ -1,4 +1,4 @@
-/* $Id: geese_ref.cc,v 1.7 2011-02-05 16:27:51 grahn Exp $
+/* $Id: geese_ref.cc,v 1.8 2011-02-06 15:05:54 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -18,6 +18,7 @@
 #include "xvpixel.h"
 #include "worldfile.h"
 #include "md5pp.h"
+#include "sumdim.h"
 
 namespace {
 
@@ -40,6 +41,12 @@ namespace {
 	return ctx.update(is).digest().hex();
     }
 
+    SumDim sum_dim(const std::string& file)
+    {
+	std::ifstream is(file.c_str());
+	return SumDim(is);
+    }
+
     template<class Container, class Value>
     bool contains(const Container& c, const Value& value)
     {
@@ -56,7 +63,7 @@ namespace {
     {
 	using std::cout;
 
-	const std::string checksum = md5sum(map);
+	const SumDim sumdim = sum_dim(map);
 
 	const char* xvargs[] = { "xv", refmap.c_str(), 0 };
 	Child rxv(const_cast<char**>(xvargs));
@@ -100,9 +107,16 @@ namespace {
 		const Pixel db = pp[3];
 
 		cout << '\n'
-		     << map << '\n'
-		     << checksum << '\n'
-		     << sa << " -> " << da << '\n'
+		     << map << '\n';
+		if(!sumdim.bad) {
+		    cout << sumdim.sum << '\n';
+		    unsigned w = sumdim.width;
+		    unsigned h = sumdim.height;
+		    if(w && h) {
+			cout << w << " x " << h << '\n';
+		    }
+		}
+		cout << sa << " -> " << da << '\n'
 		     << sb << " -> " << db << '\n';
 
 		const Transform tb(sa, da, sb, db);

@@ -1,4 +1,4 @@
-.\" $Id: geese_world.1,v 1.7 2010-09-23 18:28:46 grahn Exp $
+.\" $Id: geese_world.1,v 1.8 2011-02-06 15:05:54 grahn Exp $
 .\" $Name:  $
 .
 .
@@ -8,7 +8,7 @@
 ..
 .
 .
-.TH geese_world 1 "SEP 2010" "Geese" "User Manuals"
+.TH geese_world 1 "FEB 2011" "Geese" "User Manuals"
 .
 .SH "NAME"
 geese_world \- show georeferencing map information
@@ -48,6 +48,7 @@ This can be used to create world files or mapping file entries
 .nf
 luttra_n.png
 b3f1b2e3fcafeb2c14f43d7261e0d62a
+847 x 367
 6451134.9 1367375.9 -> 0.0 0.0
 6451148.7 1370761.1 -> 1000.0 0.0
 
@@ -59,9 +60,7 @@ b3f1b2e3fcafeb2c14f43d7261e0d62a
 6451134.9
 .fi
 .PP
-(The image width x height are unfortunately missing in the output
-above; geese_world knows nothing about image file formats so it
-cannot retrieve that information.)
+Then there is the second form:
 .IP
 .ft CR
 .nf
@@ -74,7 +73,9 @@ apply to each
 to be able to overlay it on
 .I destination-map.
 This can be used to create layered maps in drawing tools like
-.IR "the GIMP" .
+.I "the GIMP"
+(but also see
+.BR geese_fit (1)).
 .
 .SH "OPTIONS"
 .BP \-f
@@ -103,4 +104,5 @@ Licensed under the GNU General Public License.
 .SH "SEE ALSO"
 .BR geese_pick (1),
 .BR geese_ref (1),
+.BR geese_fit (1),
 .BR geese_plot (1).

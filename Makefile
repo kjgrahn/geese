@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.47 2011-02-06 06:54:54 grahn Exp $
+# $Id: Makefile,v 1.48 2011-02-06 15:05:54 grahn Exp $
 #
 # Makefile
 #
@@ -47,16 +47,16 @@ CXXFLAGS=-Wall -Wextra -pedantic -Wold-style-cast -std=c++98 -g -O3
 CFLAGS=-Wall -Wextra -pedantic -std=c99 -g -O3
 
 geese_pick: geese_pick.o libgeese.a
-	$(CXX) -o $@ geese_pick.o -L. -lgeese
+	$(CXX) -o $@ geese_pick.o -L. -lgeese -lanydim
 
 geese_ref: geese_ref.o libgeese.a
-	$(CXX) -o $@ geese_ref.o -L. -lgeese
+	$(CXX) -o $@ geese_ref.o -L. -lgeese -lanydim
 
 geese_world: geese_world.o libgeese.a
-	$(CXX) -o $@ geese_world.o -L. -lgeese
+	$(CXX) -o $@ geese_world.o -L. -lgeese -lanydim
 
 geese_fit: geese_fit.o libgeese.a
-	$(CXX) -o $@ geese_fit.o -L. -lgeese
+	$(CXX) -o $@ geese_fit.o -L. -lgeese -lanydim
 
 test.cc: libtest.a
 	testicle -o$@ $^
@@ -100,8 +100,9 @@ geese_fit.o: library.h transform.h point.h
 geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
 geese_pick.o: md5pp.h md5.h
 geese_ref.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
-geese_ref.o: md5pp.h md5.h
+geese_ref.o: md5pp.h md5.h sumdim.h
 geese_world.o: library.h transform.h point.h worldfile.h md5pp.h md5.h
+geese_world.o: sumdim.h
 globbing.o: globbing.h
 library.o: library.h transform.h point.h regex.h worldfile.h globbing.h
 md5pp.o: md5pp.h md5.h

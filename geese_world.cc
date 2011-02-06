@@ -1,4 +1,4 @@
-/* $Id: geese_world.cc,v 1.6 2011-02-05 16:27:51 grahn Exp $
+/* $Id: geese_world.cc,v 1.7 2011-02-06 15:05:54 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn
  * All rights reserved.
@@ -11,11 +11,14 @@
 #include <algorithm>
 
 #include <cstdlib>
+#include <cstring>
+#include <errno.h>
 #include <getopt.h>
 
 #include "library.h"
 #include "worldfile.h"
 #include "md5pp.h"
+#include "sumdim.h"
 
 namespace {
 
@@ -36,6 +39,12 @@ namespace {
 	std::ifstream is(file.c_str());
 	md5::Ctx ctx;
 	return ctx.update(is).digest().hex();
+    }
+
+    SumDim sum_dim(const std::string& file)
+    {
+	std::ifstream is(file.c_str());
+	return SumDim(is);
     }
 
     template<class Container, class Value>
@@ -60,7 +69,13 @@ namespace {
 		continue;
 	    }
 
-	    const std::string digest = md5sum(f);
+	    const SumDim sumdim = sum_dim(f);
+	    if(sumdim.bad) {
+		std::cerr << "error: cannot open " << f
+			  << ": " << std::strerror(errno) << '\n';
+		continue;
+	    }
+	    const std::string digest = sumdim.sum.hex();
 
 	    if(!m.checksums.empty() &&
 	       !contains(m.checksums, digest)) {
@@ -80,6 +95,7 @@ namespace {
 	    if(m.checksums.empty()) {
 		cout << digest << '\n';
 	    }
+	    cout << sumdim.width << " x " << sumdim.height << '\n';
 
 	    const Transform& t = m.t;
 	    const Pixel da(0, 0);
