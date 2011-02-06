@@ -1,9 +1,9 @@
-the `geese' Python package
+The `geese' package
 
 Geese is a set of utilities for manipulating coordinates and
 coordinate systems on bitmapped maps.
 
-It's both a library for use from other Python programs (the 'skatan'
+It's both a library for use from Python programs (the 'skatan'
 stuff depends on parts of it) and utilities you can run, namely
 'geese_pick', 'geese_plot', and so on.
 
@@ -12,10 +12,8 @@ still exists.
 
 Basically, geese is based on the following observations:
 
-- Finding coordinates from maps by hand is difficult, boring and
-  error-prone.
-- It's hard to look at a coordinate and tell where it is in the
-  terrain.
+- Finding coordinates from maps by hand is difficult, boring and error-prone.
+- It's hard to look at a coordinate and tell where it is in the terrain.
 - Plotting coordinates on maps by hand is boring and error-prone.
 - Keeping high-quality digital copies of maps for personal use is (in
   the days of flatbed scanners) convenient and legal (or at least ethical).
@@ -39,10 +37,12 @@ Use the Makefile ('make install') for installation. This will
 install the command-line tool(s), documentation and (indirectly,
 through Python's 'distutils') the 'geese' Python package.
 
-Python 2.3 or higher is required for installation and use.
+Python 2.3 or higher is required for installation and use. (Although I
+cannot verify that any more, since I use Python 2.5 and 2.6 these
+days.)
 
-Some parts also need the Python Imaging Library (the Image and
-ImageDraw modules).  Others need John Bradley's 'xv' image viewer.
+Some parts also need PIL, aka the Python Imaging Library (the Image
+and ImageDraw modules).  Others need John Bradley's 'xv' image viewer.
 
 
 AUTHOR
@@ -65,5 +65,5 @@ Let's try the GPL for a change, shall we?
   General Public License for more details.
 
 
-$Id: README,v 1.9 2011-01-08 23:37:34 grahn Exp $
+$Id: README,v 1.10 2011-02-06 15:11:28 grahn Exp $
 $Name:  $
