@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.46 2011-02-05 16:27:51 grahn Exp $
+# $Id: Makefile,v 1.47 2011-02-06 06:54:54 grahn Exp $
 #
 # Makefile
 #
@@ -66,6 +66,7 @@ tests: test.o libgeese.a libtest.a
 
 libgeese.a: md5.o
 libgeese.a: md5pp.o
+libgeese.a: sumdim.o
 libgeese.a: globbing.o
 libgeese.a: child.o
 libgeese.a: xvpixel.o
@@ -105,6 +106,7 @@ globbing.o: globbing.h
 library.o: library.h transform.h point.h regex.h worldfile.h globbing.h
 md5pp.o: md5pp.h md5.h
 point.o: point.h
+sumdim.o: sumdim.h md5pp.h md5.h
 test_md5.o: md5.h md5pp.h
 test_point.o: point.h
 test_transform.o: transform.h point.h
