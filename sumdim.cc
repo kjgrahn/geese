@@ -1,5 +1,5 @@
 /*
- * $Id: sumdim.cc,v 1.1 2011-02-06 06:54:54 grahn Exp $
+ * $Id: sumdim.cc,v 1.2 2011-02-06 07:06:36 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -22,4 +22,18 @@ void sum_and_dim(std::istream& in,
 		 unsigned& width,
 		 unsigned& height)
 {
+    md5::Ctx ctx;
+    anydim::AnyDim dim;
+    char buf[4096];
+    unsigned char* const ubuf = reinterpret_cast<unsigned char*>(buf);
+    while(in) {
+	in.read(buf, 4096);
+	ctx.update(ubuf, in.gcount());
+	dim.feed(ubuf, ubuf+in.gcount());
+    }
+    if(!in.bad()) {
+	sum = ctx.digest();
+	width = dim.width;
+	height = dim.height;
+    }
 }
