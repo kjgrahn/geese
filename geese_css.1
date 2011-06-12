@@ -1,0 +1,112 @@
+.\" $Id: geese_css.1,v 1.1 2011-06-12 14:05:43 grahn Exp $
+.\" $Name:  $
+.
+.
+.ss 12 0
+.de BP
+.IP \\fB\\$*
+..
+.
+.
+.TH geese_css 1 "JUN 2011" "Geese" "User Manuals"
+.
+.SH "NAME"
+geese_css \- generate HTML plotting information on a map
+.
+.SH "SYNOPSIS"
+.B geese_css
+.RB [ \-f
+.IR mapping-file ]
+.I map-file
+.RI [ labels ]
+.br
+.B geese_css
+.B --version
+.br
+.B geese_css
+.B --help
+.
+.SH "DESCRIPTION"
+.B geese_css
+generates a HTML fragment which combines with the code around it to display
+.I map-file
+with superimposed text labels and optionally links.
+You can use it to easily create a map with specific locations plotted and linked,
+without hardcoding their pixel coordinates.
+.PP
+The labels are read from a file, or standard input.
+The output always goes to standard output.
+.
+.SS "Input language"
+Input is line-oriented. Empty lines and comment lines (introduced by
+.BR # )
+are ignored.
+Other lines are space-separated on the form
+.IP
+.ft B
+north east label [title] [url] [class]
+.PP
+The three first are mandatory; the others may be omitted from the end.
+If you want to supply e.g. a class but not an URL, you have to give an
+empty URL as \[dq]\[dq].
+You also have to quote strings containing spaces.
+.PP
+These end up on the map as
+.BR DIV s,
+like this:
+.BP north\ east
+The coordinates in
+.B R90
+format (with 1m-precision or less).
+.BP label
+The text in the DIV.
+.BP title
+An optional
+.B title
+attribute on the DIV. Will render as a popup text in popular browsers.
+.BP url
+If given, turns the text into a link to
+.IR url .
+.BP class
+An optional
+.B class
+attribute on the DIV. May be used e.g. to classify the labels and
+colorize them differently.
+.PP
+For example
+.IP
+.ft CW
+.nf
+644056  136276  P01 H\(:ogebacke
+6441946 1363535 P02 Levina levina.html
+644218  136254  P03 \[dq]Holmen, Naglarp\[dq]
+6467586 1368362 P04 \[dq]\[dq] \[dq]\[dq] water
+.fi
+.
+.
+.SH "OPTIONS"
+.
+.BP \-f
+A
+.I mapping-file
+describing the coordinate systems of the maps involved.
+If omitted, the information must exist in world files instead, found according
+to the same rules as
+.BR geese_pick (1)
+uses.
+.
+.
+.ig
+.SH "BUGS"
+..
+.
+.SH "AUTHOR"
+J\(:orgen Grahn
+.IR \[fo]grahn+src@snipabacken.se\[fc] .
+Licensed under the GNU General Public License.
+.
+.SH "SEE ALSO"
+.BR geese_world (1),
+.BR geese_ref (1),
+.BR geese_pick (1),
+.BR geese_plot (1).
