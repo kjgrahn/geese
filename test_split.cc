@@ -1,5 +1,5 @@
 /**
- * $Id: test_split.cc,v 1.1 2011-06-12 19:48:39 grahn Exp $
+ * $Id: test_split.cc,v 1.2 2011-06-12 19:52:04 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn
  * All rights reserved.
@@ -14,13 +14,16 @@ namespace {
     void assert_splits_to(const std::string& s,
 			  const std::vector<std::string>& ref)
     {
-	const vector<string> v = split(v);
-	vector<string>::const_iterator si = s.begin();
+	using std::vector;
+	using std::string;
+
+	const vector<string> v = split(s);
+	vector<string>::const_iterator vi = v.begin();
 	vector<string>::const_iterator ri = ref.begin();
 
-	while(si!=s.end() && ri!=ref.end()) {
+	while(vi!=v.end() && ri!=ref.end()) {
 	    testicle::assert_eq(*vi, *ri);
-	    ++si; ++ri;
+	    ++vi; ++ri;
 	}
 
 	testicle::assert_eq(v.size(), ref.size());
@@ -30,7 +33,10 @@ namespace {
 			  const std::string& a,
 			  const std::string& b)
     {
-	const vector<string> v = split(v);
+	using std::vector;
+	using std::string;
+
+	const vector<string> v = split(s);
 	testicle::assert_eq(v.size(), 2);
 	testicle::assert_eq(v[0], a);
 	testicle::assert_eq(v[1], b);
@@ -39,13 +45,11 @@ namespace {
 
 namespace split_test {
 
-    using std::vector;
     using std::string;
-    using namespace testicle;
 
     namespace simple {
 	static const char* raw[] = {"foo", "bar", "baz", "bat", "fred"};
-	static const vector<string> ref(raw, raw+sizeof(raw)/sizeof(raw[0]));
+	static const std::vector<string> ref(raw, raw+sizeof(raw)/sizeof(raw[0]));
 
 	void test1() { assert_splits_to("foo bar baz bat", ref); }
 	void test2() { assert_splits_to("foo bar baz bat\n", ref); }
