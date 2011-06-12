@@ -1,5 +1,5 @@
 /**
- * $Id: test_split.cc,v 1.2 2011-06-12 19:52:04 grahn Exp $
+ * $Id: test_split.cc,v 1.3 2011-06-12 20:56:34 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn
  * All rights reserved.
@@ -51,10 +51,10 @@ namespace split_test {
 	static const char* raw[] = {"foo", "bar", "baz", "bat", "fred"};
 	static const std::vector<string> ref(raw, raw+sizeof(raw)/sizeof(raw[0]));
 
-	void test1() { assert_splits_to("foo bar baz bat", ref); }
-	void test2() { assert_splits_to("foo bar baz bat\n", ref); }
-	void test3() { assert_splits_to("foo  bar \tbaz bat", ref); }
-	void test4() { assert_splits_to("  foo bar baz bat  \t\n", ref); }
+	void test1() { assert_splits_to("foo bar baz bat fred", ref); }
+	void test2() { assert_splits_to("foo bar baz bat fred\n", ref); }
+	void test3() { assert_splits_to("foo  bar \tbaz bat fred", ref); }
+	void test4() { assert_splits_to("  foo bar baz bat  fred  \t\n", ref); }
     }
 
     namespace quoting {
