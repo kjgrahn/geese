@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.48 2011-02-06 15:05:54 grahn Exp $
+# $Id: Makefile,v 1.49 2011-06-12 19:48:39 grahn Exp $
 #
 # Makefile
 #
@@ -67,6 +67,7 @@ tests: test.o libgeese.a libtest.a
 libgeese.a: md5.o
 libgeese.a: md5pp.o
 libgeese.a: sumdim.o
+libgeese.a: split.o
 libgeese.a: globbing.o
 libgeese.a: child.o
 libgeese.a: xvpixel.o
@@ -80,6 +81,7 @@ libgeese.a: version.o
 libtest.a: test_point.o
 libtest.a: test_transform.o
 libtest.a: test_md5.o
+libtest.a: test_split.o
 	$(AR) -r $@ $^
 
 .PHONY: tags
@@ -107,9 +109,11 @@ globbing.o: globbing.h
 library.o: library.h transform.h point.h regex.h worldfile.h globbing.h
 md5pp.o: md5pp.h md5.h
 point.o: point.h
+split.o: split.h
 sumdim.o: sumdim.h md5pp.h md5.h
 test_md5.o: md5.h md5pp.h
 test_point.o: point.h
+test_split.o: split.h
 test_transform.o: transform.h point.h
 transform.o: transform.h point.h
 worldfile.o: worldfile.h transform.h point.h

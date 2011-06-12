@@ -1,4 +1,4 @@
-.\" $Id: geese_css.1,v 1.1 2011-06-12 14:05:43 grahn Exp $
+.\" $Id: geese_css.1,v 1.2 2011-06-12 19:48:39 grahn Exp $
 .\" $Name:  $
 .
 .
@@ -13,6 +13,7 @@
 .SH "NAME"
 geese_css \- generate HTML plotting information on a map
 .
+.
 .SH "SYNOPSIS"
 .B geese_css
 .RB [ \-f
@@ -26,6 +27,7 @@ geese_css \- generate HTML plotting information on a map
 .B geese_css
 .B --help
 .
+.
 .SH "DESCRIPTION"
 .B geese_css
 generates a HTML fragment which combines with the code around it to display
@@ -36,6 +38,7 @@ without hardcoding their pixel coordinates.
 .PP
 The labels are read from a file, or standard input.
 The output always goes to standard output.
+.
 .
 .SS "Input language"
 Input is line-oriented. Empty lines and comment lines (introduced by
@@ -84,6 +87,42 @@ For example
 .fi
 .
 .
+.SS "Output"
+Each label which fits onto the map (or all of them, if the map's size is unknown)
+ends up something like this:
+.IP
+.ft CW
+.nf
+<div style="left: 75px; top: 65px;" class=foo title=bar>
+<a href="baz">foobar</a></div>
+.fi
+.
+.PP
+The surrounding CSS and HTML might look like this:
+.IP
+.ft CW
+.nf
+DIV.map {
+    position: relative;
+}
+IMG.map {
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+}
+DIV.map DIV {
+    position: absolute;
+    background-color: beige;
+    line-height: 1.0;
+}
+
+<p><div class="map">
+<img class="map" src="foo.jpg">
+<!-- label DIVs go here -->
+</div>
+.fi
+.
+.
 .SH "OPTIONS"
 .
 .BP \-f
@@ -96,14 +135,20 @@ to the same rules as
 uses.
 .
 .
-.ig
 .SH "BUGS"
-..
+.IP  \(bu 3x
+The labels get positioned not centered on the intended coordinate,
+but with the NW corner at it.
+.IP \(bu
+If the image has a border \- which in itself is reasonable \-
+the positioning doesn't take that into account.
+.
 .
 .SH "AUTHOR"
 J\(:orgen Grahn
 .IR \[fo]grahn+src@snipabacken.se\[fc] .
 Licensed under the GNU General Public License.
+.
 .
 .SH "SEE ALSO"
 .BR geese_world (1),
