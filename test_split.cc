@@ -1,5 +1,5 @@
 /**
- * $Id: test_split.cc,v 1.3 2011-06-12 20:56:34 grahn Exp $
+ * $Id: test_split.cc,v 1.4 2011-06-13 21:15:21 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn
  * All rights reserved.
@@ -72,4 +72,14 @@ namespace split_test {
 	void test3() { assert_splits_to("foo \"b r\"",    "foo", "b r"); }
 	void test4() { assert_splits_to("foo   \"b r\" ", "foo", "b r"); }
     }
+
+    namespace empties {
+	void test()
+	{
+	    static const std::vector<string> ref(7, "");
+	    assert_splits_to(" \"\"  \"\" \"\" \"\"  \"\"  \"\"  \"\" ",
+			     ref);
+	}
+    }
+
 }
