@@ -1,4 +1,4 @@
-/* $Id: geese_css.cc,v 1.1 2011-06-14 21:32:38 grahn Exp $
+/* $Id: geese_css.cc,v 1.2 2011-06-14 21:59:48 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn
  * All rights reserved.
@@ -47,18 +47,37 @@ namespace {
     }
 
 
-    bool plot(const Map& mapping, std::ostream& os,
-	      const RT90& coord,
-	      const std::string& tag)
+    /* True if 'coordinate' may lie inside 'map'.
+     * 
+     */
+    bool contains(const Map& map, const RT90& coord)
     {
-	return false;
+	if(map.dimensions.empty()) return true;
+	const Pixel px = map.t(coord);
+	if(px.p.x < 0) return false;
+	if(px.p.y < 0) return false;
+	if(px.p.x > map.dimensions.width) return false;
+	if(px.p.y > map.dimensions.height) return false;
+	return true;
     }
 
 
-    bool plot(const Map& mapping, std::ostream& os, std::istream& labels)
+    void plot(const Map& map, std::ostream& os,
+	      const RT90& coord,
+	      const std::string& tag)
+    {
+	if(!contains(map, coord)) return;
+	const Pixel px = map.t(coord);
+	os << px << " " << tag << '\n';
+    }
+
+
+    bool plot(const Map& map, std::ostream& os, std::istream& labels)
     {
 	using std::vector;
 	using std::string;
+
+	/* XXX I/O errors and parse errors need more work */
 
 	string s;
 	while(getline(labels, s)) {
@@ -67,7 +86,7 @@ namespace {
 	    if(!ss[0].empty() && ss[0][0]=='#') continue;
 
 	    if(ss.size()<3) return false;
-	    const char* end;
+	    char* end;
 	    const double north = std::strtod(ss[0].c_str(), &end);
 	    if(*end) return false;
 	    const double east = std::strtod(ss[1].c_str(), &end);
@@ -75,7 +94,7 @@ namespace {
 	    const string tag = ss[2];
 	    if(tag.empty()) return false;
 
-	    plot(mapping, os, R90(north, east), tag);
+	    plot(map, os, RT90(north, east), tag);
 	}
 
 	return true;
@@ -154,12 +173,12 @@ int main(int argc, char ** argv)
     }
 
     if(optind == argc) {
-	plot(mapping, std::cout, std::cin)
+	plot(mapping, std::cout, std::cin);
     }
 
     while(optind < argc) {
 	const std::string labelfile = argv[optind++];
-	std::ifstream labels(labelfile);
+	std::ifstream labels(labelfile.c_str());
 	plot(mapping, std::cout, labels);
 	labels.close();
     }

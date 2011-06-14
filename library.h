@@ -1,6 +1,6 @@
 /* -*- c++ -*-
  *
- * $Id: library.h,v 1.7 2011-02-05 11:08:27 grahn Exp $
+ * $Id: library.h,v 1.8 2011-06-14 21:59:48 grahn Exp $
  *
  * Copyright (c) 2010, 2011 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -19,6 +19,7 @@ struct Dimensions {
     Dimensions() : width(0), height(0) {}
     double width;
     double height;
+    bool empty() const;
 };
 
 struct Map {

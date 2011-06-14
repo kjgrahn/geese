@@ -1,4 +1,4 @@
-/* $Id: library.cc,v 1.15 2011-02-05 11:08:27 grahn Exp $
+/* $Id: library.cc,v 1.16 2011-06-14 21:59:48 grahn Exp $
  *
  * Copyright (c) 2010, 2011 Jörgen Grahn
  * All rights reserved.
@@ -140,6 +140,14 @@ namespace {
 	}
     }
 
+}
+
+
+bool Dimensions::empty() const
+{
+    /* I assume 0.0==0.0 */
+    const double zero = 0;
+    return width==zero || height==zero;
 }
 
 
