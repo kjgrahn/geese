@@ -1,5 +1,5 @@
 /*
- * $Id: worldfile.cc,v 1.4 2010-09-18 20:35:49 grahn Exp $
+ * $Id: worldfile.cc,v 1.5 2011-06-14 21:32:38 grahn Exp $
  *
  * Copyright (c) 2010 Jörgen Grahn <grahn+src@snipabacken.se>
  * All rights reserved.
@@ -30,7 +30,7 @@ bool parse_world(Transform& t, const std::string& file, std::ostream& log)
     std::vector<double> acc;
     std::string s;
 
-    while(std::getline(is, s)) {
+    while(getline(is, s)) {
 	const char* p = s.c_str();
 	char* end;
 	acc.push_back(std::strtod(p, &end));
