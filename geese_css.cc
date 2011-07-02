@@ -1,4 +1,4 @@
-/* $Id: geese_css.cc,v 1.2 2011-06-14 21:59:48 grahn Exp $
+/* $Id: geese_css.cc,v 1.3 2011-07-02 19:51:56 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn
  * All rights reserved.
@@ -64,11 +64,23 @@ namespace {
 
     void plot(const Map& map, std::ostream& os,
 	      const RT90& coord,
-	      const std::string& tag)
+	      const std::string& label,
+	      const std::string& title,
+	      const std::string& url,
+	      const std::string& cls)
     {
 	if(!contains(map, coord)) return;
 	const Pixel px = map.t(coord);
-	os << px << " " << tag << '\n';
+	const int x = px.p.x + .5;
+	const int y = px.p.y + .5;
+
+	os << "<a style=\"left " << x << "px; top: " << y << "px;\"";
+
+	if(!title.empty()) os << " title=\"" << title << "\"";
+	if(!cls.empty()) os << " class=\"" << cls << "\"";
+	if(!url.empty()) os << " href=\"" << url << "\"";
+
+	os << '>' << label << "</a>\n";
     }
 
 
@@ -91,10 +103,16 @@ namespace {
 	    if(*end) return false;
 	    const double east = std::strtod(ss[1].c_str(), &end);
 	    if(*end) return false;
-	    const string tag = ss[2];
-	    if(tag.empty()) return false;
+	    const string label = ss[2];
+	    if(label.empty()) return false;
+	    string title;
+	    string url;
+	    string cls;
+	    if(ss.size()>3) title = ss[3];
+	    if(ss.size()>4) url = ss[4];
+	    if(ss.size()>5) cls = ss[5];
 
-	    plot(map, os, RT90(north, east), tag);
+	    plot(map, os, RT90(north, east), label, title, url, cls);
 	}
 
 	return true;

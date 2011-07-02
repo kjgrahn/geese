@@ -1,4 +1,4 @@
-.\" $Id: geese_css.1,v 1.2 2011-06-12 19:48:39 grahn Exp $
+.\" $Id: geese_css.1,v 1.3 2011-07-02 19:51:56 grahn Exp $
 .\" $Name:  $
 .
 .
@@ -8,7 +8,7 @@
 ..
 .
 .
-.TH geese_css 1 "JUN 2011" "Geese" "User Manuals"
+.TH geese_css 1 "JUL 2011" "Geese" "User Manuals"
 .
 .SH "NAME"
 geese_css \- generate HTML plotting information on a map
@@ -55,7 +55,7 @@ empty URL as \[dq]\[dq].
 You also have to quote strings containing spaces.
 .PP
 These end up on the map as
-.BR DIV s,
+.BR A s,
 like this:
 .BP north\ east
 The coordinates in
@@ -66,14 +66,14 @@ The text in the DIV.
 .BP title
 An optional
 .B title
-attribute on the DIV. Will render as a popup text in popular browsers.
+attribute on the element. Will render as a popup text in popular browsers.
 .BP url
 If given, turns the text into a link to
 .IR url .
 .BP class
 An optional
 .B class
-attribute on the DIV. May be used e.g. to classify the labels and
+attribute on the element. May be used e.g. to classify the labels and
 colorize them differently.
 .PP
 For example
@@ -93,8 +93,10 @@ ends up something like this:
 .IP
 .ft CW
 .nf
-<div style="left: 75px; top: 65px;" class=foo title=bar>
-<a href="baz">foobar</a></div>
+<a style="left: 60px; top: 50px;"
+title="title"
+class="class"
+href="url">label</a>
 .fi
 .
 .PP
@@ -104,13 +106,12 @@ The surrounding CSS and HTML might look like this:
 .nf
 DIV.map {
     position: relative;
-}
-IMG.map {
+    float: left;
     border-width: 1px;
     border-color: black;
     border-style: solid;
 }
-DIV.map DIV {
+DIV.map A {
     position: absolute;
     background-color: beige;
     line-height: 1.0;
@@ -118,7 +119,7 @@ DIV.map DIV {
 
 <p><div class="map">
 <img class="map" src="foo.jpg">
-<!-- label DIVs go here -->
+<!-- label As go here -->
 </div>
 .fi
 .
@@ -142,6 +143,7 @@ but with the NW corner at it.
 .IP \(bu
 If the image has a border \- which in itself is reasonable \-
 the positioning doesn't take that into account.
+The example CSS above puts a border around the whole DIV; that's a reasonable workaround.
 .
 .
 .SH "AUTHOR"
