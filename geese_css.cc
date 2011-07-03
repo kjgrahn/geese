@@ -1,4 +1,4 @@
-/* $Id: geese_css.cc,v 1.3 2011-07-02 19:51:56 grahn Exp $
+/* $Id: geese_css.cc,v 1.4 2011-07-03 22:29:08 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn
  * All rights reserved.
@@ -74,7 +74,7 @@ namespace {
 	const int x = px.p.x + .5;
 	const int y = px.p.y + .5;
 
-	os << "<a style=\"left " << x << "px; top: " << y << "px;\"";
+	os << "<a style=\"left: " << x << "px; top: " << y << "px;\"";
 
 	if(!title.empty()) os << " title=\"" << title << "\"";
 	if(!cls.empty()) os << " class=\"" << cls << "\"";
@@ -99,10 +99,15 @@ namespace {
 
 	    if(ss.size()<3) return false;
 	    char* end;
-	    const double north = std::strtod(ss[0].c_str(), &end);
+	    double north = std::strtod(ss[0].c_str(), &end);
 	    if(*end) return false;
-	    const double east = std::strtod(ss[1].c_str(), &end);
+	    double east = std::strtod(ss[1].c_str(), &end);
 	    if(*end) return false;
+	    /* XXX this task should be a library function */
+	    while(north < 1e6) {
+                north *= 10;
+                east *= 10;
+	    }
 	    const string label = ss[2];
 	    if(label.empty()) return false;
 	    string title;
