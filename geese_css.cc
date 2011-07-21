@@ -1,4 +1,4 @@
-/* $Id: geese_css.cc,v 1.4 2011-07-03 22:29:08 grahn Exp $
+/* $Id: geese_css.cc,v 1.5 2011-07-21 20:27:02 grahn Exp $
  *
  * Copyright (c) 2011 Jörgen Grahn
  * All rights reserved.
@@ -48,14 +48,15 @@ namespace {
 
 
     /* True if 'coordinate' may lie inside 'map'.
+     * ("May" because maps aren't required to know their size.)
      * 
      */
     bool contains(const Map& map, const RT90& coord)
     {
-	if(map.dimensions.empty()) return true;
 	const Pixel px = map.t(coord);
 	if(px.p.x < 0) return false;
 	if(px.p.y < 0) return false;
+	if(map.dimensions.empty()) return true;
 	if(px.p.x > map.dimensions.width) return false;
 	if(px.p.y > map.dimensions.height) return false;
 	return true;
