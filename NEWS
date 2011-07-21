@@ -4,6 +4,11 @@ Major changes (with focus on user-visible changes) to 'geese', per version.
 
 _________________________________________
 
+geese 2.10 (2011-07-21):
+
+  - New utility geese_css(1) - generate HTML plotting information on a
+    map.
+
 geese 2.9 (2011-02-06):
 
   - geese_ref and geese_world now include image dimensions in the
@@ -132,5 +137,5 @@ geese 1.0 (2004-08-09):
     sometimes report incorrect coordinates for places was recently
     fixed.
 _________________________________________
-$Id: NEWS,v 1.27 2011-02-06 15:15:15 grahn Exp $
+$Id: NEWS,v 1.28 2011-07-21 20:29:23 grahn Exp $
 $Name:  $
