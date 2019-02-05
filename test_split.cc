@@ -7,7 +7,7 @@
  */
 #include "split.h"
 
-#include <testicle.h>
+#include <orchis.h>
 
 namespace {
 
@@ -22,11 +22,11 @@ namespace {
 	vector<string>::const_iterator ri = ref.begin();
 
 	while(vi!=v.end() && ri!=ref.end()) {
-	    testicle::assert_eq(*vi, *ri);
+	    orchis::assert_eq(*vi, *ri);
 	    ++vi; ++ri;
 	}
 
-	testicle::assert_eq(v.size(), ref.size());
+	orchis::assert_eq(v.size(), ref.size());
     }
 
     void assert_splits_to(const std::string& s,
@@ -37,9 +37,9 @@ namespace {
 	using std::string;
 
 	const vector<string> v = split(s);
-	testicle::assert_eq(v.size(), 2);
-	testicle::assert_eq(v[0], a);
-	testicle::assert_eq(v[1], b);
+	orchis::assert_eq(v.size(), 2);
+	orchis::assert_eq(v[0], a);
+	orchis::assert_eq(v[1], b);
     }
 }
 

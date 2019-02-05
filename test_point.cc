@@ -7,26 +7,28 @@
  */
 #include "point.h"
 
-#include <testicle.h>
+#include <orchis.h>
 
 namespace {
 
     void assert_in(double a, double val, double b)
     {
-	testicle::assert_lt(a, val);
-	testicle::assert_lt(val, b);
+	orchis::assert_lt(a, val);
+	orchis::assert_lt(val, b);
     }
 
     void assert_near(double a, double val)
     {
 	const double epsilon = 1e-6;
-	testicle::assert_lt(a-epsilon, val);
-	testicle::assert_lt(val, a+epsilon);
+	orchis::assert_lt(a-epsilon, val);
+	orchis::assert_lt(val, a+epsilon);
     }
 
 }
 
 namespace point {
+
+    using orchis::TC;
 
     const Point  e( 1,  0);
     const Point ne( 1,  1);
@@ -37,7 +39,7 @@ namespace point {
     const Point  s( 0, -1);
     const Point se( 1, -1);
 
-    void test_length()
+    void length(TC)
     {
 	assert_near(1, e.len());
 	assert_near(1, n.len());
@@ -56,7 +58,7 @@ namespace point {
 	assert_near(1e8, Point(0, 1e8).len());
     }
 
-    void test_sin()
+    void sin(TC)
     {
 	assert_near( 0, e.sin());
 	assert_near( 1, n.sin());
@@ -71,7 +73,7 @@ namespace point {
 	assert_near(0.70710678, Point(1e6, 1e6).sin());
     }
 
-    void test_cos()
+    void cos(TC)
     {
 	assert_near( 1, e.cos());
 	assert_near( 0, n.cos());
@@ -86,7 +88,7 @@ namespace point {
 	assert_near(0.70710678, Point(1e6, 1e6).cos());
     }
 
-    void test_distance()
+    void distance(TC)
     {
 	const Point a(10, 10);
 	const Point b(13, 14);

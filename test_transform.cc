@@ -7,7 +7,7 @@
  */
 #include "transform.h"
 
-#include <testicle.h>
+#include <orchis.h>
 
 namespace {
 
@@ -16,8 +16,8 @@ namespace {
      */
     void assert_in(double a, double val, double b)
     {
-	testicle::assert_lt(a, val);
-	testicle::assert_lt(val, b);
+	orchis::assert_lt(a, val);
+	orchis::assert_lt(val, b);
     }
 
     /**
@@ -90,6 +90,8 @@ namespace Aaa {
     }
 }
 
+using orchis::TC;
+
 
 /* Testing the 'in' transformation -- from the real world onto the
  * map, i.e. from RT90 to Pixel.
@@ -131,7 +133,7 @@ namespace in {
 
     namespace freeform {
 
-	void test_a()
+	void a(TC)
 	{
 	    for(int x=-100; x<100; x+=4) {
 		for(int y=-100; y<100; y+=4) {
@@ -142,7 +144,7 @@ namespace in {
 	    }
 	}
 
-	void test_b()
+	void b(TC)
 	{
 	    for(int x=-100; x<100; x+=4) {
 		for(int y=-100; y<100; y+=4) {
@@ -156,7 +158,7 @@ namespace in {
 
     namespace transposition {
 
-	void test_carpet()
+	void carpet(TC)
 	{
 	    for(int x=-100; x<100; x+=3) {
 		for(int y=-100; y<100; y+=3) {
@@ -167,7 +169,7 @@ namespace in {
 	    }
 	}
 
-	void test_carpet2()
+	void carpet2(TC)
 	{
 	    for(int x=-100; x<100; x+=3) {
 		for(int y=-100; y<100; y+=3) {
@@ -178,7 +180,7 @@ namespace in {
 	    }
 	}
 
-	void test_unrotated()
+	void unrotated(TC)
 	{
 	    const Transform T(RT90(8, 0),  Pixel(0, 0),
 			      RT90(0, 16), Pixel(16, 8));
@@ -196,7 +198,7 @@ namespace in {
 
     namespace scaling {
 
-	void test_blowup1()
+	void blowup1(TC)
 	{
 	    const Transform T(RT90(0, 0), Pixel(0,16),
 			      RT90(0,16), Pixel(32,16));
@@ -206,7 +208,7 @@ namespace in {
 	    assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
 	}
 
-	void test_blowup2()
+	void blowup2(TC)
 	{
 	    const Transform T(RT90(0, 0), Pixel(0,16),
 			      RT90(8, 0), Pixel(0, 0));
@@ -216,7 +218,7 @@ namespace in {
 	    assert_near(RT90(0,16), Pixel(32,16), 1e-6, T);
 	}
 
-	void test_blowup3()
+	void blowup3(TC)
 	{
 	    const Transform T(RT90(0,16), Pixel(32,16),
 			      RT90(8, 0), Pixel( 0, 0));
@@ -229,7 +231,7 @@ namespace in {
 
     namespace rotation {
 
-	void test_e()
+	void e(TC)
 	{
 	    const Transform T(RT90(0, 0),  Pixel(0, 0),
 			      RT90(0, 16), Pixel(16, 0));
@@ -238,7 +240,7 @@ namespace in {
 	    assert_near(RT90(0, 16), Pixel(16, 0), 1e-6, T);
 	}
 
-	void test_e2()
+	void e2(TC)
 	{
 	    const Transform T(RT90(0, 16), Pixel(16, 0),
 			      RT90(0, 0),  Pixel(0, 0));
@@ -247,7 +249,7 @@ namespace in {
 	    assert_near(RT90(0, 16), Pixel(16, 0), 1e-6, T);
 	}
 
-	void test_s()
+	void s(TC)
 	{
 	    const Transform T(RT90(0, 0),  Pixel(0, 0),
 			      RT90(0, 16), Pixel(0, 16));
@@ -256,7 +258,7 @@ namespace in {
 	    assert_near(RT90(0, 16), Pixel(0, 16), 1e-6, T);
 	}
 
-	void test_w()
+	void w(TC)
 	{
 	    const Transform T(RT90(0, 0),  Pixel(0, 0),
 			      RT90(0, 16), Pixel(-16, 0));
@@ -265,7 +267,7 @@ namespace in {
 	    assert_near(RT90(0, 16), Pixel(-16, 0), 1e-6, T);
 	}
 
-	void test_w2()
+	void w2(TC)
 	{
 	    const Transform T(RT90(0, 16), Pixel(-16, 0),
 			      RT90(0, 0),  Pixel(0, 0));
@@ -274,7 +276,7 @@ namespace in {
 	    assert_near(RT90(0, 16), Pixel(-16, 0), 1e-6, T);
 	}
 
-	void test_n()
+	void n(TC)
 	{
 	    const Transform T(RT90(0, 0),  Pixel(0, 0),
 			      RT90(0, 16), Pixel(0, -16));
@@ -283,7 +285,7 @@ namespace in {
 	    assert_near(RT90(0, 16), Pixel(0, -16), 1e-6, T);
 	}
 
-	void test_se()
+	void se(TC)
 	{
 	    const Transform T(RT90(0, 0),  Pixel(0, 0),
 			      RT90(0, 16), Pixel(11.31, 11.31));
@@ -292,7 +294,7 @@ namespace in {
 	    assert_near(RT90(0, 16), Pixel(11.31, 11.31), 1e-6, T);
 	}
 
-	void test_se2()
+	void se2(TC)
 	{
 	    const Transform T(RT90(0, 16), Pixel(11.31, 11.31),
 			      RT90(0, 0),  Pixel(0, 0));
@@ -344,7 +346,7 @@ namespace out {
 
     namespace freeform {
 
-	void test_a()
+	void a(TC)
 	{
 	    for(int x=-100; x<100; x+=4) {
 		for(int y=-100; y<100; y+=4) {
@@ -355,7 +357,7 @@ namespace out {
 	    }
 	}
 
-	void test_b()
+	void b(TC)
 	{
 	    for(int x=-100; x<100; x+=4) {
 		for(int y=-100; y<100; y+=4) {
@@ -388,7 +390,7 @@ namespace props {
     const RT90 B(1, 0);
     const Pixel a(0, 0);
 
-    void test_scale()
+    void scale(TC)
     {
 	assert_near(Transform(A, a, B, Pixel(1, 0)).scale(),
 		    1, 1e-6);
@@ -400,7 +402,7 @@ namespace props {
 		    1/5.0, 1e-6);
     }
 
-    void test_rotation()
+    void rotation(TC)
     {
        	/*     	 1
 	 *    8	 |  5
