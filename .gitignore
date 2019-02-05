@@ -1,0 +1,13 @@
+*.o
+lib*.a
+dep/
+geese_pick
+geese_ref
+geese_world
+geese_fit
+geese_css
+build/
+TAGS
+*.pyc
+tests
+test.cc
