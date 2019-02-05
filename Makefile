@@ -30,7 +30,7 @@ clean:
 	$(RM) *.o Makefile.bak core TAGS
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
-	$(RM) geese_{pick,ref,world,fit}
+	$(RM) geese_{pick,ref,world,fit,css}
 
 .PHONY: check checkv
 check: pycheck
