@@ -46,7 +46,7 @@ pycheck: test.py
 %.1.ps : %.1
 	groff -man $< >$@
 
-CXXFLAGS=-Wall -Wextra -pedantic -Wold-style-cast -std=c++98 -g -O3
+CXXFLAGS=-Wall -Wextra -pedantic -Wold-style-cast -std=c++11 -g -O3
 CFLAGS=-Wall -Wextra -pedantic -std=c99 -g -O3
 
 geese_pick: geese_pick.o libgeese.a
