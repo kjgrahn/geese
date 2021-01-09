@@ -31,6 +31,7 @@ clean:
 	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
 	$(RM) geese_{pick,ref,world,fit,css}
+	$(RM) -r dep/
 
 .PHONY: check checkv
 check: pycheck
@@ -90,40 +91,23 @@ libtest.a: test_md5.o
 libtest.a: test_split.o
 	$(AR) -r $@ $^
 
-.PHONY: tags
+.PHONY: tags TAGS
 tags: TAGS
 TAGS:
 	etags *.cc *.h
-
-depend:
-	makedepend -- $(CFLAGS) -- -Y *.cc *.c
 
 love:
 	@echo "not war?"
 
 # DO NOT DELETE
 
-child.o: child.h
-geese_css.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
-geese_css.o: md5pp.h md5.h split.h
-geese_fit.o: library.h transform.h point.h
-geese_pick.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
-geese_pick.o: md5pp.h md5.h
-geese_ref.o: library.h transform.h point.h child.h xvpixel.h worldfile.h
-geese_ref.o: md5pp.h md5.h sumdim.h
-geese_world.o: library.h transform.h point.h worldfile.h md5pp.h md5.h
-geese_world.o: sumdim.h
-globbing.o: globbing.h
-library.o: library.h transform.h point.h regex.h worldfile.h globbing.h
-md5pp.o: md5pp.h md5.h
-point.o: point.h
-split.o: split.h
-sumdim.o: sumdim.h md5pp.h md5.h
-test_md5.o: md5.h md5pp.h
-test_point.o: point.h
-test_split.o: split.h
-test_transform.o: transform.h point.h
-transform.o: transform.h point.h
-worldfile.o: worldfile.h transform.h point.h
-xvpixel.o: xvpixel.h transform.h point.h
-md5.o: md5.h
+$(shell mkdir -p dep)
+DEPFLAGS=-MT $@ -MMD -MP -MF dep/$*.Td
+COMPILE.cc=$(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+
+%.o: %.cc
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	@mv dep/$*.{Td,d}
+
+dep/%.d: ;
+-include dep/*.d
