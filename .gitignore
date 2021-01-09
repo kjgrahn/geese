@@ -5,6 +5,7 @@ geese_pick
 geese_ref
 geese_world
 geese_fit
+geese_plot
 geese_css
 build/
 TAGS

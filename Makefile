@@ -15,6 +15,7 @@ all: geese_world
 all: geese_fit
 all: geese_plot
 all: geese_css
+all: tests
 
 .PHONY: install
 install:
@@ -26,9 +27,9 @@ install:
 .PHONY: clean
 clean:
 	$(RM) tests test.cc libtest.a libgeese.a
-	$(RM) *.o Makefile.bak core TAGS
+	$(RM) *.o core TAGS
 	$(RM) geese_*.1.ps
-	$(RM) geese_{pick,ref,world,fit,css}
+	$(RM) geese_{pick,ref,world,fit,plot,css}
 	$(RM) -r dep/
 
 .PHONY: check checkv
@@ -55,6 +56,9 @@ geese_world: geese_world.o libgeese.a
 geese_fit: geese_fit.o libgeese.a
 	$(CXX) -o $@ geese_fit.o -L. -lgeese -lanydim
 
+geese_plot: geese_plot.o libgeese.a
+	$(CXX) -o $@ geese_plot.o -L. -lgeese -lanydim -lgd
+
 geese_css: geese_css.o libgeese.a
 	$(CXX) -o $@ geese_css.o -L. -lgeese -lanydim
 
@@ -71,6 +75,7 @@ libgeese.a: split.o
 libgeese.a: globbing.o
 libgeese.a: child.o
 libgeese.a: xvpixel.o
+libgeese.a: canvas.o
 libgeese.a: worldfile.o
 libgeese.a: library.o
 libgeese.a: transform.o

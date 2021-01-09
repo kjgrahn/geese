@@ -7,11 +7,16 @@
 geese_plot \- plot coordinates on maps
 .SH "SYNOPSIS"
 .B geese_plot
-.RI [ \-V ]
 .RB [ \-t
 .IR format ]
 .BI \-f\  mapping-file
 .I map-file
+.br
+.B geese_plot
+.BR \-V | --version
+.br
+.B geese_plot
+.B --help
 .
 .SH "DESCRIPTION"
 .B geese_plot
@@ -33,11 +38,11 @@ for details).
 Render the plotted map in graphics format
 .IR format ,
 which can be either
-.I jpeg
+.B jpeg
 or
-.IR png .
+.BR png .
 Default is
-.IR jpeg ,
+.BR jpeg ,
 which generates much faster, but loses some detail.
 .IP
 Other formats such as
