@@ -43,6 +43,18 @@ namespace {
     }
 }
 
+/**
+ * True iff the coordinate seems to be in Sweden.
+ */
+bool valid(const RT90& c)
+{
+    auto in_range = [] (unsigned a, double v, unsigned b) {
+	return a < v && v < b;
+    };
+
+    return in_range(6100000, c.p.y, 7800000) &&
+	   in_range(1200000, c.p.x, 1900000);
+}
 
 /**
  * Print as e.g. "6442400.0 1362217.0".

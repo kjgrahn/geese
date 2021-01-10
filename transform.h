@@ -38,6 +38,8 @@ inline double distance(const RT90& a, const RT90& b) {
     return distance(a.p, b.p);
 }
 
+bool valid(const RT90& val);
+
 std::ostream& operator<< (std::ostream& os, const RT90::Format f);
 
 
