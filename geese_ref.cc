@@ -19,6 +19,7 @@
 #include "worldfile.h"
 #include "md5pp.h"
 #include "sumdim.h"
+#include "version.h"
 
 namespace {
 
@@ -160,9 +161,9 @@ int main(int argc, char ** argv)
 	    std::cout << usage << '\n';
 	    return 0;
 	case 'v':
-	    std::string version();
-	    std::cout << prog << ", part of geese " << version() << "\n"
-		      << "Copyright (c) 2010, 2011 Jörgen Grahn\n";
+	    std::cout << prog << ", part of "
+		      << version::geese() << ' ' << version::version() << '\n'
+		      << version::copyright() << '\n';
 	    return 0;
 	    break;
 	case ':':

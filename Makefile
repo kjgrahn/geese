@@ -82,7 +82,6 @@ libgeese.a: worldfile.o
 libgeese.a: library.o
 libgeese.a: transform.o
 libgeese.a: point.o
-libgeese.a: version.o
 	$(AR) -r $@ $^
 
 libtest.a: test_point.o
