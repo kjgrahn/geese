@@ -18,7 +18,6 @@ all: geese_css
 
 .PHONY: install
 install:
-	python ./setup.py install --force
 	install -m755 geese_{pick,ref,world} $(INSTALLBASE)/bin/
 	install -m755 geese_{fit,plot,css} $(INSTALLBASE)/bin/
 	install -m644 geese_{pick,ref,world}.1 $(INSTALLBASE)/man/man1/
@@ -28,21 +27,15 @@ install:
 clean:
 	$(RM) tests test.cc libtest.a libgeese.a
 	$(RM) *.o Makefile.bak core TAGS
-	$(RM) *.pyc ChangeLog ChangeLog.bak MANIFEST
 	$(RM) geese_*.1.ps
 	$(RM) geese_{pick,ref,world,fit,css}
 	$(RM) -r dep/
 
 .PHONY: check checkv
-check: pycheck
 check: tests
 	./tests
 checkv: tests
 	valgrind -q ./tests -v
-
-.PHONY: pycheck
-pycheck: test.py
-	PYTHONPATH=.. ./test.py
 
 %.1.ps : %.1
 	groff -man $< >$@

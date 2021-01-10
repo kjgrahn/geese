@@ -1,5 +1,0 @@
-include NEWS
-include geese_pick
-include geese_pick.1
-include geese_plot
-include geese_plot.1
