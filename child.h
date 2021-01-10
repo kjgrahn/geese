@@ -11,8 +11,8 @@
 struct Child {
     explicit Child(char** argv);
     ~Child();
-    int child;
 private:
+    int child;
     Child();
     Child(const Child&);
     Child& operator= (const Child&);
