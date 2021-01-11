@@ -3,12 +3,9 @@ The `geese' package
 Geese is a set of utilities for manipulating coordinates and
 coordinate systems on bitmapped maps.
 
-It's both a library for use from Python programs (the 'skatan'
-stuff depends on parts of it) and utilities you can run, namely
-'geese_pick', 'geese_plot', and so on.
-
-Some of these have been (re)written in C++, but the Python library
-still exists.
+At one point it was a set of Python modules too, but these have been
+obsoleted; they were never ported to Python 3. Now it's all written
+in C++.
 
 Basically, geese is based on the following observations:
 
@@ -25,24 +22,24 @@ Basically, geese is based on the following observations:
   mapping.
 
 Geese is mostly limited to handle coordinates in the "Rikets Nät"
-(RT-90, "Swedish Grid"). See geese.segrid for details.  It's probably
-trivial to generalize it to other national systems working along the
-same principles, but I don't want to mess with broad generalizations
-for which I have no test data or documentation ...
+(RT-90, "Swedish Grid"). It's probably trivial to generalize it to
+other national systems working along the same principles, but I don't
+want to mess with broad generalizations for which I have no test data
+or documentation ...
 
 
 INSTALLATION AND REQUIREMENTS
 
-Use the Makefile ('make install') for installation. This will
-install the command-line tool(s), documentation and (indirectly,
-through Python's 'distutils') the 'geese' Python package.
+Use the Makefile ('make && make install') for installation. This will
+install the command-line tools and documentation.
 
-Python 2.3 or higher is required for installation and use. (Although I
-cannot verify that any more, since I use Python 2.5 and 2.6 these
-days.)
-
-Some parts also need PIL, aka the Python Imaging Library (the Image
-and ImageDraw modules).  Others need John Bradley's 'xv' image viewer.
+You need:
+- a Unix system
+- a C++11 compiler
+- anydim <git://snipabacken.se/anydim>
+- orchis <git://snipabacken.se/orchis> if you want to run the unit tests
+- libgd  <https://libgd.github.io>
+- John Bradley's 'xv' image viewer.
 
 
 AUTHOR
