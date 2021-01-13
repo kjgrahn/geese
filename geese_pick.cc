@@ -13,7 +13,7 @@
 #include <getopt.h>
 
 #include "library.h"
-#include "child.h"
+#include "xv.h"
 #include "xvpixel.h"
 #include "worldfile.h"
 #include "md5pp.h"
@@ -51,8 +51,7 @@ namespace {
      */
     void pick(const Transform& t, const std::string& mapfile)
     {
-	const char* xvargs[] = { "xv", mapfile.c_str(), 0 };
-	Child xv(const_cast<char**>(xvargs));
+	xv::Child xv(mapfile);
 
 	int i = 0;
 	RT90 prev(0,0);

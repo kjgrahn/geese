@@ -44,9 +44,33 @@ void Canvas::plot(const Pixel& px)
     circle(eye.width.inner, eye.color);
 }
 
-const std::string Canvas::write() const
+namespace {
+
+    int putBuf(gdIOCtx* ctx, const void* buf, int len)
+    {
+	xv::Sink* const sink = static_cast<xv::Sink*>(ctx->data);
+	if (sink->write(buf, len)) return len;
+	return 0;
+    }
+
+    void putC(gdIOCtx* ctx, int n)
+    {
+	char ch = n;
+	putBuf(ctx, &ch, 1);
+    }
+}
+
+/**
+ * Write the image to a sink. Hidden inside xv::Sink is a pipe;
+ * we really write to 'xv -'.
+ */
+void Canvas::write(xv::Sink& sink) const
 {
-    const std::string name = "/tmp/foo.jpg";
-    gdImageFile(im, name.c_str());
-    return name;
+    gdIOCtx ctx;
+    ctx.putC = putC;
+    ctx.putBuf = putBuf;
+    ctx.data = &sink;
+
+    gdImagePngCtx(im, &ctx);
+    sink.eof();
 }

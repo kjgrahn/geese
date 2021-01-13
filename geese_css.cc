@@ -13,8 +13,6 @@
 #include <getopt.h>
 
 #include "library.h"
-#include "child.h"
-#include "xvpixel.h"
 #include "worldfile.h"
 #include "md5pp.h"
 #include "split.h"

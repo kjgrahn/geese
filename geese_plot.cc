@@ -11,7 +11,7 @@
 #include <getopt.h>
 
 #include "library.h"
-#include "child.h"
+#include "xv.h"
 #include "canvas.h"
 #include "md5pp.h"
 #include "split.h"
@@ -35,7 +35,7 @@ namespace {
     private:
 	void add(const RT90& coord);
 	void bullseye(const std::string& color, unsigned width);
-	void show(std::istream& is) const;
+	void show() const;
 
 	const Transform& t;
 	Canvas canvas;
@@ -93,7 +93,7 @@ namespace {
 
 	    const auto& s0 = ss[0];
 	    if (s0=="show") {
-		show(is);
+		show();
 	    }
 	    else if (s0=="bullseye") {
 
@@ -137,15 +137,13 @@ namespace {
 	canvas.bullseye(color, width);
     }
 
-    void Plot::show(std::istream& is) const
+    void Plot::show() const
     {
-	const auto name = canvas.write();
-
-	const char* xvargs[] = { "xv", name.c_str(), 0 };
-	Child xv(const_cast<char**>(xvargs));
-
-	std::string s;
-	getline(is, s);
+	std::cout << "displaying ... " << std::flush;
+	xv::Sink xv;
+	canvas.write(xv);
+	std::cout << "ok. Close viewer to continue.\n" << std::flush;
+	xv.wait();
     }
 
     struct fmt {

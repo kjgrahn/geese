@@ -73,7 +73,7 @@ libgeese.a: md5pp.o
 libgeese.a: sumdim.o
 libgeese.a: split.o
 libgeese.a: globbing.o
-libgeese.a: child.o
+libgeese.a: xv.o
 libgeese.a: xvpixel.o
 libgeese.a: canvas.o
 libgeese.a: worldfile.o

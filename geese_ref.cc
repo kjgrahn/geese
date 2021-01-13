@@ -14,7 +14,7 @@
 #include <getopt.h>
 
 #include "library.h"
-#include "child.h"
+#include "xv.h"
 #include "xvpixel.h"
 #include "worldfile.h"
 #include "md5pp.h"
@@ -66,10 +66,8 @@ namespace {
 
 	const SumDim sumdim = sum_dim(map);
 
-	const char* xvargs[] = { "xv", refmap.c_str(), 0 };
-	Child rxv(const_cast<char**>(xvargs));
-	xvargs[1] = map.c_str();
-	Child xv(const_cast<char**>(xvargs));
+	xv::Child rxv {refmap};
+	xv::Child xv {map};
 
 	cout << "Start pasting coordinates, pair by pair.\n"
 	     << "The reference map's first point, then the\n"

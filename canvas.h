@@ -4,6 +4,8 @@
 #ifndef GEESE_CANVAS_H
 #define GEESE_CANVAS_H
 
+#include "xv.h"
+
 #include <string>
 
 class Pixel;
@@ -25,7 +27,7 @@ public:
 
     void bullseye(const std::string& color, unsigned width);
     void plot(const Pixel& px);
-    const std::string write() const;
+    void write(xv::Sink& sink) const;
 
 private:
     struct gdImageStruct* const im;
