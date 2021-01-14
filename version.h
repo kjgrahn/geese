@@ -7,7 +7,7 @@
 namespace version {
 
     inline const char* geese()   { return "geese"; }
-    inline const char* version() { return "2.10"; }
+    inline const char* version() { return "2.11"; }
     inline const char* copyright() {
 	return "Copyright (c) 2004--2011, 2021 Jörgen Grahn";
     }
