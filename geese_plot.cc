@@ -25,9 +25,9 @@ namespace {
      */
     class Plot {
     public:
-	Plot(const Transform& t, const std::string& mapfile)
+	Plot(const Transform& t, const std::string& mapfile, bool jpeg)
 	    : t {t},
-	      canvas {mapfile}
+	      canvas {mapfile, jpeg}
 	{}
 
 	int run(std::istream& is, std::ostream& os);
@@ -174,23 +174,22 @@ namespace {
 
 int main(int argc, char ** argv)
 {
-    using std::string;
-
-    const string prog = argv[0] ? argv[0] : "geese_plot";
-    const string usage = string("usage: ")
+    const std::string prog = argv[0] ? argv[0] : "geese_plot";
+    const std::string usage = "usage: "
 	+ prog + " [-t format] -f mapping-file map-file\n"
 	"       "
 	+ prog + " --version\n"
 	"       "
 	+ prog + " --help";
-    const char optstring[] = "+Vf:";
+    const char optstring[] = "t:f:";
     struct option long_options[] = {
 	{"version", 0, 0, 'V'},
 	{"help", 0, 0, 'h'},
 	{0, 0, 0, 0}
     };
 
-    string libfile;
+    std::string libfile;
+    std::string format = "jpeg";
 
     std::cin.sync_with_stdio(false);
     std::cout.sync_with_stdio(false);
@@ -201,6 +200,9 @@ int main(int argc, char ** argv)
 	switch(ch) {
 	case 'f':
 	    libfile = optarg;
+	    break;
+	case 't':
+	    format = optarg;
 	    break;
 	case 'h':
 	    std::cout << usage << '\n';
@@ -227,7 +229,14 @@ int main(int argc, char ** argv)
 	return 1;
     }
 
-    const string mapfile = argv[optind];
+    const bool jpeg = (format == "jpeg");
+    if (!jpeg && format != "png") {
+	std::cerr << "error: unsupported -t argument\n";
+	std::cerr << usage << '\n';
+	return 1;
+    }
+
+    const std::string mapfile = argv[optind];
 
     const Map mapping = find_mapping(mapfile,
 				     libfile, {},
@@ -250,11 +259,10 @@ int main(int argc, char ** argv)
     const double area = scale * mapping.dimensions.width
 	              * scale * mapping.dimensions.height;
 
-    std::cout << prog << ": displaying map ...\n"
-	      << "one pixel is " << fmt(scale) << " m wide\n"
+    std::cout << "one pixel is " << fmt(scale) << " m wide\n"
 	      << "the map covers " << fmt(area/1e6) << " km²\n"
 	      << "and is rotated " << fmt(t.rotation()) << "°\n"
 	      << t << '\n';
 
-    return Plot {t, mapfile}.run(std::cin, std::cout);
+    return Plot {t, mapfile, jpeg}.run(std::cin, std::cout);
 }

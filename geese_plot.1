@@ -2,9 +2,11 @@
 .\" $Name:  $
 .\" 
 .\"
-.TH geese_plot 1 "AUG 2007" "Geese" "User Manuals"
+.TH geese_plot 1 "JAN 2021" "Geese" "User Manuals"
+.
 .SH "NAME"
 geese_plot \- plot coordinates on maps
+.
 .SH "SYNOPSIS"
 .B geese_plot
 .RB [ \-t
@@ -13,7 +15,7 @@ geese_plot \- plot coordinates on maps
 .I map-file
 .br
 .B geese_plot
-.BR \-V | --version
+.B --version
 .br
 .B geese_plot
 .B --help
@@ -44,18 +46,6 @@ or
 Default is
 .BR jpeg ,
 which generates much faster, but loses some detail.
-.IP
-Other formats such as
-.IR gif ,
-.I ppm
-and
-.I tiff
-are also likely to be supported; the name is simply passed through to the
-.SM PIL
-library which encodes the image.
-.
-.IP \-V
-Print version information and exit.
 .
 .SH "USAGE"
 .B geese_plot

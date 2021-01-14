@@ -10,6 +10,7 @@
 
 class Pixel;
 struct gdImageStruct;
+struct gdIOCtx;
 
 /**
  * A canvas with a background image loaded from file.
@@ -20,7 +21,7 @@ struct gdImageStruct;
  */
 class Canvas {
 public:
-    explicit Canvas(const std::string& file);
+    Canvas(const std::string& file, bool use_jpeg);
     Canvas(const Canvas&) = delete;
     Canvas& operator= (const Canvas&) = delete;
     ~Canvas();
@@ -30,7 +31,8 @@ public:
     void write(xv::Sink& sink) const;
 
 private:
-    struct gdImageStruct* const im;
+    gdImageStruct* const im;
+    void (* const writep) (gdImageStruct* im, gdIOCtx* out);
     const int white;
     const int black;
     struct Bullseye {

@@ -8,8 +8,22 @@
 #include <gd.h>
 #include <cmath>
 
-Canvas::Canvas(const std::string& file)
+namespace {
+
+    void write_jpeg(gdImageStruct* im, gdIOCtx* ctx)
+    {
+	gdImageJpegCtx(im, ctx, 80);
+    }
+
+    void write_png(gdImageStruct* im, gdIOCtx* ctx)
+    {
+	gdImagePngCtxEx(im, ctx, 3);
+    }
+}
+
+Canvas::Canvas(const std::string& file, bool use_jpeg)
     : im {gdImageCreateFromFile(file.c_str())},
+      writep { use_jpeg ? write_jpeg : write_png},
       white {gdImageColorAllocate(im, 255, 255, 255)},
       black {gdImageColorAllocate(im, 0, 0, 0)},
       eye {white, {10, 16}}
@@ -71,6 +85,6 @@ void Canvas::write(xv::Sink& sink) const
     ctx.putBuf = putBuf;
     ctx.data = &sink;
 
-    gdImagePngCtx(im, &ctx);
+    writep(im, &ctx);
     sink.eof();
 }
