@@ -23,7 +23,7 @@ SumDim::SumDim(std::istream& in)
       bad(false)
 {
     md5::Ctx ctx;
-    anydim::AnyDim dim;
+    anydim::AnyDim dim {true};
     char buf[4096];
     unsigned char* const ubuf = reinterpret_cast<unsigned char*>(buf);
     while(in) {
