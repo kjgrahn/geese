@@ -26,8 +26,8 @@ install:
 
 .PHONY: clean
 clean:
-	$(RM) tests test.cc libtest.a libgeese.a
-	$(RM) *.o core TAGS
+	$(RM) tests test/test.cc test/libtest.a libgeese.a
+	$(RM) *.o test/*.o core TAGS
 	$(RM) geese_*.1.ps
 	$(RM) geese_{pick,ref,world,fit,plot,css}
 	$(RM) -r dep/
@@ -43,30 +43,32 @@ checkv: tests
 
 CXXFLAGS=-Wall -Wextra -pedantic -Wold-style-cast -std=c++11 -g -O3
 CFLAGS=-Wall -Wextra -pedantic -std=c99 -g -O3
+CPPFLAGS=
+ARFLAGS=rTP
 
 geese_pick: geese_pick.o libgeese.a
-	$(CXX) -o $@ geese_pick.o -L. -lgeese -lanydim
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lgeese -lanydim
 
 geese_ref: geese_ref.o libgeese.a
-	$(CXX) -o $@ geese_ref.o -L. -lgeese -lanydim
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lgeese -lanydim
 
 geese_world: geese_world.o libgeese.a
-	$(CXX) -o $@ geese_world.o -L. -lgeese -lanydim
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lgeese -lanydim
 
 geese_fit: geese_fit.o libgeese.a
-	$(CXX) -o $@ geese_fit.o -L. -lgeese -lanydim
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lgeese -lanydim
 
 geese_plot: geese_plot.o libgeese.a
-	$(CXX) -o $@ geese_plot.o -L. -lgeese -lanydim -lgd
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lgeese -lanydim -lgd
 
 geese_css: geese_css.o libgeese.a
-	$(CXX) -o $@ geese_css.o -L. -lgeese -lanydim
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lgeese -lanydim
 
-test.cc: libtest.a
-	testicle -o$@ $^
+test/test.cc: test/libtest.a
+	orchis -o$@ $^
 
-tests: test.o libgeese.a libtest.a
-	$(CXX) -o $@ test.o -L. -ltest -lgeese -lm
+tests: test/test.o libgeese.a test/libtest.a
+	$(CXX) -o $@ $< -L. -Ltest/ -ltest -lgeese -lm
 
 libgeese.a: md5.o
 libgeese.a: md5pp.o
@@ -80,13 +82,15 @@ libgeese.a: worldfile.o
 libgeese.a: library.o
 libgeese.a: transform.o
 libgeese.a: point.o
-	$(AR) -r $@ $^
+	$(AR) $(ARFLAGS) $@ $^
 
-libtest.a: test_point.o
-libtest.a: test_transform.o
-libtest.a: test_md5.o
-libtest.a: test_split.o
-	$(AR) -r $@ $^
+test/libtest.a: test/point.o
+test/libtest.a: test/transform.o
+test/libtest.a: test/md5.o
+test/libtest.a: test/split.o
+	$(AR) $(ARFLAGS) $@ $^
+
+test/%.o: CPPFLAGS+=-I.
 
 .PHONY: tags TAGS
 tags: TAGS
@@ -98,7 +102,7 @@ love:
 
 # DO NOT DELETE
 
-$(shell mkdir -p dep)
+$(shell mkdir -p dep{,/test})
 DEPFLAGS=-MT $@ -MMD -MP -MF dep/$*.Td
 COMPILE.cc=$(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 COMPILE.c=$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
@@ -112,4 +116,6 @@ COMPILE.c=$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 	@mv dep/$*.{Td,d}
 
 dep/%.d: ;
+dep/test/%.d: ;
 -include dep/*.d
+-include dep/test/*.d
