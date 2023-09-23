@@ -1,17 +1,26 @@
 /* -*- c++ -*-
  *
- * $Id: split.h,v 1.2 2011-06-12 20:51:44 grahn Exp $
- *
- * Copyright (c) 2011 Jörgen Grahn
+ * Copyright (c) 2019 Jörgen Grahn
  * All rights reserved.
  */
-#ifndef GEESE_SPLIT_H
-#define GEESE_SPLIT_H
+#ifndef ORCHIS_SPLIT_H
+#define ORCHIS_SPLIT_H
 
 #include <string>
 #include <vector>
 
-std::vector<std::string> split(const char* a, const char* b);
-std::vector<std::string> split(const std::string& s);
+std::vector<std::string> split(const std::string& s, size_t limit = 0);
+std::vector<std::string> split(const char* a, const char* b,
+			       size_t limit = 0);
+
+std::vector<std::string> split(const std::string& delimiter,
+			       const std::string& s);
+std::vector<std::string> split(const std::string& delimiter,
+			       const char* a, const char* b);
+
+std::string join(char sep,
+		 const std::vector<std::string>& v);
+std::string join(const std::string& sep,
+		 const std::vector<std::string>& v);
 
 #endif
