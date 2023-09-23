@@ -51,7 +51,7 @@ namespace {
 	double d;
     };
 
-    void parse(Library& lib,
+    void parse(Library<Map>& lib,
 	       const Lines& acc,
 	       const Files::Position& pos,
 	       std::ostream& log)
@@ -151,9 +151,9 @@ bool Dimensions::empty() const
  * Read a map "library" from 'files', printing errors/warnings to 'log'.
  * Returns an empty library in case of complete failure.
  */
-Library parse_lib(Files& files, std::ostream& log)
+Library<Map> parse_lib(Files& files, std::ostream& log)
 {
-    Library lib;
+    Library<Map> lib;
 
     Lines acc;
     std::string s;
@@ -271,7 +271,7 @@ namespace {
  *
  */
 Map find_mapping(const string& mapfile,
-		 const Library& library,
+		 const Library<Map>& library,
 		 const string& worldfile,
 		 std::ostream& log)
 {
@@ -283,7 +283,7 @@ Map find_mapping(const string& mapfile,
     }
 
     if(!library.empty()) {
-	const Library::const_iterator i = library.find(basename(mapfile));
+	const auto i = library.find(basename(mapfile));
 	if(i!=library.end()) {
 	    mapping = i->second;
 	    return mapping;

@@ -9,7 +9,7 @@ using orchis::assert_false;
 
 namespace {
 
-    Library parse(const char* s)
+    Library<Map> parse(const char* s)
     {
 	std::stringstream ss {s};
 	Files files {ss};
@@ -21,12 +21,12 @@ namespace {
 	return lib;
     }
 
-    void assert_has(const Library& lib, const char* name)
+    void assert_has(const Library<Map>& lib, const char* name)
     {
 	orchis::assert_true(lib.count(name));
     }
 
-    void assert_map(const Library& lib, const char* const name,
+    void assert_map(const Library<Map>& lib, const char* const name,
 		    const std::vector<std::string>& checksums,
 		    unsigned width, unsigned height)
     {
@@ -46,11 +46,11 @@ namespace library {
 
     void simple(TC)
     {
-	const Library lib = parse("luttra_n.png\n"
-				  "b3f1b2e3fcafeb2c14f43d7261e0d62a\n"
-				  "847 x 367\n"
-				  "6450000 1368000 -> 183 336\n"
-				  "6451000 1370000 -> 775  43\n");
+	const Library<Map> lib = parse("luttra_n.png\n"
+				       "b3f1b2e3fcafeb2c14f43d7261e0d62a\n"
+				       "847 x 367\n"
+				       "6450000 1368000 -> 183 336\n"
+				       "6451000 1370000 -> 775  43\n");
 	assert_eq(lib.size(), 2);
 	assert_has(lib, "luttra_n.png");
 	assert_has(lib, "b3f1b2e3fcafeb2c14f43d7261e0d62a");
@@ -62,25 +62,25 @@ namespace library {
 
     void variations(TC)
     {
-	const Library lib = parse("# no checksum\n"
-				  "foo\n"
-				  "847 x 367\n"
-				  "6450000 1368000 -> 183 336\n"
-				  "6451000 1370000 -> 775  43\n"
-				  "\n"
-				  "# two names\n"
-				  "bar\n"
-				  "baz\n"
-				  "b3f1b2e3fcafeb2c14f43d7261e0d62a\n"
-				  "847 x 367\n"
-				  "6450000 1368000 -> 183 336\n"
-				  "6451000 1370000 -> 775  43\n"
-				  "\n"
-				  "# commas in transformations\n"
-				  "bat\n"
-				  "847 x 367\n"
-				  "6450000 1368000 -> 183, 336\n"
-				  "6451000 1370000 -> 775,  43\n");
+	const Library<Map> lib = parse("# no checksum\n"
+				       "foo\n"
+				       "847 x 367\n"
+				       "6450000 1368000 -> 183 336\n"
+				       "6451000 1370000 -> 775  43\n"
+				       "\n"
+				       "# two names\n"
+				       "bar\n"
+				       "baz\n"
+				       "b3f1b2e3fcafeb2c14f43d7261e0d62a\n"
+				       "847 x 367\n"
+				       "6450000 1368000 -> 183 336\n"
+				       "6451000 1370000 -> 775  43\n"
+				       "\n"
+				       "# commas in transformations\n"
+				       "bat\n"
+				       "847 x 367\n"
+				       "6450000 1368000 -> 183, 336\n"
+				       "6451000 1370000 -> 775,  43\n");
 
 	assert_eq(lib.size(), 1+3+1);
 	assert_has(lib, "foo");

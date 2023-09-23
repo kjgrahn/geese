@@ -39,13 +39,14 @@ struct Map {
     Transform t;
 };
 
-typedef std::map<std::string, Map> Library;
+template <class T>
+using Library = std::map<std::string, T>;
 
 class Files;
-Library parse_lib(Files& files, std::ostream& log);
+Library<Map> parse_lib(Files& files, std::ostream& log);
 
 Map find_mapping(const std::string& mapfile,
-		 const Library& library,
+		 const Library<Map>& library,
 		 const std::string& worldfile,
 		 std::ostream& log);
 

@@ -56,7 +56,7 @@ namespace {
     }
 
 
-    void describe_maps(const Library& lib,
+    void describe_maps(const Library<Map>& lib,
 		       const char* const * argv)
     {
 	using std::cout;
@@ -112,7 +112,7 @@ namespace {
     }
 
 
-    void delta_maps(const Library& lib,
+    void delta_maps(const Library<Map>& lib,
 		    const std::string& dstfile,
 		    const char* const * argv)
     {
@@ -200,7 +200,7 @@ int main(int argc, char ** argv)
 	return 1;
     }
 
-    Library lib;
+    Library<Map> lib;
     if(!libfile.empty()) {
 	Files files {begin(libfile), end(libfile), false};
 	lib = parse_lib(files, std::cerr);

@@ -21,7 +21,7 @@ namespace {
      * The actual core of the utility, with arguments corresponding
      * to the command-line arguments.
      */
-    void fit_maps(const Library& lib,
+    void fit_maps(const Library<Map>& lib,
 		  const std::string& targetdir,
 		  const unsigned prescale,
 		  char** argv)
@@ -141,7 +141,7 @@ int main(int argc, char ** argv)
 	prescale = 1e6*(s+0.5e-6);
     }
 
-    Library lib;
+    Library<Map> lib;
     if(!libfile.empty()) {
 	Files files {begin(libfile), end(libfile), false};
 	lib = parse_lib(files, std::cerr);
