@@ -16,6 +16,7 @@
 #include <getopt.h>
 
 #include "library.h"
+#include "files...h"
 #include "worldfile.h"
 #include "md5pp.h"
 #include "sumdim.h"
@@ -148,9 +149,9 @@ int main(int argc, char ** argv)
 
     const string prog = argv[0];
     const string usage = string("usage: ")
-	+ prog + " [-f mapping-file] map-file ...\n"
+	+ prog + " [-f mapping-file] ... map-file ...\n"
 	+ "       "
-	+ prog + " [-f mapping-file] -d destination-map source-map ...";
+	+ prog + " [-f mapping-file] ... -d destination-map source-map ...";
     const char optstring[] = "+f:d:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
@@ -161,7 +162,7 @@ int main(int argc, char ** argv)
     std::cin.sync_with_stdio(false);
     std::cout.sync_with_stdio(false);
 
-    string libfile;
+    std::vector<string> libfile;
     string dstfile;
 
     int ch;
@@ -169,7 +170,7 @@ int main(int argc, char ** argv)
 			    optstring, &long_options[0], 0)) != -1) {
 	switch(ch) {
 	case 'f':
-	    libfile = optarg;
+	    libfile.emplace_back(optarg);
 	    break;
 	case 'd':
 	    dstfile = optarg;
@@ -194,14 +195,15 @@ int main(int argc, char ** argv)
     }
 
     if(optind == argc) {
-	std::cerr << "error: required argyment missing\n";
+	std::cerr << "error: required argument missing\n";
 	std::cerr << usage << '\n';
 	return 1;
     }
 
     Library lib;
     if(!libfile.empty()) {
-	lib = parse_lib(libfile, std::cerr);
+	Files files {begin(libfile), end(libfile), false};
+	lib = parse_lib(files, std::cerr);
 	if(lib.empty()) return 1;
     }
 

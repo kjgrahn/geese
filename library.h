@@ -41,7 +41,8 @@ struct Map {
 
 typedef std::map<std::string, Map> Library;
 
-Library parse_lib(const std::string& libfile, std::ostream& log);
+class Files;
+Library parse_lib(Files& files, std::ostream& log);
 
 Map find_mapping(const std::string& mapfile,
 		 const Library& library,

@@ -6,6 +6,7 @@
  */
 #include "library.h"
 #include "regex.h"
+#include "files...h"
 #include "worldfile.h"
 #include "globbing.h"
 
@@ -52,8 +53,7 @@ namespace {
 
     void parse(Library& lib,
 	       const Lines& acc,
-	       const std::string& filename,
-	       const unsigned lineno,
+	       const Files::Position& pos,
 	       std::ostream& log)
     {
 	vector<string> names;
@@ -108,24 +108,20 @@ namespace {
 		mappings.push_back(m);
 	    }
 	    else {
-		log << filename << ':' << lineno << ": "
-		    << "warning: ignoring line \"" << s << "\"\n";
+		log << pos << ": " << "warning: ignoring line \"" << s << "\"\n";
 	    }
 	}
 
 	if(names.empty()) {
-	    log << filename << ':' << lineno << ": "
-		<< "warning: entry without file name discarded\n";
+	    log << pos << ": " << "warning: entry without file name discarded\n";
 	    return;
 	}
 	if(mappings.size()<2) {
-	    log << filename << ':' << lineno << ": "
-		<< "warning: entry without mappings discarded\n";
+	    log << pos << ": " << "warning: entry without mappings discarded\n";
 	    return;
 	}
 	if(mappings.size()>2) {
-	    log << filename << ':' << lineno << ": "
-		<< "warning: ignoring extra mappings (I only use two)\n";
+	    log << pos << ": " << "warning: ignoring extra mappings (I only use two)\n";
 	}
 
 	const Mapping& a = mappings[0];
@@ -152,32 +148,24 @@ bool Dimensions::empty() const
 
 
 /**
- * Read a map "library" from 'libfile', printing errors/warnings to 'log'.
+ * Read a map "library" from 'files', printing errors/warnings to 'log'.
  * Returns an empty library in case of complete failure.
  */
-Library parse_lib(const std::string& libfile, std::ostream& log)
+Library parse_lib(Files& files, std::ostream& log)
 {
     Library lib;
-    std::ifstream is(libfile.c_str());
-    if(is.fail()) {
-	log << "error: cannot open " << libfile << ": "
-	    << std::strerror(errno) << '\n';
-	return lib;
-    }
 
     Lines acc;
     std::string s;
-    unsigned n = 0;
 
-    while(std::getline(is, s)) {
-	++n;
+    while(files.getline(s)) {
 	if(!s.empty() && s[0] == '#') {
 	    continue;
 	}
 
 	if(s.empty()) {
 	    if(!acc.empty()) {
-		parse(lib, acc, libfile, n, log);
+		parse(lib, acc, files.position(), log);
 		acc.clear();
 	    }
 	    continue;
@@ -187,13 +175,9 @@ Library parse_lib(const std::string& libfile, std::ostream& log)
     }
 
     if(!acc.empty()) {
-	parse(lib, acc, libfile, n, log);
+	parse(lib, acc, files.position(), log);
     }
 
-    if(!is.eof()) {
-	log << "error reading " << libfile << ": "
-	    << std::strerror(errno) << '\n';
-    }
     return lib;
 }
 
@@ -337,8 +321,11 @@ Map find_mapping(const std::string& mapfile,
 		 const std::string& worldfile,
 		 std::ostream& log)
 {
+    const auto a = &libfile;
+    const auto b = a+1;
+    Files files {a, b, false};
     return find_mapping(mapfile,
-			parse_lib(libfile, log),
+			parse_lib(files, log),
 			worldfile,
 			log);
 }

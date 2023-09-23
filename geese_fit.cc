@@ -12,6 +12,7 @@
 #include <getopt.h>
 
 #include "library.h"
+#include "files...h"
 #include "version.h"
 
 namespace {
@@ -74,7 +75,7 @@ int main(int argc, char ** argv)
 
     const string prog = argv[0];
     const string usage = string("usage: ")
-	+ prog + " [-f mapping-file] [-s scale] -d target-dir map-file ...";
+	+ prog + " [-f mapping-file] ... [-s scale] -d target-dir map-file ...";
     const char optstring[] = "+f:s:d:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
@@ -85,7 +86,7 @@ int main(int argc, char ** argv)
     std::cin.sync_with_stdio(false);
     std::cout.sync_with_stdio(false);
 
-    string libfile;
+    std::vector<string> libfile;
     string targetdir;
     string scale;
     unsigned prescale = 1e6;
@@ -95,7 +96,7 @@ int main(int argc, char ** argv)
 			    optstring, &long_options[0], 0)) != -1) {
 	switch(ch) {
 	case 'f':
-	    libfile = optarg;
+	    libfile.emplace_back(optarg);
 	    break;
 	case 's':
 	    scale = optarg;
@@ -123,7 +124,7 @@ int main(int argc, char ** argv)
     }
 
     if(argc - optind < 2 || targetdir.empty()) {
-	std::cerr << "error: required argyment missing\n";
+	std::cerr << "error: required argument missing\n";
 	std::cerr << usage << '\n';
 	return 1;
     }
@@ -142,7 +143,8 @@ int main(int argc, char ** argv)
 
     Library lib;
     if(!libfile.empty()) {
-	lib = parse_lib(libfile, std::cerr);
+	Files files {begin(libfile), end(libfile), false};
+	lib = parse_lib(files, std::cerr);
 	if(lib.empty()) return 1;
     }
 
