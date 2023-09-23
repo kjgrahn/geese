@@ -75,6 +75,7 @@ libgeese.a: md5pp.o
 libgeese.a: sumdim.o
 libgeese.a: split.o
 libgeese.a: globbing.o
+libgeese.a: files...o
 libgeese.a: xv.o
 libgeese.a: xvpixel.o
 libgeese.a: canvas.o
@@ -88,6 +89,7 @@ test/libtest.a: test/point.o
 test/libtest.a: test/transform.o
 test/libtest.a: test/md5.o
 test/libtest.a: test/split.o
+test/libtest.a: test/files.o
 	$(AR) $(ARFLAGS) $@ $^
 
 test/%.o: CPPFLAGS+=-I.
