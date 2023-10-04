@@ -57,13 +57,13 @@ namespace {
 	       std::ostream& log)
     {
 	vector<string> names;
-	vector<string> checksums;
+	vector<md5::Digest> checksums;
 
 	Lines::const_iterator i;
 	for(i = acc.begin(); i!=acc.end(); ++i) {
 	    const string& s = *i;
 	    if(re::dimension.match(s) || re::mapping.match(s)) break;
-	    if(re::md5.match(s)) checksums.push_back(s);
+	    if(re::md5.match(s)) checksums.push_back(md5::parse(s));
 	    names.push_back(s);
 	}
 

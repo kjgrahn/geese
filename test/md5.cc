@@ -143,5 +143,27 @@ namespace md5 {
 	    orchis::assert_eq("bar 6cd3556deb0da54bca060b4c39479839",
 			      o2.str());
 	}
+
+	void test_digest_eq()
+	{
+	    md5::Ctx ctx;
+	    ctx.update(hw);
+	    const md5::Digest a = ctx.digest();
+	    const md5::Digest b = ctx.digest();
+	    ctx.update(hw);
+	    const md5::Digest c = ctx.digest();
+	    orchis::assert_eq(a, a);
+	    orchis::assert_eq(a, b);
+	    orchis::assert_neq(a, c);
+	}
+
+	void test_digest_str()
+	{
+	    md5::Ctx ctx;
+	    ctx.update(hw);
+	    const md5::Digest a = ctx.digest();
+	    const md5::Digest b = md5::parse("6cd3556deb0da54bca060b4c39479839");
+	    orchis::assert_eq(a, b);
+	}
     }
 }

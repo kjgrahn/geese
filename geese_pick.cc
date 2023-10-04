@@ -33,11 +33,11 @@ namespace {
 	return os << buf;
     }
 
-    std::string md5sum(const std::string& file)
+    auto md5sum(const std::string& file)
     {
 	std::ifstream is(file.c_str());
 	md5::Ctx ctx;
-	return ctx.update(is).digest().hex();
+	return ctx.update(is).digest();
     }
 
     template<class Container, class Value>
@@ -145,7 +145,7 @@ int main(int argc, char ** argv)
     }
     if(!mapping.checksums.empty()) {
 
-	const std::string digest = md5sum(mapfile);
+	const auto digest = md5sum(mapfile);
 	if(!contains(mapping.checksums, digest)) {
 	    std::cout << "warning: " << mapfile
 		      << ": bad checksum - distrust the coordinates!\n";

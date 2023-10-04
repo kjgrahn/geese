@@ -21,12 +21,16 @@ namespace md5 {
      * should have had one, too.
      */
     struct Digest {
-	Digest() {}
+	Digest() = default;
 	explicit Digest(const unsigned char buf[16]);
 	std::string hex() const;
-	unsigned char val[16];
+	unsigned char val[16] = {};
+
+	bool operator== (const Digest& other) const;
+	bool operator!= (const Digest& other) const;
     };
 
+    Digest parse(const std::string& s);
 
     /**
      * Like Solar Designer's MD5_CTX, but with a richer set of input

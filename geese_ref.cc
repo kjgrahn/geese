@@ -35,11 +35,11 @@ namespace {
 	return os << buf;
     }
 
-    std::string md5sum(const std::string& file)
+    auto md5sum(const std::string& file)
     {
 	std::ifstream is(file.c_str());
 	md5::Ctx ctx;
-	return ctx.update(is).digest().hex();
+	return ctx.update(is).digest();
     }
 
     SumDim sum_dim(const std::string& file)
@@ -193,7 +193,7 @@ int main(int argc, char ** argv)
 
     if(!refmapping.checksums.empty()) {
 
-	const std::string digest = md5sum(refmapfile);
+	const auto digest = md5sum(refmapfile);
 	if(!contains(refmapping.checksums, digest)) {
 	    std::cerr << "warning: " << refmapfile
 		      << ": bad MD5 checksum; aborting\n";

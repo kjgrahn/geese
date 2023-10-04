@@ -27,7 +27,7 @@ namespace {
     }
 
     void assert_map(const Library<Map>& lib, const char* const name,
-		    const std::vector<std::string>& checksums,
+		    const std::vector<md5::Digest>& checksums,
 		    unsigned width, unsigned height)
     {
 	assert_true(lib.count(name));
@@ -56,7 +56,7 @@ namespace library {
 	assert_has(lib, "b3f1b2e3fcafeb2c14f43d7261e0d62a");
 
 	assert_map(lib, "luttra_n.png",
-		   {"b3f1b2e3fcafeb2c14f43d7261e0d62a"},
+		   {md5::parse("b3f1b2e3fcafeb2c14f43d7261e0d62a")},
 		   847, 367);
     }
 

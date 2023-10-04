@@ -14,6 +14,7 @@
 #include <map>
 
 #include "transform.h"
+#include "md5pp.h"
 
 struct Dimensions {
     Dimensions() : width(0), height(0) {}
@@ -24,7 +25,7 @@ struct Dimensions {
 
 struct Map {
     Map() : empty(true) {}
-    Map(const std::vector<std::string>& checksums_,
+    Map(const std::vector<md5::Digest>& checksums_,
 	const Dimensions& dimensions_,
 	const Transform& transform)
 	: empty(false),
@@ -34,7 +35,7 @@ struct Map {
     {}
 
     bool empty;
-    std::vector<std::string> checksums;
+    std::vector<md5::Digest> checksums;
     Dimensions dimensions;
     Transform t;
 };

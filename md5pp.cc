@@ -6,6 +6,8 @@
  */
 #include "md5pp.h"
 
+#include "hexread.h"
+
 #include <iostream>
 #include <cstdio>
 
@@ -28,6 +30,38 @@ std::string Digest::hex() const
 	s.append(buf);
     }
     return s;
+}
+
+
+bool Digest::operator== (const Digest& other) const
+{
+    return std::equal(std::begin(val), std::end(val),
+		      std::begin(other.val));
+}
+
+
+bool Digest::operator!= (const Digest& other) const
+{
+    return !(*this==other);
+}
+
+
+/**
+ * Parse a string, which must contain only a hex MD5 digest and
+ * whitespace.
+ */
+Digest md5::parse(const std::string& s)
+{
+    const char* p = s.c_str();
+    std::vector<uint8_t> v(s.size()/2);
+    size_t n = hexread(v.data(), &p, p+s.size());
+
+    Digest d;
+    if (n==16) {
+	std::copy(begin(v), end(v), std::begin(d.val));
+    }
+
+    return d;
 }
 
 

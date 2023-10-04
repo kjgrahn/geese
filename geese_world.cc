@@ -36,13 +36,6 @@ namespace {
 	return os << buf;
     }
 
-    std::string md5sum(const std::string& file)
-    {
-	std::ifstream is(file.c_str());
-	md5::Ctx ctx;
-	return ctx.update(is).digest().hex();
-    }
-
     SumDim sum_dim(const std::string& file)
     {
 	std::ifstream is(file.c_str());
@@ -77,7 +70,7 @@ namespace {
 			  << ": " << std::strerror(errno) << '\n';
 		continue;
 	    }
-	    const std::string digest = sumdim.sum.hex();
+	    const auto digest = sumdim.sum;
 
 	    if(!m.checksums.empty() &&
 	       !contains(m.checksums, digest)) {
@@ -89,10 +82,8 @@ namespace {
 		cout << '\n';
 	    }
 	    cout << f << '\n';
-	    for(std::vector<std::string>::const_iterator i = m.checksums.begin();
-		i != m.checksums.end();
-		++i) {
-		cout << *i << '\n';
+	    for(const auto& sum : m.checksums) {
+		cout << sum << '\n';
 	    }
 	    if(m.checksums.empty()) {
 		cout << digest << '\n';
