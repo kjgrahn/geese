@@ -82,13 +82,17 @@ libgeese.a: xvpixel.o
 libgeese.a: canvas.o
 libgeese.a: worldfile.o
 libgeese.a: library.o
+libgeese.a: parse.o
 libgeese.a: transform.o
 libgeese.a: point.o
 	$(AR) $(ARFLAGS) $@ $^
 
+library.o: CXXFLAGS+=-Wno-misleading-indentation
+
 test/libtest.a: test/point.o
 test/libtest.a: test/transform.o
 test/libtest.a: test/library.o
+test/libtest.a: test/parse.o
 test/libtest.a: test/md5.o
 test/libtest.a: test/hexread.o
 test/libtest.a: test/split.o

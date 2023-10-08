@@ -5,7 +5,7 @@
  *
  */
 #include "library.h"
-#include "regex.h"
+#include "parse.h"
 #include "files...h"
 #include "worldfile.h"
 #include "globbing.h"
@@ -16,6 +16,7 @@
 #include <fstream>
 #include <cerrno>
 #include <cstring>
+#include <cstdlib>
 
 
 using std::vector;
@@ -25,25 +26,6 @@ typedef std::vector<std::string> Lines;
 
 namespace {
 
-    namespace re {
-
-	/* 21da8fb51edd4c398765e012b9cc8738 */
-	Regex md5("^[[:xdigit:]]{32}$");
-
-	/* 2146 x 2578 */
-	Regex dimension("^ *[0-9]+ *x *[0-9]+$");
-
-	/* 6447181 1356800 -> 0,0 */
-	Regex mapping("^ *"
-		      "[0-9]+(\\.[0-9]+)?"
-		      " +"
-		      "[0-9]+(\\.[0-9]+)?"
-		      " *-> *"
-		      "[0-9]+(\\.[0-9]+)?"
-		      " *,? *"
-		      "[0-9]+(\\.[0-9]+)?");
-    }
-
     struct Mapping {
 	double a;
 	double b;
@@ -51,64 +33,77 @@ namespace {
 	double d;
     };
 
+    bool parse(const std::string& s, Dimensions& val)
+    {
+	const char* p = s.c_str();
+
+	try {
+	    val.width = eat<unsigned>(p);
+	    eat(p, "x");
+	    val.height = eat<unsigned>(p);
+	    eat_ws(p);
+	    return *p=='\0';
+	}
+	catch (const ParseError&) {
+	    return false;
+	}
+    }
+
+    bool parse(const std::string& s, Mapping& val)
+    {
+	const char* p = s.c_str();
+
+	try {
+	    val.a = eat<double>(p);
+	    val.b = eat<double>(p);
+	    eat(p, "->");
+	    val.c = eat<double>(p);
+	    eat_optional(p, ",");
+	    val.d = eat<double>(p);
+	    eat_ws(p);
+	    return *p=='\0';
+	}
+	catch (const ParseError&) {
+	    return false;
+	}
+    }
+
+    bool parse(const std::string& s, md5::Digest& val)
+    {
+	const md5::Digest nil;
+	val = md5::parse(s);
+	return val != nil;
+    }
+
     void parse(Library<Map>& lib,
 	       const Lines& acc,
 	       const Files::Position& pos,
 	       std::ostream& log)
     {
-	vector<string> names;
-	vector<md5::Digest> checksums;
-
-	Lines::const_iterator i;
-	for(i = acc.begin(); i!=acc.end(); ++i) {
-	    const string& s = *i;
-	    if(re::dimension.match(s) || re::mapping.match(s)) break;
-	    if(re::md5.match(s)) checksums.push_back(md5::parse(s));
-	    names.push_back(s);
-	}
-
+	std::vector<std::string> names;
+	std::vector<md5::Digest> checksums;
 	Dimensions dim;
-	vector<Mapping> mappings;
+	std::vector<Mapping> mappings;
 
-	for(; i!=acc.end(); ++i) {
-	    const std::string& s = *i;
-	    const char* p = s.c_str();
-	    if(re::dimension.match(s)) {
-		char* end;
-		dim.width = std::strtod(p, &end);
-		assert(end!=p);
-		assert(*end);
-		p = end;
-		while(isspace(*p)) p++;
-		assert(*p=='x');
-		p++;
-		dim.height = std::strtod(p, &end);
-		assert(end!=p);
-	    }
-	    else if(re::mapping.match(s)) {
-		Mapping m;
-		char* end;
-		m.a = std::strtod(p, &end);
-		p = end;
-		m.b = std::strtod(p, &end);
-		p = end;
-		while(isspace(*p)) p++;
-		assert(*p=='-');
-		p++;
-		assert(*p=='>');
-		p++;
-		m.c = std::strtod(p, &end);
-		p = end;
-		while(isspace(*p)) p++;
-		if(*p==',') {
-		    p++;
+	for (const std::string& s: acc) {
+	    if (dim.empty()) {
+		if (parse(s, dim)) continue;
+		md5::Digest md5;
+		if (parse(s, md5)) {
+		    names.push_back(md5.hex());
+		    checksums.push_back(md5);
+		    continue;
 		}
-		m.d = std::strtod(p, &end);
-
-		mappings.push_back(m);
+		names.push_back(s);
+		continue;
 	    }
 	    else {
-		log << pos << ": " << "warning: ignoring line \"" << s << "\"\n";
+		Mapping m;
+		if (parse(s, m)) {
+		    mappings.push_back(m);
+		    continue;
+		}
+		log << pos << ": warning: ignoring line \"" << s << "\"\n";
 	    }
 	}
 
@@ -131,8 +126,14 @@ namespace {
 		      Transform(RT90(a.a, a.b), Pixel(a.c, a.d),
 				RT90(b.a, b.b), Pixel(b.c, b.d)));
 
-	for(vector<string>::const_iterator i = names.begin(); i!=names.end(); ++i) {
-	    lib[*i] = map;
+	for (const auto& name: names) {
+
+	    if (lib.count(name)) {
+		log << pos << ": warning: ignoring extra entry for '"
+		    << name << "'\n";
+		continue;
+	    }
+	    lib.emplace(name, map);
 	}
     }
 
