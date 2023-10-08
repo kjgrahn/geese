@@ -86,7 +86,7 @@ int main(int argc, char ** argv)
 	+ prog + " [-f mapping-file] map-file\n"
 	"       "
 	+ prog + " -w world-file map-file";
-    const char optstring[] = "+f:w:h";
+    const char optstring[] = "f:w:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
 	{"help", 0, 0, 'h'},

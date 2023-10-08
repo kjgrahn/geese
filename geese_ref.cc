@@ -136,7 +136,7 @@ int main(int argc, char ** argv)
     const string prog = argv[0];
     const string usage = string("usage: ")
 	+ prog + " [-f mapping-file] reference-map map";
-    const char optstring[] = "+f:h";
+    const char optstring[] = "f:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
 	{"help", 0, 0, 'h'},

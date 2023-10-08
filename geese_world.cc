@@ -152,7 +152,7 @@ int main(int argc, char ** argv)
 	+ prog + " [-f mapping-file] ... map-file ...\n"
 	+ "       "
 	+ prog + " [-f mapping-file] ... -d destination-map source-map ...";
-    const char optstring[] = "+f:d:h";
+    const char optstring[] = "f:d:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
 	{"help", 0, 0, 'h'},

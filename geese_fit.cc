@@ -76,7 +76,7 @@ int main(int argc, char ** argv)
     const string prog = argv[0];
     const string usage = string("usage: ")
 	+ prog + " [-f mapping-file] ... [-s scale] -d target-dir map-file ...";
-    const char optstring[] = "+f:s:d:h";
+    const char optstring[] = "f:s:d:h";
     struct option long_options[] = {
 	{"version", 0, 0, 'v'},
 	{"help", 0, 0, 'h'},
